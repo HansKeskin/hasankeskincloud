@@ -518,24 +518,6 @@ function showToast(message, type = 'info') {
   setTimeout(() => { toast.remove(); }, 3500);
 }
 
-// ===== COOKIE BANNER =====
-const cookieBanner = document.querySelector('.cookie-banner');
-if (cookieBanner && !localStorage.getItem('cookies_accepted')) {
-  setTimeout(() => { cookieBanner.classList.add('visible'); }, 1500);
-
-  const acceptBtn = cookieBanner.querySelector('.btn-accept');
-  const rejectBtn = cookieBanner.querySelector('.btn-reject');
-
-  if (acceptBtn) acceptBtn.addEventListener('click', () => {
-    localStorage.setItem('cookies_accepted', 'true');
-    cookieBanner.classList.remove('visible');
-    showToast('Cerezler kabul edildi!', 'success');
-  });
-  if (rejectBtn) rejectBtn.addEventListener('click', () => {
-    localStorage.setItem('cookies_accepted', 'rejected');
-    cookieBanner.classList.remove('visible');
-  });
-}
 
 // ===== KEYBOARD SHORTCUTS =====
 const shortcutsModal = document.querySelector('.shortcuts-modal');
@@ -633,19 +615,6 @@ document.querySelectorAll('.fade-left, .fade-right, .fade-up, .fade-down').forEa
   observer.observe(el);
 });
 
-// ===== VISITOR COUNTER =====
-(function() {
-  const sessionKey = 'session_active';
-  const counterKey = 'visitor_count';
-  if (!sessionStorage.getItem(sessionKey)) {
-    sessionStorage.setItem(sessionKey, 'true');
-    let count = parseInt(localStorage.getItem(counterKey) || '0');
-    count++;
-    localStorage.setItem(counterKey, count.toString());
-  }
-  const badge = document.getElementById('visitorCount');
-  if (badge) badge.textContent = localStorage.getItem(counterKey) || '0';
-})();
 
 // ===== BLOG VIEW TRACKING =====
 function trackPostView(postId) {

@@ -30,23 +30,6 @@
     document.body.appendChild(tc);
   }
 
-  // Cookie Banner
-  if (!document.querySelector('.cookie-banner') && !localStorage.getItem('cookies_accepted')) {
-    const cb = document.createElement('div');
-    cb.className = 'cookie-banner';
-    cb.innerHTML = `
-      <div class="container">
-        <p><i class="fas fa-cookie-bite"></i> Bu web sitesi deneyiminizi iyilestirmek icin cerezler kullanmaktadir. Devam ederek cerez kullanimini kabul etmis olursunuz.</p>
-        <div class="cookie-buttons">
-          <button class="btn-accept">Kabul Et</button>
-          <button class="btn-reject">Reddet</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(cb);
-  }
-
-
   // Global Search Modal
   if (!document.querySelector('.global-search')) {
     const gs = document.createElement('div');

@@ -1891,71 +1891,6 @@ img {
   to { opacity: 0; transform: translateX(100px); }
 }
 
-/* ===== COOKIE BANNER ===== */
-.cookie-banner {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: var(--dark);
-  color: var(--light);
-  padding: 20px 0;
-  z-index: 9997;
-  transform: translateY(100%);
-  transition: transform 0.5s ease;
-}
-
-.cookie-banner.visible {
-  transform: translateY(0);
-}
-
-.cookie-banner .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.cookie-banner p {
-  font-size: 0.9rem;
-  flex: 1;
-  min-width: 200px;
-}
-
-.cookie-banner .cookie-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.cookie-banner .btn-accept {
-  padding: 10px 24px;
-  border-radius: 50px;
-  border: none;
-  background: var(--primary);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  transition: var(--transition);
-}
-
-.cookie-banner .btn-reject {
-  padding: 10px 24px;
-  border-radius: 50px;
-  border: 2px solid var(--dark-light);
-  background: transparent;
-  color: var(--light);
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  transition: var(--transition);
-}
-
-[data-theme="dark"] .cookie-banner {
-  background: #0F172A;
-}
-
 /* ===== KEYBOARD SHORTCUTS MODAL ===== */
 .shortcuts-modal {
   position: fixed;
@@ -2153,8 +2088,7 @@ body.reading-mode .like-section,
 body.reading-mode .comments-section,
 body.reading-mode .related-posts,
 body.reading-mode .newsletter-section,
-body.reading-mode .scroll-top,
-body.reading-mode .cookie-banner {
+body.reading-mode .scroll-top {
   display: none !important;
 }
 
@@ -3016,23 +2950,6 @@ html {
 
 .project-modal-close:hover {
   color: var(--primary);
-}
-
-/* ===== VISITOR COUNTER ===== */
-.visitor-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 50px;
-  background: rgba(67, 56, 202, 0.1);
-  color: var(--primary);
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.visitor-badge i {
-  font-size: 0.75rem;
 }
 
 /* ===== GLOBAL SEARCH MODAL ===== */
