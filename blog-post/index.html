@@ -205,15 +205,17 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase-client.js"></script>
   <script src="/js/blog-data.js"></script>
   <script src="/js/i18n.js"></script>
   <script src="/js/components.js"></script>
   <script src="/js/main.js"></script>
   <script>
-    function renderPost() {
+    async function renderPost() {
       const params = new URLSearchParams(window.location.search);
       const postId = params.get('id');
-      const post = getPostById(postId);
+      const post = await getPostById(postId);
       const lang = getLang();
 
       if (!post) {
@@ -244,12 +246,12 @@
         setTimeout(() => { document.getElementById('shareCopy').innerHTML = '<i class="fas fa-link"></i>'; }, 2000);
       };
 
-      loadComments(postId);
+      await loadComments(postId);
     }
 
     // Comments
-    function loadComments(postId) {
-      const comments = JSON.parse(localStorage.getItem('comments_' + postId) || '[]');
+    async function loadComments(postId) {
+      const comments = await fetchComments(postId);
       const list = document.getElementById('commentsList');
       const count = document.getElementById('commentCount');
       count.textContent = comments.length;
@@ -262,13 +264,14 @@
       list.innerHTML = comments.map(c => {
         const safeName = escapeHtml(c.name);
         const safeText = escapeHtml(c.text);
+        const commentDate = c.created_at ? c.created_at.split('T')[0] : new Date().toISOString().split('T')[0];
         return `
         <div class="comment-item">
           <div class="comment-avatar">${safeName.charAt(0).toUpperCase()}</div>
           <div class="comment-body">
             <div class="comment-header">
               <strong>${safeName}</strong>
-              <span>${formatDate(c.date, getLang())}</span>
+              <span>${formatDate(commentDate, getLang())}</span>
             </div>
             <p>${safeText}</p>
           </div>
@@ -276,20 +279,22 @@
       `; }).join('');
     }
 
-    document.getElementById('commentForm').addEventListener('submit', (e) => {
+    document.getElementById('commentForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const postId = new URLSearchParams(window.location.search).get('id');
       const name = document.getElementById('commentName').value.trim();
       const text = document.getElementById('commentText').value.trim();
       if (name.length < 2 || text.length < 3) return;
 
-      const comments = JSON.parse(localStorage.getItem('comments_' + postId) || '[]');
-      comments.push({ name, text, date: new Date().toISOString().split('T')[0] });
-      localStorage.setItem('comments_' + postId, JSON.stringify(comments));
+      try {
+        await insertComment(Number(postId), name, text);
+      } catch (err) {
+        console.error('Comment error:', err);
+      }
 
       document.getElementById('commentName').value = '';
       document.getElementById('commentText').value = '';
-      loadComments(postId);
+      await loadComments(postId);
       if (typeof launchConfetti === 'function') launchConfetti();
       if (typeof logActivity === 'function') logActivity('comment', name + ' yorum yapti');
     });
@@ -335,9 +340,10 @@
     }
 
     // Related Posts
-    function renderRelatedPosts(currentPost) {
+    async function renderRelatedPosts(currentPost) {
       const lang = getLang();
-      const allPosts = getAllPosts().filter(p => p.id !== currentPost.id);
+      const all = await getAllPosts();
+      const allPosts = all.filter(p => p.id !== currentPost.id);
       const sameCat = allPosts.filter(p => p.category === currentPost.category);
       const related = sameCat.length >= 3 ? sameCat.slice(0, 3) : [...sameCat, ...allPosts.filter(p => p.category !== currentPost.category)].slice(0, 3);
 
@@ -367,8 +373,8 @@
     }
 
     // Tag Cloud - reads tags from all posts
-    function renderTagCloud() {
-      const allPosts = getAllPosts();
+    async function renderTagCloud() {
+      const allPosts = await getAllPosts();
       const tagSet = new Set();
       allPosts.forEach(p => {
         if (p.tags && Array.isArray(p.tags)) {
@@ -389,14 +395,14 @@
 
     // Override renderPost to include new features
     const originalRenderPost = renderPost;
-    renderPost = function() {
-      originalRenderPost();
+    renderPost = async function() {
+      await originalRenderPost();
       const params = new URLSearchParams(window.location.search);
       const postId = params.get('id');
-      const post = getPostById(postId);
+      const post = await getPostById(postId);
       if (post) {
         updateLikeUI(postId);
-        renderRelatedPosts(post);
+        await renderRelatedPosts(post);
 
         // Track view (only once per page load)
         if (!window._viewTracked) {
@@ -441,7 +447,7 @@
           }
         }
       }
-      renderTagCloud();
+      await renderTagCloud();
     };
 
     renderPost();
@@ -449,12 +455,15 @@
     // Newsletter form handler
     const nlForm = document.getElementById('newsletterForm');
     if (nlForm) {
-      nlForm.addEventListener('submit', (e) => {
+      nlForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = e.target.querySelector('input').value.trim();
         if (!email) return;
-        const subs = JSON.parse(localStorage.getItem('newsletter_subs') || '[]');
-        if (!subs.includes(email)) { subs.push(email); localStorage.setItem('newsletter_subs', JSON.stringify(subs)); }
+        try {
+          await insertNewsletterSub(email);
+        } catch (err) {
+          console.error('Newsletter error:', err);
+        }
         e.target.querySelector('input').value = '';
         const btn = e.target.querySelector('button');
         btn.textContent = t('newsletter.success');

@@ -201,14 +201,17 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
   <script src="js/blog-data.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/components.js"></script>
   <script src="js/main.js"></script>
   <script>
-    function renderLatestPosts() {
+    async function renderLatestPosts() {
       const lang = getLang();
-      const posts = getAllPosts().slice(0, 3);
+      const allPosts = await getAllPosts();
+      const posts = allPosts.slice(0, 3);
       const grid = document.getElementById('latestPosts');
 
       grid.innerHTML = posts.map(p => {
@@ -238,12 +241,15 @@
     // Newsletter
     const nlForm = document.getElementById('newsletterForm');
     if (nlForm) {
-      nlForm.addEventListener('submit', (e) => {
+      nlForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = e.target.querySelector('input').value.trim();
         if (!email) return;
-        const subs = JSON.parse(localStorage.getItem('newsletter_subs') || '[]');
-        if (!subs.includes(email)) { subs.push(email); localStorage.setItem('newsletter_subs', JSON.stringify(subs)); }
+        try {
+          await insertNewsletterSub(email);
+        } catch (err) {
+          console.error('Newsletter error:', err);
+        }
         e.target.querySelector('input').value = '';
         const btn = e.target.querySelector('button');
         btn.textContent = t('newsletter.success');
@@ -253,11 +259,12 @@
       });
     }
 
-    // Dynamic stats from localStorage
-    function updateStats() {
-      const blogCount = getAllPosts().length;
-      const projects = JSON.parse(localStorage.getItem('projects') || '[]');
-      const experiences = JSON.parse(localStorage.getItem('experiences') || '[]');
+    // Dynamic stats from Supabase
+    async function updateStats() {
+      const allPosts = await getAllPosts();
+      const blogCount = allPosts.length;
+      const projects = await fetchProjects();
+      const experiences = await fetchExperiences();
       // Collect unique technologies from projects
       const techSet = new Set();
       projects.forEach(p => (p.tech || []).forEach(t => techSet.add(t)));

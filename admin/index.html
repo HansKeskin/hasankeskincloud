@@ -16,10 +16,11 @@
     <div style="background:var(--card-bg,#1a1a2e);border-radius:16px;padding:40px;max-width:400px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.5);text-align:center;">
       <div style="font-size:48px;margin-bottom:16px;"><i class="fas fa-lock" style="color:var(--primary,#6c63ff);"></i></div>
       <h2 style="margin-bottom:8px;color:var(--text,#fff);font-family:'Poppins',sans-serif;">Admin Paneli</h2>
-      <p style="margin-bottom:24px;color:var(--dark-light,#888);font-size:14px;">Devam etmek icin sifrenizi girin</p>
+      <p style="margin-bottom:24px;color:var(--dark-light,#888);font-size:14px;">Devam etmek icin giris yapin</p>
       <form id="loginForm" autocomplete="off">
-        <input type="password" id="loginPassword" placeholder="Sifre..." style="width:100%;padding:12px 16px;border-radius:8px;border:2px solid var(--border,#333);background:var(--dark,#0a0a0a);color:var(--text,#fff);font-size:16px;font-family:'Poppins',sans-serif;outline:none;box-sizing:border-box;margin-bottom:12px;transition:border-color 0.3s;" onfocus="this.style.borderColor='var(--primary,#6c63ff)'" onblur="this.style.borderColor='var(--border,#333)'">
-        <div id="loginError" style="color:#ff4757;font-size:13px;margin-bottom:12px;display:none;">Yanlis sifre!</div>
+        <input type="email" id="loginEmail" placeholder="E-posta..." style="width:100%;padding:12px 16px;border-radius:8px;border:2px solid var(--border,#333);background:var(--dark,#0a0a0a);color:var(--text,#fff);font-size:16px;font-family:'Poppins',sans-serif;outline:none;box-sizing:border-box;margin-bottom:12px;transition:border-color 0.3s;" onfocus="this.style.borderColor='var(--primary,#6c63ff)'" onblur="this.style.borderColor='var(--border,#333)'" required>
+        <input type="password" id="loginPassword" placeholder="Sifre..." style="width:100%;padding:12px 16px;border-radius:8px;border:2px solid var(--border,#333);background:var(--dark,#0a0a0a);color:var(--text,#fff);font-size:16px;font-family:'Poppins',sans-serif;outline:none;box-sizing:border-box;margin-bottom:12px;transition:border-color 0.3s;" onfocus="this.style.borderColor='var(--primary,#6c63ff)'" onblur="this.style.borderColor='var(--border,#333)'" required>
+        <div id="loginError" style="color:#ff4757;font-size:13px;margin-bottom:12px;display:none;">Giris basarisiz!</div>
         <button type="submit" style="width:100%;padding:12px;border-radius:8px;border:none;background:var(--primary,#6c63ff);color:#fff;font-size:16px;font-weight:600;font-family:'Poppins',sans-serif;cursor:pointer;transition:opacity 0.3s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"><i class="fas fa-sign-in-alt"></i> Giris Yap</button>
       </form>
     </div>
@@ -66,7 +67,8 @@
   <div class="page-header">
     <div class="container">
       <h1><i class="fas fa-cog"></i> Admin Paneli</h1>
-      <p>Blog, Proje ve Deneyim Yonetimi (LocalStorage)</p>
+      <p>Blog, Proje ve Deneyim Yonetimi</p>
+      <button onclick="handleLogout();" style="margin-top:12px;padding:8px 20px;border-radius:8px;border:2px solid rgba(255,255,255,0.3);background:transparent;color:#fff;font-size:14px;font-weight:500;font-family:'Poppins',sans-serif;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'"><i class="fas fa-sign-out-alt"></i> Cikis Yap</button>
     </div>
   </div>
 
@@ -154,7 +156,7 @@
 
       <!-- Existing Posts -->
       <div class="admin-posts-list" id="adminPostsList">
-        <h3 style="margin-bottom: 20px;"><i class="fas fa-list"></i> Mevcut Yazilar (LocalStorage)</h3>
+        <h3 style="margin-bottom: 20px;"><i class="fas fa-list"></i> Mevcut Yazilar</h3>
       </div>
 
       <!-- ===== PROJE YONETIMI ===== -->
@@ -242,10 +244,6 @@
         <h3 style="margin-bottom:16px;"><i class="fas fa-key"></i> Sifre Degistir</h3>
         <form id="changePasswordForm" autocomplete="off">
           <div class="form-group">
-            <label>Mevcut Sifre</label>
-            <input type="password" id="currentPassword" placeholder="Mevcut sifreniz..." required>
-          </div>
-          <div class="form-group">
             <label>Yeni Sifre</label>
             <input type="password" id="newPassword" placeholder="Yeni sifre..." required>
           </div>
@@ -271,6 +269,8 @@
 
   </div><!-- /adminContent -->
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase-client.js"></script>
   <script src="/js/blog-data.js"></script>
   <script src="/js/i18n.js"></script>
   <script src="/js/components.js"></script>
@@ -279,34 +279,22 @@
     // ===== MARKDOWN SUPPORT =====
     function markdownToHtml(md) {
       let html = md;
-      // Code blocks (```)
       html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
-      // Inline code
       html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-      // Headers
       html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
       html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
       html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-      // Bold and italic
       html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-      // Images (must be before links)
       html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
-      // Links
       html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-      // Unordered lists
       html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
       html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-      // Horizontal rule
       html = html.replace(/^---$/gm, '<hr>');
-      // Blockquotes
       html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
-      // Paragraphs (double newline)
       html = html.replace(/\n\n(?!<)/g, '</p><p>');
-      // Single newlines to <br> (if not inside tags)
       html = html.replace(/(?<!\>)\n(?!\<)/g, '<br>');
-      // Wrap in paragraph if no block elements at start
       if (!html.startsWith('<')) html = '<p>' + html + '</p>';
       return html;
     }
@@ -327,7 +315,6 @@
       const preview = document.getElementById(previewId);
       if (preview.style.display === 'none') {
         const content = ta.value;
-        // If content looks like HTML (starts with <), show as-is; otherwise convert from Markdown
         preview.innerHTML = content.trim().startsWith('<') ? content : markdownToHtml(content);
         preview.style.display = 'block';
         ta.style.display = 'none';
@@ -337,25 +324,24 @@
       }
     }
 
-    function getCustomPosts() {
-      return JSON.parse(localStorage.getItem('customBlogPosts') || '[]');
+    // ===== BLOG POST MANAGEMENT (Supabase) =====
+    let _adminPosts = [];
+
+    async function loadAdminPosts() {
+      _adminPosts = await fetchAllPosts();
     }
 
-    function saveCustomPosts(posts) {
-      localStorage.setItem('customBlogPosts', JSON.stringify(posts));
-    }
-
-    function renderAdminList() {
-      const posts = getCustomPosts();
+    async function renderAdminList() {
+      await loadAdminPosts();
       const list = document.getElementById('adminPostsList');
 
-      if (posts.length === 0) {
-        list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Yazilar (LocalStorage)</h3><p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz ozel yazi eklenmemis.</p>';
+      if (_adminPosts.length === 0) {
+        list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Yazilar</h3><p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz yazi eklenmemis.</p>';
         return;
       }
 
-      list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Yazilar (LocalStorage)</h3>' +
-        posts.map(p => `
+      list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Yazilar</h3>' +
+        _adminPosts.map(p => `
           <div class="admin-post-item">
             <div class="post-info">
               <h4>${p.title.tr}</h4>
@@ -363,23 +349,18 @@
             </div>
             <div class="post-actions">
               <button class="btn-edit" onclick="editPost(${p.id})"><i class="fas fa-edit"></i> Duzenle</button>
-              <button class="btn-delete" onclick="deletePost(${p.id})"><i class="fas fa-trash"></i> Sil</button>
+              <button class="btn-delete" onclick="handleDeletePost(${p.id})"><i class="fas fa-trash"></i> Sil</button>
             </div>
           </div>
         `).join('');
     }
 
-    document.getElementById('postForm').addEventListener('submit', (e) => {
+    document.getElementById('postForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const posts = getCustomPosts();
       const editId = document.getElementById('editId').value;
-      const gradients = [
-        'var(--primary)', 'var(--primary-light)',
-        'var(--gradient-1)'
-      ];
+      const gradients = ['var(--primary)', 'var(--primary-light)', 'var(--gradient-1)'];
 
       const postData = {
-        id: editId ? Number(editId) : Date.now(),
         title: { tr: document.getElementById('titleTr').value, en: document.getElementById('titleEn').value || document.getElementById('titleTr').value },
         summary: { tr: document.getElementById('summaryTr').value, en: document.getElementById('summaryEn').value || document.getElementById('summaryTr').value },
         content: {
@@ -394,21 +375,24 @@
         tags: document.getElementById('tags').value.split(',').map(s => s.trim()).filter(Boolean)
       };
 
-      if (editId) {
-        const idx = posts.findIndex(p => p.id === Number(editId));
-        if (idx !== -1) posts[idx] = postData;
-      } else {
-        posts.push(postData);
+      try {
+        if (editId) {
+          await updateBlogPost(Number(editId), postData);
+        } else {
+          await insertBlogPost(postData);
+        }
+        invalidatePostsCache();
+        resetForm();
+        await renderAdminList();
+        if (typeof showToast === 'function') showToast('Yazi kaydedildi!', 'success');
+      } catch (err) {
+        console.error('Blog post save error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
       }
-
-      saveCustomPosts(posts);
-      resetForm();
-      renderAdminList();
     });
 
     function editPost(id) {
-      const posts = getCustomPosts();
-      const post = posts.find(p => p.id === id);
+      const post = _adminPosts.find(p => p.id === id);
       if (!post) return;
 
       document.getElementById('editId').value = post.id;
@@ -425,11 +409,17 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function deletePost(id) {
+    async function handleDeletePost(id) {
       if (!confirm('Bu yaziyi silmek istediginize emin misiniz?')) return;
-      const posts = getCustomPosts().filter(p => p.id !== id);
-      saveCustomPosts(posts);
-      renderAdminList();
+      try {
+        await deleteBlogPost(id);
+        invalidatePostsCache();
+        await renderAdminList();
+        if (typeof showToast === 'function') showToast('Yazi silindi', 'info');
+      } catch (err) {
+        console.error('Delete error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
+      }
     }
 
     function resetForm() {
@@ -438,43 +428,39 @@
       document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus"></i> Yeni Yazi Ekle';
     }
 
-    renderAdminList();
+    // ===== PROJECT MANAGEMENT (Supabase) =====
+    let _adminProjects = [];
 
-    // ===== PROJECT MANAGEMENT =====
-    function getProjects() {
-      return JSON.parse(localStorage.getItem('projects') || '[]');
+    async function loadAdminProjects() {
+      _adminProjects = await fetchProjects();
     }
-    function saveProjects(projects) {
-      localStorage.setItem('projects', JSON.stringify(projects));
-    }
-    function renderProjectList() {
-      const projects = getProjects();
+
+    async function renderProjectList() {
+      await loadAdminProjects();
       const list = document.getElementById('adminProjectsList');
-      if (projects.length === 0) {
+      if (_adminProjects.length === 0) {
         list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Projeler</h3><p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz proje eklenmemis.</p>';
         return;
       }
       list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Projeler</h3>' +
-        projects.map(p => `
+        _adminProjects.map(p => `
           <div class="admin-post-item">
             <div class="post-info">
               <h4><i class="fas ${p.icon || 'fa-code'}"></i> ${p.name}</h4>
               <span>${p.category} | ${(p.tech || []).join(', ')}</span>
             </div>
             <div class="post-actions">
-              <button class="btn-edit" onclick="editProject(${p.id})"><i class="fas fa-edit"></i> Duzenle</button>
-              <button class="btn-delete" onclick="deleteProject(${p.id})"><i class="fas fa-trash"></i> Sil</button>
+              <button class="btn-edit" onclick="editProjectAdmin(${p.id})"><i class="fas fa-edit"></i> Duzenle</button>
+              <button class="btn-delete" onclick="handleDeleteProject(${p.id})"><i class="fas fa-trash"></i> Sil</button>
             </div>
           </div>
         `).join('');
     }
 
-    document.getElementById('projectFormEl').addEventListener('submit', (e) => {
+    document.getElementById('projectFormEl').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const projects = getProjects();
       const editId = document.getElementById('projEditId').value;
       const projectData = {
-        id: editId ? Number(editId) : Date.now(),
         name: document.getElementById('projName').value.trim(),
         description: document.getElementById('projDesc').value.trim(),
         tech: document.getElementById('projTech').value.split(',').map(s => s.trim()).filter(Boolean),
@@ -482,19 +468,24 @@
         category: document.getElementById('projCategory').value,
         icon: document.getElementById('projIcon').value.trim() || 'fa-code'
       };
-      if (editId) {
-        const idx = projects.findIndex(p => p.id === Number(editId));
-        if (idx !== -1) projects[idx] = projectData;
-      } else {
-        projects.push(projectData);
+
+      try {
+        if (editId) {
+          await updateProject(Number(editId), projectData);
+        } else {
+          await insertProject(projectData);
+        }
+        resetProjectForm();
+        await renderProjectList();
+        if (typeof showToast === 'function') showToast('Proje kaydedildi!', 'success');
+      } catch (err) {
+        console.error('Project save error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
       }
-      saveProjects(projects);
-      resetProjectForm();
-      renderProjectList();
     });
 
-    function editProject(id) {
-      const proj = getProjects().find(p => p.id === id);
+    function editProjectAdmin(id) {
+      const proj = _adminProjects.find(p => p.id === id);
       if (!proj) return;
       document.getElementById('projEditId').value = proj.id;
       document.getElementById('projName').value = proj.name;
@@ -507,10 +498,16 @@
       document.getElementById('projectSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function deleteProject(id) {
+    async function handleDeleteProject(id) {
       if (!confirm('Bu projeyi silmek istediginize emin misiniz?')) return;
-      saveProjects(getProjects().filter(p => p.id !== id));
-      renderProjectList();
+      try {
+        await deleteProject(id);
+        await renderProjectList();
+        if (typeof showToast === 'function') showToast('Proje silindi', 'info');
+      } catch (err) {
+        console.error('Delete error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
+      }
     }
 
     function resetProjectForm() {
@@ -520,61 +517,62 @@
       document.getElementById('projectFormTitle').innerHTML = '<i class="fas fa-folder-plus"></i> Proje Yonetimi';
     }
 
-    renderProjectList();
+    // ===== EXPERIENCE MANAGEMENT (Supabase) =====
+    let _adminExps = [];
 
-    // ===== EXPERIENCE MANAGEMENT =====
-    function getExperiences() {
-      return JSON.parse(localStorage.getItem('experiences') || '[]');
+    async function loadAdminExps() {
+      _adminExps = await fetchExperiences();
     }
-    function saveExperiences(exps) {
-      localStorage.setItem('experiences', JSON.stringify(exps));
-    }
-    function renderExpList() {
-      const exps = getExperiences();
+
+    async function renderExpList() {
+      await loadAdminExps();
       const list = document.getElementById('adminExpList');
-      if (exps.length === 0) {
+      if (_adminExps.length === 0) {
         list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Deneyimler</h3><p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz deneyim eklenmemis.</p>';
         return;
       }
       list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Deneyimler</h3>' +
-        exps.map(exp => `
+        _adminExps.map(exp => `
           <div class="admin-post-item">
             <div class="post-info">
               <h4>${exp.title}</h4>
               <span>${exp.company} | ${exp.date}</span>
             </div>
             <div class="post-actions">
-              <button class="btn-edit" onclick="editExp(${exp.id})"><i class="fas fa-edit"></i> Duzenle</button>
-              <button class="btn-delete" onclick="deleteExp(${exp.id})"><i class="fas fa-trash"></i> Sil</button>
+              <button class="btn-edit" onclick="editExpAdmin(${exp.id})"><i class="fas fa-edit"></i> Duzenle</button>
+              <button class="btn-delete" onclick="handleDeleteExp(${exp.id})"><i class="fas fa-trash"></i> Sil</button>
             </div>
           </div>
         `).join('');
     }
 
-    document.getElementById('experienceFormEl').addEventListener('submit', (e) => {
+    document.getElementById('experienceFormEl').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const exps = getExperiences();
       const editId = document.getElementById('expEditId').value;
       const expData = {
-        id: editId ? Number(editId) : Date.now(),
         title: document.getElementById('expTitle').value.trim(),
         company: document.getElementById('expCompany').value.trim(),
         date: document.getElementById('expDate').value.trim(),
         description: document.getElementById('expDescription').value.trim()
       };
-      if (editId) {
-        const idx = exps.findIndex(e => e.id === Number(editId));
-        if (idx !== -1) exps[idx] = expData;
-      } else {
-        exps.push(expData);
+
+      try {
+        if (editId) {
+          await updateExperience(Number(editId), expData);
+        } else {
+          await insertExperience(expData);
+        }
+        resetExpForm();
+        await renderExpList();
+        if (typeof showToast === 'function') showToast('Deneyim kaydedildi!', 'success');
+      } catch (err) {
+        console.error('Experience save error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
       }
-      saveExperiences(exps);
-      resetExpForm();
-      renderExpList();
     });
 
-    function editExp(id) {
-      const exp = getExperiences().find(e => e.id === id);
+    function editExpAdmin(id) {
+      const exp = _adminExps.find(e => e.id === id);
       if (!exp) return;
       document.getElementById('expEditId').value = exp.id;
       document.getElementById('expTitle').value = exp.title;
@@ -585,10 +583,16 @@
       document.getElementById('experienceSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function deleteExp(id) {
+    async function handleDeleteExp(id) {
       if (!confirm('Bu deneyimi silmek istediginize emin misiniz?')) return;
-      saveExperiences(getExperiences().filter(e => e.id !== id));
-      renderExpList();
+      try {
+        await deleteExperience(id);
+        await renderExpList();
+        if (typeof showToast === 'function') showToast('Deneyim silindi', 'info');
+      } catch (err) {
+        console.error('Delete error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
+      }
     }
 
     function resetExpForm() {
@@ -597,37 +601,38 @@
       document.getElementById('expFormTitle').innerHTML = '<i class="fas fa-briefcase"></i> Deneyim Yonetimi';
     }
 
-    renderExpList();
-
-    // ===== LOGIN & PASSWORD MANAGEMENT =====
-    (function() {
-      // Set default password if not set
-      if (!localStorage.getItem('adminPassword')) {
-        localStorage.setItem('adminPassword', 'admin123');
-      }
-
+    // ===== LOGIN & AUTH (Supabase) =====
+    (async function() {
       var overlay = document.getElementById('loginOverlay');
       var content = document.getElementById('adminContent');
 
       function showAdmin() {
         overlay.style.display = 'none';
         content.style.display = '';
+        // Load all data
+        renderAdminList();
+        renderProjectList();
+        renderExpList();
       }
 
       // Check existing session
-      if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+      var session = await getSession();
+      if (session) {
         showAdmin();
       }
 
       // Login form
-      document.getElementById('loginForm').addEventListener('submit', function(e) {
+      document.getElementById('loginForm').addEventListener('submit', async function(e) {
         e.preventDefault();
+        var email = document.getElementById('loginEmail').value;
         var pwd = document.getElementById('loginPassword').value;
         var errEl = document.getElementById('loginError');
-        if (pwd === localStorage.getItem('adminPassword')) {
-          sessionStorage.setItem('adminLoggedIn', 'true');
+
+        try {
+          await signIn(email, pwd);
           showAdmin();
-        } else {
+        } catch (err) {
+          errEl.textContent = err.message || 'Giris basarisiz!';
           errEl.style.display = 'block';
           document.getElementById('loginPassword').value = '';
           document.getElementById('loginPassword').focus();
@@ -635,38 +640,47 @@
       });
 
       // Password change form
-      document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+      document.getElementById('changePasswordForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        var cur = document.getElementById('currentPassword').value;
         var newPwd = document.getElementById('newPassword').value;
-        var confirm = document.getElementById('confirmPassword').value;
+        var confirmPwd = document.getElementById('confirmPassword').value;
         var msgEl = document.getElementById('passwordMsg');
 
         msgEl.style.display = 'block';
 
-        if (cur !== localStorage.getItem('adminPassword')) {
+        if (newPwd.length < 6) {
           msgEl.style.color = '#ff4757';
-          msgEl.textContent = 'Mevcut sifre yanlis!';
+          msgEl.textContent = 'Yeni sifre en az 6 karakter olmali!';
           return;
         }
-        if (newPwd.length < 4) {
-          msgEl.style.color = '#ff4757';
-          msgEl.textContent = 'Yeni sifre en az 4 karakter olmali!';
-          return;
-        }
-        if (newPwd !== confirm) {
+        if (newPwd !== confirmPwd) {
           msgEl.style.color = '#ff4757';
           msgEl.textContent = 'Yeni sifreler eslesmiyor!';
           return;
         }
 
-        localStorage.setItem('adminPassword', newPwd);
-        msgEl.style.color = '#2ed573';
-        msgEl.textContent = 'Sifre basariyla guncellendi!';
-        document.getElementById('changePasswordForm').reset();
-        setTimeout(function() { msgEl.style.display = 'none'; }, 3000);
+        try {
+          await supabase.auth.updateUser({ password: newPwd });
+          msgEl.style.color = '#2ed573';
+          msgEl.textContent = 'Sifre basariyla guncellendi!';
+          document.getElementById('changePasswordForm').reset();
+          setTimeout(function() { msgEl.style.display = 'none'; }, 3000);
+        } catch (err) {
+          msgEl.style.color = '#ff4757';
+          msgEl.textContent = 'Hata: ' + (err.message || 'Sifre guncellenemedi');
+        }
       });
     })();
+
+    // Logout handler
+    async function handleLogout() {
+      try {
+        await signOut();
+        window.location.reload();
+      } catch (err) {
+        console.error('Logout error:', err);
+      }
+    }
   </script>
 </body>
 </html>

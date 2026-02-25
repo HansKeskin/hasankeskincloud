@@ -1,14 +1,25 @@
 // ===== BLOG POST DATA =====
-const blogPosts = [];
 
-// Load custom posts from localStorage
-function getAllPosts() {
-  const customPosts = JSON.parse(localStorage.getItem('customBlogPosts') || '[]');
-  return [...blogPosts, ...customPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+// In-memory cache
+let _postsCache = null;
+
+async function getAllPosts() {
+  if (_postsCache) return _postsCache;
+  _postsCache = await fetchAllPosts();
+  return _postsCache;
 }
 
-function getPostById(id) {
-  return getAllPosts().find(p => p.id === Number(id));
+function invalidatePostsCache() {
+  _postsCache = null;
+}
+
+async function getPostById(id) {
+  // Try cache first
+  if (_postsCache) {
+    const cached = _postsCache.find(p => p.id === Number(id));
+    if (cached) return cached;
+  }
+  return await fetchPostById(id);
 }
 
 function calculateReadingTime(content) {

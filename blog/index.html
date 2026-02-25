@@ -166,6 +166,8 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase-client.js"></script>
   <script src="/js/blog-data.js"></script>
   <script src="/js/i18n.js"></script>
   <script src="/js/components.js"></script>
@@ -177,9 +179,9 @@
     let searchQuery = '';
     let currentSort = 'newest';
 
-    function getFilteredPosts() {
+    async function getFilteredPosts() {
       const lang = getLang();
-      let posts = getAllPosts();
+      let posts = await getAllPosts();
 
       if (currentFilter !== 'all') {
         posts = posts.filter(p => p.category === currentFilter);
@@ -221,9 +223,9 @@
       return posts;
     }
 
-    function renderBlog() {
+    async function renderBlog() {
       const lang = getLang();
-      const posts = getFilteredPosts();
+      const posts = await getFilteredPosts();
       const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
       if (blogPage > totalPages) blogPage = totalPages;
 
@@ -307,14 +309,14 @@
     });
 
     // Newsletter
-    document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+    document.getElementById('newsletterForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = e.target.querySelector('input').value.trim();
       if (!email) return;
-      const subs = JSON.parse(localStorage.getItem('newsletter_subs') || '[]');
-      if (!subs.includes(email)) {
-        subs.push(email);
-        localStorage.setItem('newsletter_subs', JSON.stringify(subs));
+      try {
+        await insertNewsletterSub(email);
+      } catch (err) {
+        console.error('Newsletter error:', err);
       }
       e.target.querySelector('input').value = '';
       const btn = e.target.querySelector('button');
@@ -326,8 +328,8 @@
     });
 
     // Update blog stats
-    function updateBlogStats() {
-      const allPosts = getAllPosts();
+    async function updateBlogStats() {
+      const allPosts = await getAllPosts();
       const el1 = document.getElementById('statTotalPosts');
       const el2 = document.getElementById('statTotalViews');
       const el3 = document.getElementById('bookmarkCount');
@@ -338,9 +340,9 @@
 
     // Show skeleton loading then render
     if (typeof showSkeletons === 'function') showSkeletons('blogGrid', 4);
-    setTimeout(() => {
-      renderBlog();
-      updateBlogStats();
+    setTimeout(async () => {
+      await renderBlog();
+      await updateBlogStats();
     }, 800);
   </script>
 </body>

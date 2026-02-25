@@ -217,13 +217,15 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase-client.js"></script>
   <script src="/js/i18n.js"></script>
   <script src="/js/components.js"></script>
   <script src="/js/main.js"></script>
   <script>
-    // Render experiences from localStorage
-    (function() {
-      const experiences = JSON.parse(localStorage.getItem('experiences') || '[]');
+    // Render experiences from Supabase
+    (async function() {
+      const experiences = await fetchExperiences();
       const timeline = document.getElementById('experienceTimeline');
       const noExp = document.getElementById('noExperience');
       if (experiences.length === 0) {

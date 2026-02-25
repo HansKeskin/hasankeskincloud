@@ -685,7 +685,7 @@ if (globalSearch) {
   });
 
   if (searchInput) {
-    searchInput.addEventListener('input', () => {
+    searchInput.addEventListener('input', async () => {
       const q = searchInput.value.toLowerCase().trim();
       if (q.length < 2) { searchResults.innerHTML = ''; return; }
 
@@ -710,7 +710,8 @@ if (globalSearch) {
       // Search blog posts (if blog-data.js is loaded)
       if (typeof getAllPosts === 'function') {
         const lang = typeof getLang === 'function' ? getLang() : 'tr';
-        getAllPosts().forEach(post => {
+        const posts = await getAllPosts();
+        posts.forEach(post => {
           const title = (post.title[lang] || post.title.tr).toLowerCase();
           const summary = (post.summary[lang] || post.summary.tr).toLowerCase();
           if (title.includes(q) || summary.includes(q)) {
@@ -1221,9 +1222,9 @@ function handleScroll() {
 window.addEventListener('scroll', throttle(handleScroll, 16), { passive: true });
 
 // ===== RANDOM POST =====
-function goToRandomPost() {
+async function goToRandomPost() {
   if (typeof getAllPosts !== 'function') return;
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   if (posts.length === 0) return;
   const random = posts[Math.floor(Math.random() * posts.length)];
   window.location.href = '/blog-post/?id=' + random.id;

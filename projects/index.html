@@ -129,14 +129,14 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase-client.js"></script>
   <script src="/js/i18n.js"></script>
   <script src="/js/components.js"></script>
   <script src="/js/main.js"></script>
   <script>
-    // ===== PROJECTS DISPLAY (read-only, data from localStorage) =====
-    function getProjects() {
-      return JSON.parse(localStorage.getItem('projects') || '[]');
-    }
+    // ===== PROJECTS DISPLAY (read-only, data from Supabase) =====
+    let _projectsCache = null;
 
     function escapeHtmlProj(str) {
       const div = document.createElement('div');
@@ -144,8 +144,9 @@
       return div.innerHTML;
     }
 
-    function renderProjects() {
-      const projects = getProjects();
+    async function renderProjects() {
+      if (!_projectsCache) _projectsCache = await fetchProjects();
+      const projects = _projectsCache;
       const grid = document.getElementById('projectsGrid');
       const noMsg = document.getElementById('noProjects');
       const currentFilter = document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all';
@@ -182,7 +183,7 @@
         card.style.cursor = 'pointer';
         card.addEventListener('click', (e) => {
           const id = Number(card.getAttribute('data-id'));
-          const proj = getProjects().find(p => p.id === id);
+          const proj = _projectsCache.find(p => p.id === id);
           if (!proj) return;
           const modal = document.getElementById('projectModal');
           document.getElementById('modalHeader').innerHTML = `

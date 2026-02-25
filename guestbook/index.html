@@ -344,6 +344,8 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase-client.js"></script>
   <script src="/js/i18n.js"></script>
   <script src="/js/components.js"></script>
   <script src="/js/main.js"></script>
@@ -365,9 +367,9 @@
     // Select the first emoji by default
     document.querySelector('.emoji-picker button').classList.add('selected');
 
-    // Load messages from localStorage
-    function loadMessages() {
-      var messages = JSON.parse(localStorage.getItem('guestbook_messages') || '[]');
+    // Load messages from Supabase
+    async function loadMessages() {
+      var messages = await fetchGuestbookMessages();
       var container = document.getElementById('guestbookMessages');
       var countEl = document.getElementById('messageCount');
 
@@ -378,20 +380,20 @@
         return;
       }
 
-      // Show newest first
-      var sorted = messages.slice().reverse();
-      container.innerHTML = sorted.map(function(msg) {
+      // Already sorted by created_at desc from Supabase
+      container.innerHTML = messages.map(function(msg) {
         var firstLetter = msg.name.charAt(0).toUpperCase();
+        var dateStr = msg.created_at ? new Date(msg.created_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
         var locationHtml = msg.location ? '<div class="guestbook-location"><i class="fas fa-map-marker-alt"></i> ' + escapeHtml(msg.location) + '</div>' : '';
         return '<div class="guestbook-card">' +
           '<div class="guestbook-card-header">' +
             '<div class="guestbook-avatar">' + firstLetter + '</div>' +
             '<div class="guestbook-meta">' +
               '<div class="guestbook-name">' + escapeHtml(msg.name) + '</div>' +
-              '<div class="guestbook-date">' + msg.date + '</div>' +
+              '<div class="guestbook-date">' + dateStr + '</div>' +
               locationHtml +
             '</div>' +
-            '<div class="guestbook-emoji">' + msg.emoji + '</div>' +
+            '<div class="guestbook-emoji">' + (msg.emoji || '\u{1F60A}') + '</div>' +
           '</div>' +
           '<div class="guestbook-text">' + escapeHtml(msg.message) + '</div>' +
         '</div>';
@@ -399,7 +401,7 @@
     }
 
     // Form submit handler
-    document.getElementById('guestbookForm').addEventListener('submit', function(e) {
+    document.getElementById('guestbookForm').addEventListener('submit', async function(e) {
       e.preventDefault();
 
       var name = document.getElementById('guestName').value.trim();
@@ -416,24 +418,19 @@
         return;
       }
 
-      // Create message object
-      var now = new Date();
-      var dateStr = now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-      var msgObj = {
-        name: name,
-        location: location,
-        emoji: selectedEmoji,
-        message: message,
-        date: dateStr
-      };
-
-      // Save to localStorage
-      var messages = JSON.parse(localStorage.getItem('guestbook_messages') || '[]');
-      messages.push(msgObj);
-      localStorage.setItem('guestbook_messages', JSON.stringify(messages));
+      try {
+        await insertGuestbookMessage({
+          name: name,
+          location: location,
+          emoji: selectedEmoji,
+          message: message
+        });
+      } catch (err) {
+        console.error('Guestbook error:', err);
+      }
 
       // Reload messages
-      loadMessages();
+      await loadMessages();
 
       // Show confetti if available
       if (typeof launchConfetti === 'function') {
@@ -464,7 +461,6 @@
       var nameInput = document.getElementById('guestName');
       var locInput = document.getElementById('guestLocation');
       var msgInput = document.getElementById('guestMessage');
-      var countEl = document.getElementById('messageCount');
 
       if (lang === 'en') {
         if (titleEl) titleEl.textContent = 'Guestbook';
@@ -482,12 +478,6 @@
         if (nameInput) nameInput.placeholder = 'Adiniz *';
         if (locInput) locInput.placeholder = 'Konum (istege bagli)';
         if (msgInput) msgInput.placeholder = 'Mesajiniz *';
-      }
-
-      // Update message count text
-      var messages = JSON.parse(localStorage.getItem('guestbook_messages') || '[]');
-      if (countEl) {
-        countEl.innerHTML = (lang === 'en' ? 'Total ' : 'Toplam ') + '<span>' + messages.length + '</span>' + (lang === 'en' ? ' messages' : ' mesaj');
       }
     }
 
