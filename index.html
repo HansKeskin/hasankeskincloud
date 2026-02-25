@@ -116,22 +116,22 @@
   <!-- Stats Counter -->
   <section class="stats-section" id="stats">
     <div class="container">
-      <div class="stats-grid fade-in">
+      <div class="stats-grid fade-in" id="statsGrid">
         <div class="stat-item">
-          <div class="stat-number" data-target="6" data-suffix="+">0</div>
+          <div class="stat-number" id="statBlog" data-target="0" data-suffix="">0</div>
           <div class="stat-label">Blog Yazisi</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" data-target="6" data-suffix="+">0</div>
+          <div class="stat-number" id="statProject" data-target="0" data-suffix="">0</div>
           <div class="stat-label">Proje</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" data-target="9" data-suffix="+">0</div>
+          <div class="stat-number" id="statTech" data-target="0" data-suffix="">0</div>
           <div class="stat-label">Teknoloji</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" data-target="3" data-suffix="+">0</div>
-          <div class="stat-label">Yil Deneyim</div>
+          <div class="stat-number" id="statExp" data-target="0" data-suffix="">0</div>
+          <div class="stat-label">Deneyim</div>
         </div>
       </div>
     </div>
@@ -252,6 +252,28 @@
         setTimeout(() => { btn.textContent = t('newsletter.btn'); }, 3000);
       });
     }
+
+    // Dynamic stats from localStorage
+    function updateStats() {
+      const blogCount = getAllPosts().length;
+      const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+      const experiences = JSON.parse(localStorage.getItem('experiences') || '[]');
+      // Collect unique technologies from projects
+      const techSet = new Set();
+      projects.forEach(p => (p.tech || []).forEach(t => techSet.add(t)));
+
+      const statBlog = document.getElementById('statBlog');
+      const statProject = document.getElementById('statProject');
+      const statTech = document.getElementById('statTech');
+      const statExp = document.getElementById('statExp');
+
+      statBlog.setAttribute('data-target', blogCount);
+      statBlog.setAttribute('data-suffix', blogCount > 0 ? '' : '');
+      statProject.setAttribute('data-target', projects.length);
+      statTech.setAttribute('data-target', techSet.size);
+      statExp.setAttribute('data-target', experiences.length);
+    }
+    updateStats();
 
     // Show skeleton then render
     if (typeof showSkeletons === 'function') showSkeletons('latestPosts', 3);
