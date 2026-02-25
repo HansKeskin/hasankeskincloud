@@ -2154,7 +2154,6 @@ body.reading-mode .comments-section,
 body.reading-mode .related-posts,
 body.reading-mode .newsletter-section,
 body.reading-mode .scroll-top,
-body.reading-mode .feedback-widget,
 body.reading-mode .cookie-banner {
   display: none !important;
 }
@@ -3036,86 +3035,6 @@ html {
   font-size: 0.75rem;
 }
 
-/* ===== FEEDBACK WIDGET ===== */
-.feedback-widget {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 998;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: var(--transition);
-}
-
-.feedback-widget.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.feedback-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 20px;
-  box-shadow: var(--shadow);
-  text-align: center;
-  max-width: 220px;
-}
-
-.feedback-card p {
-  font-size: 0.85rem;
-  margin-bottom: 10px;
-  color: var(--dark);
-  font-weight: 500;
-}
-
-.feedback-buttons {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-
-.feedback-btn {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: var(--transition);
-}
-
-.feedback-btn:hover {
-  transform: scale(1.15);
-}
-
-.feedback-btn.up:hover {
-  background: rgba(0, 184, 148, 0.2);
-  border-color: #00b894;
-}
-
-.feedback-btn.down:hover {
-  background: rgba(220, 38, 38, 0.15);
-  border-color: #DC2626;
-}
-
-.feedback-thanks {
-  font-size: 0.85rem;
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.feedback-dismiss {
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--dark-light);
-  font-size: 0.8rem;
-}
-
 /* ===== GLOBAL SEARCH MODAL ===== */
 .global-search {
   position: fixed;
@@ -3404,7 +3323,6 @@ html {
     flex-direction: column;
   }
 
-  .feedback-widget { left: 12px; bottom: 12px; }
   .reading-remaining { right: 12px; bottom: 70px; }
   .global-search { padding-top: 5vh; }
 }

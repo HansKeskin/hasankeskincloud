@@ -46,22 +46,6 @@
     document.body.appendChild(cb);
   }
 
-  // Feedback Widget
-  if (!document.querySelector('.feedback-widget') && !localStorage.getItem('feedback_' + window.location.pathname)) {
-    const fw = document.createElement('div');
-    fw.className = 'feedback-widget';
-    fw.innerHTML = `
-      <div class="feedback-card" style="position:relative;">
-        <button class="feedback-dismiss" aria-label="Geri bildirimi kapat">&times;</button>
-        <p>Bu sayfa faydali miydi?</p>
-        <div class="feedback-buttons">
-          <button class="feedback-btn up" title="Evet">&#128077;</button>
-          <button class="feedback-btn down" title="Hayir">&#128078;</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(fw);
-  }
 
   // Global Search Modal
   if (!document.querySelector('.global-search')) {

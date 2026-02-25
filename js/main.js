@@ -838,33 +838,6 @@ if (globalSearch) {
   }
 }
 
-// ===== FEEDBACK WIDGET =====
-const feedbackWidget = document.querySelector('.feedback-widget');
-if (feedbackWidget) {
-  const pageKey = 'feedback_' + window.location.pathname;
-  if (localStorage.getItem(pageKey)) {
-    feedbackWidget.remove();
-  } else {
-    setTimeout(() => feedbackWidget.classList.add('visible'), 3000);
-
-    const upBtn = feedbackWidget.querySelector('.feedback-btn.up');
-    const downBtn = feedbackWidget.querySelector('.feedback-btn.down');
-    const dismissBtn = feedbackWidget.querySelector('.feedback-dismiss');
-
-    function handleFeedback(type) {
-      localStorage.setItem(pageKey, type);
-      const card = feedbackWidget.querySelector('.feedback-card');
-      card.innerHTML = '<p class="feedback-thanks"><i class="fas fa-heart"></i> Geri bildiriminiz icin tesekkurler!</p>';
-      setTimeout(() => feedbackWidget.classList.remove('visible'), 2500);
-    }
-
-    if (upBtn) upBtn.addEventListener('click', () => handleFeedback('positive'));
-    if (downBtn) downBtn.addEventListener('click', () => handleFeedback('negative'));
-    if (dismissBtn) dismissBtn.addEventListener('click', () => {
-      feedbackWidget.classList.remove('visible');
-    });
-  }
-}
 
 // ===== CONFETTI EFFECT =====
 function launchConfetti() {
