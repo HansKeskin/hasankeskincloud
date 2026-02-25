@@ -164,7 +164,7 @@
         const techTags = (p.tech || []).map(t => '<span class="tag">' + escapeHtmlProj(t) + '</span>').join('');
         const animClass = ['fade-left', 'fade-right', 'fade-up'][i % 3];
         return `
-          <div class="project-card ${animClass}" data-category="${escapeHtmlProj(p.category)}" data-id="${p.id}">
+          <div class="project-card ${animClass} visible" data-category="${escapeHtmlProj(p.category)}" data-id="${p.id}">
             <div class="card-image" style="background: var(--primary);">
               <i class="fas ${escapeHtmlProj(p.icon || 'fa-code')}" style="color: white;"></i>
             </div>
