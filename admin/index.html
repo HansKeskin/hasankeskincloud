@@ -288,6 +288,16 @@
   <script src="/js/components.js"></script>
   <script src="/js/main.js"></script>
   <script>
+    // ===== HTML SANITIZER =====
+    function sanitizeHtml(html) {
+      html = html.replace(/<script[\s\S]*?<\/script>/gi, '');
+      html = html.replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
+      html = html.replace(/\son\w+\s*=\s*["'][^"']*["']/gi, '');
+      html = html.replace(/\son\w+\s*=\s*[^\s>]+/gi, '');
+      html = html.replace(/javascript\s*:/gi, '');
+      return html;
+    }
+
     // ===== MARKDOWN SUPPORT =====
     function markdownToHtml(md) {
       let html = md;
@@ -327,7 +337,7 @@
       const preview = document.getElementById(previewId);
       if (preview.style.display === 'none') {
         const content = ta.value;
-        preview.innerHTML = content.trim().startsWith('<') ? content : markdownToHtml(content);
+        preview.innerHTML = sanitizeHtml(content.trim().startsWith('<') ? content : markdownToHtml(content));
         preview.style.display = 'block';
         ta.style.display = 'none';
       } else {

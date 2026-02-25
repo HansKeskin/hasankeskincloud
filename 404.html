@@ -108,7 +108,11 @@
     <div class="error-icon"><i class="fas fa-ghost"></i></div>
     <h1 class="error-title">Sayfa Bulunamadi</h1>
     <p class="error-desc">Aradiginiz sayfa mevcut degil, tasinmis veya kaldirilmis olabilir.</p>
-    <a href="/" class="error-btn"><i class="fas fa-home"></i> Ana Sayfaya Don</a>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="/" class="error-btn"><i class="fas fa-home"></i> Ana Sayfa</a>
+      <a href="/blog/" class="error-btn" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);"><i class="fas fa-blog"></i> Blog</a>
+      <a href="/sitemap-page/" class="error-btn" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);"><i class="fas fa-sitemap"></i> Site Haritasi</a>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

@@ -8,6 +8,9 @@
   <meta property="og:title" content="Ziyaretci Defteri - Hasan">
   <meta property="og:description" content="Ziyaretcilerimiz icin mesaj defteri">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="/images/profile.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/images/profile.jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -336,8 +339,8 @@
         <div>
           <h4 data-i18n="footer.social">Sosyal Medya</h4>
           <div class="footer-links">
-            <a href="https://www.linkedin.com/in/hasan-keskin-7989572a1/" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-            <a href="https://medium.com/@hasann.keskiin" aria-label="Medium" target="_blank"><i class="fab fa-medium"></i> Medium</a>
+            <a href="https://www.linkedin.com/in/hasan-keskin-7989572a1/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="https://medium.com/@hasann.keskiin" aria-label="Medium" target="_blank" rel="noopener noreferrer"><i class="fab fa-medium"></i> Medium</a>
           </div>
         </div>
       </div>
@@ -408,6 +411,9 @@
 
       // Show thank you message
       document.getElementById('thankYouMsg').style.display = 'block';
+
+      // Rate limit
+      if (typeof markFormSubmitted === 'function') markFormSubmitted('guestbookForm');
 
       // Show confetti if available
       if (typeof launchConfetti === 'function') {

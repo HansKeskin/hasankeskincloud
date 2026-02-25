@@ -9,6 +9,9 @@
   <meta property="og:description" content="Hasan'in kisisel blogu - Teknoloji, yazilim ve hayata dair yazilar">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Hasan Blog">
+  <meta property="og:image" content="/images/profile.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/images/profile.jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -97,8 +100,8 @@
           <div class="sidebar-card">
             <h4><i class="fas fa-share-alt"></i> <span data-i18n="blog.share">Paylas</span></h4>
             <div class="share-buttons">
-              <a href="#" id="shareTwitter" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
-              <a href="#" id="shareLinkedin" class="share-btn linkedin"><i class="fab fa-linkedin-in"></i></a>
+              <a href="javascript:void(0)" id="shareTwitter" class="share-btn twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+              <a href="javascript:void(0)" id="shareLinkedin" class="share-btn linkedin" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
               <button class="share-btn copy" id="shareCopy" title="Linki Kopyala"><i class="fas fa-link"></i></button>
             </div>
           </div>
@@ -199,8 +202,8 @@
         <div>
           <h4 data-i18n="footer.social">Sosyal Medya</h4>
           <div class="footer-links">
-            <a href="https://www.linkedin.com/in/hasan-keskin-7989572a1/" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-            <a href="https://medium.com/@hasann.keskiin" aria-label="Medium" target="_blank"><i class="fab fa-medium"></i> Medium</a>
+            <a href="https://www.linkedin.com/in/hasan-keskin-7989572a1/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="https://medium.com/@hasann.keskiin" aria-label="Medium" target="_blank" rel="noopener noreferrer"><i class="fab fa-medium"></i> Medium</a>
           </div>
         </div>
       </div>
@@ -307,6 +310,7 @@
       document.getElementById('commentName').value = '';
       document.getElementById('commentText').value = '';
       await loadComments(postId);
+      if (typeof markFormSubmitted === 'function') markFormSubmitted('commentForm');
       if (typeof launchConfetti === 'function') launchConfetti();
       if (typeof showToast === 'function') showToast('Yorumunuz admin onayina gonderildi!', 'success');
       if (typeof logActivity === 'function') logActivity('comment', name + ' yorum yapti');
@@ -512,6 +516,7 @@
         e.target.querySelector('input[type="email"]').value = '';
         const btn = e.target.querySelector('button');
         btn.textContent = t('newsletter.success');
+        if (typeof markFormSubmitted === 'function') markFormSubmitted('newsletterForm');
         if (typeof launchConfetti === 'function') launchConfetti();
         if (typeof logActivity === 'function') logActivity('newsletter', 'Bultene abone olundu');
         setTimeout(() => { btn.textContent = t('newsletter.btn'); }, 3000);

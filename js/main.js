@@ -69,6 +69,8 @@ function fuzzyMatch(text, query) {
 
 // ===== SPAM PROTECTION =====
 const _spamTimestamps = {};
+const _formCooldowns = {};
+const FORM_COOLDOWN_MS = 10000;
 
 function initSpamProtection(formId) {
   _spamTimestamps[formId] = Date.now();
@@ -79,7 +81,13 @@ function checkSpamProtection(formId, honeypotId) {
   if (honeypot && honeypot.value) return false;
   const elapsed = Date.now() - (_spamTimestamps[formId] || 0);
   if (elapsed < 3000) return false;
+  if (_formCooldowns[formId] && Date.now() - _formCooldowns[formId] < FORM_COOLDOWN_MS) return false;
   return true;
+}
+
+function markFormSubmitted(formId) {
+  _formCooldowns[formId] = Date.now();
+  _spamTimestamps[formId] = Date.now();
 }
 
 // ===== RAF MANAGEMENT =====
@@ -134,8 +142,10 @@ const savedTheme = localStorage.getItem('theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
 if (themeToggle) {
+  themeToggle.setAttribute('aria-pressed', savedTheme === 'dark');
   themeToggle.addEventListener('click', (e) => {
     const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    themeToggle.setAttribute('aria-pressed', next === 'dark');
 
     // Create circle transition overlay
     const overlay = document.createElement('div');
@@ -183,9 +193,11 @@ const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
 
 if (hamburger) {
+  hamburger.setAttribute('aria-expanded', 'false');
   hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
+    const isOpen = hamburger.classList.toggle('active');
     navLinks.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
   });
 
   // Close menu when a link is clicked
@@ -193,6 +205,7 @@ if (hamburger) {
     link.addEventListener('click', () => {
       hamburger.classList.remove('active');
       navLinks.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', 'false');
     });
   });
 }
@@ -319,6 +332,7 @@ if (contactForm) {
       const originalText = btn.textContent;
       btn.textContent = 'Mesaj Gonderildi!';
       btn.style.background = '#059669';
+      markFormSubmitted('contactForm');
 
       setTimeout(() => {
         btn.textContent = originalText;
@@ -747,13 +761,18 @@ if (globalSearch) {
   const searchInput = globalSearch.querySelector('input');
   const searchResults = globalSearch.querySelector('.global-search-results');
 
+  globalSearch.setAttribute('role', 'dialog');
+  globalSearch.setAttribute('aria-label', 'Arama');
+
   function openGlobalSearch() {
     globalSearch.classList.add('open');
+    globalSearch.setAttribute('aria-hidden', 'false');
     setTimeout(() => searchInput && searchInput.focus(), 100);
   }
 
   function closeGlobalSearch() {
     globalSearch.classList.remove('open');
+    globalSearch.setAttribute('aria-hidden', 'true');
     if (searchInput) searchInput.value = '';
     if (searchResults) searchResults.innerHTML = '';
   }
