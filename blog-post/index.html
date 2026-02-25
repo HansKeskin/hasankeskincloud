@@ -366,16 +366,23 @@
       }).join('');
     }
 
-    // Tag Cloud
+    // Tag Cloud - reads tags from all posts
     function renderTagCloud() {
-      const lang = getLang();
-      const tags = {
-        tr: ['JavaScript', 'HTML', 'CSS', 'React', 'Node.js', 'Python', 'Web', 'AI', 'Guvenlik', 'Veritabani', 'Frontend', 'Backend'],
-        en: ['JavaScript', 'HTML', 'CSS', 'React', 'Node.js', 'Python', 'Web', 'AI', 'Security', 'Database', 'Frontend', 'Backend']
-      };
+      const allPosts = getAllPosts();
+      const tagSet = new Set();
+      allPosts.forEach(p => {
+        if (p.tags && Array.isArray(p.tags)) {
+          p.tags.forEach(t => tagSet.add(t));
+        }
+      });
       const cloud = document.getElementById('tagCloud');
       if (!cloud) return;
-      cloud.innerHTML = (tags[lang] || tags.tr).map(tag =>
+      const tags = Array.from(tagSet);
+      if (tags.length === 0) {
+        cloud.innerHTML = '<span style="color:var(--dark-light); font-size:0.85rem;">Henuz etiket yok</span>';
+        return;
+      }
+      cloud.innerHTML = tags.map(tag =>
         `<a href="/blog/" class="tag-item">${tag}</a>`
       ).join('');
     }

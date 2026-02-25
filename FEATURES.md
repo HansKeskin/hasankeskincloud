@@ -2,12 +2,12 @@
 
 ## Temel Yapi
 - [x] Ana Sayfa (index.html)
-- [x] Blog Sayfasi (blog.html)
-- [x] Blog Detay Sayfasi (blog-post.html)
-- [x] Projeler Sayfasi (projects.html)
-- [x] CV Sayfasi (cv.html)
-- [x] Iletisim Sayfasi (contact.html)
-- [x] Admin Paneli (admin.html)
+- [x] Blog Sayfasi (/blog/)
+- [x] Blog Detay Sayfasi (/blog-post/)
+- [x] Projeler Sayfasi (/projects/)
+- [x] CV Sayfasi (/cv/)
+- [x] Iletisim Sayfasi (/contact/)
+- [x] Admin Paneli (/admin/)
 - [x] CSS Stilleri (css/style.css)
 - [x] JavaScript (js/main.js)
 - [x] Blog Verileri (js/blog-data.js)
@@ -92,6 +92,23 @@
 - [x] Sayfa Mini Haritasi (VS Code tarzi minimap)
 - [x] Ziyaretci Defteri Sayfasi (guestbook.html - mesaj birakma)
 - [x] Site Haritasi Sayfasi (sitemap-page.html - gorsel agac yapisi)
+
+## Guvenlik
+- [x] Admin Paneli Sifre Korumasi (localStorage + sessionStorage)
+- [x] Sifre Degistirme (Admin paneli icinden)
+- [x] Oturum Yonetimi (Sekme kapaninca sifirlanir)
+
+## URL / Yapi
+- [x] Temiz URL Yapisi (klasor/index.html - /blog/, /cv/ vb.)
+- [x] Absolute Path Linkleri (tum sayfalarda)
+
+## Icerik Guncellemeleri
+- [x] Hero Kayan Yazi: DevOps Engineer & Blogger
+- [x] Iletisim Bilgileri (telefon + mail guncellendi)
+- [x] Preloader Yazisi Kaldirildi
+- [x] Footer Copyright Yazisi Kaldirildi
+- [x] Hasan Keskin Sonrasi Nokta Kaldirildi
+- [x] Calisma Saatleri Alani Kaldirildi
 
 ## Performans / SEO
 - [x] Meta Tags & Open Graph

@@ -76,123 +76,59 @@
         <button class="filter-btn" data-filter="app" data-i18n="projects.filter_app">Uygulama</button>
       </div>
 
-      <div class="projects-grid">
+      <!-- Projects Grid (rendered from localStorage) -->
+      <div class="projects-grid" id="projectsGrid"></div>
 
-        <div class="project-card fade-left" data-category="web">
-          <div class="card-image" style="background: var(--primary);">
-            <i class="fas fa-globe" style="color: white;"></i>
-          </div>
-          <div class="card-body">
-            <h3>Kisisel Web Sitesi</h3>
-            <p>HTML, CSS ve JavaScript ile gelistirdigim kisisel web sitem. Blog, CV ve proje vitrinim.</p>
-            <div class="tech-stack">
-              <span class="tag">HTML</span>
-              <span class="tag">CSS</span>
-              <span class="tag">JavaScript</span>
-            </div>
-            <div class="project-links">
-              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
-              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card fade-right" data-category="app">
-          <div class="card-image" style="background: var(--primary);">
-            <i class="fas fa-tasks" style="color: white;"></i>
-          </div>
-          <div class="card-body">
-            <h3>Gorev Yonetici Uygulamasi</h3>
-            <p>Gunluk gorevlerinizi takip edebileceginiz, kategorize edebileceginiz bir to-do uygulamasi.</p>
-            <div class="tech-stack">
-              <span class="tag">JavaScript</span>
-              <span class="tag">LocalStorage</span>
-              <span class="tag">CSS</span>
-            </div>
-            <div class="project-links">
-              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
-              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card fade-up" data-category="web">
-          <div class="card-image" style="background: var(--primary-light);">
-            <i class="fas fa-cloud-sun" style="color: white;"></i>
-          </div>
-          <div class="card-body">
-            <h3>Hava Durumu Uygulamasi</h3>
-            <p>API kullanarak anlik hava durumu bilgilerini gosteren modern bir web uygulamasi.</p>
-            <div class="tech-stack">
-              <span class="tag">JavaScript</span>
-              <span class="tag">REST API</span>
-              <span class="tag">CSS</span>
-            </div>
-            <div class="project-links">
-              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
-              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card fade-left" data-category="tool">
-          <div class="card-image" style="background: var(--primary);">
-            <i class="fas fa-calculator" style="color: white;"></i>
-          </div>
-          <div class="card-body">
-            <h3>Hesap Makinesi</h3>
-            <p>Modern arayuzlu, bilimsel islemleri destekleyen gelismis hesap makinesi uygulamasi.</p>
-            <div class="tech-stack">
-              <span class="tag">HTML</span>
-              <span class="tag">CSS Grid</span>
-              <span class="tag">JavaScript</span>
-            </div>
-            <div class="project-links">
-              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
-              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card fade-right" data-category="app">
-          <div class="card-image" style="background: var(--primary-light);">
-            <i class="fas fa-quote-left" style="color: white;"></i>
-          </div>
-          <div class="card-body">
-            <h3>Rastgele Alinti Uretici</h3>
-            <p>Her yenilediginde farkli motivasyon sozleri gosteren, paylasim ozellikli bir uygulama.</p>
-            <div class="tech-stack">
-              <span class="tag">JavaScript</span>
-              <span class="tag">API</span>
-              <span class="tag">CSS Animations</span>
-            </div>
-            <div class="project-links">
-              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
-              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card fade-up" data-category="tool">
-          <div class="card-image" style="background: var(--primary);">
-            <i class="fas fa-paint-brush" style="color: white;"></i>
-          </div>
-          <div class="card-body">
-            <h3>CSS Gradient Uretici</h3>
-            <p>Kolayca CSS gradient kodlari ureten, canli onizleme sunan bir arac.</p>
-            <div class="tech-stack">
-              <span class="tag">HTML</span>
-              <span class="tag">CSS</span>
-              <span class="tag">JavaScript</span>
-            </div>
-            <div class="project-links">
-              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
-              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
-            </div>
-          </div>
-        </div>
-
+      <!-- No Projects Message -->
+      <div class="no-results" id="noProjects" style="display:none;">
+        Henuz proje eklenmemis. Asagidaki formu kullanarak proje ekleyebilirsiniz.
       </div>
+
+      <!-- Project Add/Edit Form -->
+      <div class="admin-form" id="projectForm" style="margin-top: 40px;">
+        <h3 style="margin-bottom: 24px;" id="projectFormTitle"><i class="fas fa-plus"></i> Yeni Proje Ekle</h3>
+
+        <form id="projectFormEl">
+          <div class="form-group">
+            <label>Proje Adi</label>
+            <input type="text" id="projName" placeholder="Proje adi..." required>
+          </div>
+          <div class="form-group">
+            <label>Aciklama</label>
+            <textarea id="projDesc" rows="3" placeholder="Projenin ne oldugu, kisa aciklama..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Kullanilan Teknolojiler (virgülle ayirin)</label>
+            <input type="text" id="projTech" placeholder="HTML, CSS, JavaScript, Docker...">
+          </div>
+          <div class="form-group">
+            <label>Rolu / Gorevim</label>
+            <input type="text" id="projRole" placeholder="Frontend Developer, DevOps Engineer...">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label>Kategori</label>
+              <select id="projCategory">
+                <option value="web">Web</option>
+                <option value="app">Uygulama</option>
+                <option value="tool">Arac</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Ikon (FontAwesome)</label>
+              <input type="text" id="projIcon" value="fa-code" placeholder="fa-code">
+            </div>
+          </div>
+
+          <input type="hidden" id="projEditId" value="">
+
+          <div class="btn-group" style="margin-top: 16px;">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Kaydet</button>
+            <button type="button" class="btn btn-outline" onclick="resetProjectForm();"><i class="fas fa-times"></i> Iptal</button>
+          </div>
+        </form>
+      </div>
+
     </div>
   </section>
 
@@ -244,59 +180,143 @@
   <script src="/js/components.js"></script>
   <script src="/js/main.js"></script>
   <script>
-    // Project filtering
-    const projFilterBtns = document.querySelectorAll('.filter-btn');
-    const projCards = document.querySelectorAll('.project-card');
+    // ===== PROJECTS CRUD (localStorage) =====
+    function getProjects() {
+      return JSON.parse(localStorage.getItem('projects') || '[]');
+    }
 
-    projFilterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        projFilterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.getAttribute('data-filter');
+    function saveProjects(projects) {
+      localStorage.setItem('projects', JSON.stringify(projects));
+    }
 
-        projCards.forEach(card => {
-          if (filter === 'all' || card.getAttribute('data-category') === filter) {
-            card.style.display = 'block';
-            setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 50);
-          } else {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            setTimeout(() => { card.style.display = 'none'; }, 300);
-          }
-        });
-      });
-    });
+    function escapeHtmlProj(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
 
-    // Project detail modal
-    const projectData = [
-      { name: 'Kisisel Web Sitesi', icon: 'fa-globe', gradient: 'var(--primary)', desc: 'HTML, CSS ve JavaScript ile sifirdan gelistirdigim kisisel web sitem. Blog sistemi, CV sayfasi, proje vitrini, admin paneli, coklu dil destegi ve bircok interaktif ozellik barindiriyor. Tum veriler LocalStorage ile yonetiliyor.', tech: ['HTML','CSS','JavaScript','LocalStorage'] },
-      { name: 'Gorev Yonetici Uygulamasi', icon: 'fa-tasks', gradient: 'var(--primary)', desc: 'Gunluk gorevlerinizi kolayca takip edebileceginiz, kategorize edebileceginiz ve onceliklendirebileceginiz bir to-do uygulamasi. Drag & drop destegi ve hatirlatici ozelligi ile uretkenliginizi artirin.', tech: ['JavaScript','LocalStorage','CSS'] },
-      { name: 'Hava Durumu Uygulamasi', icon: 'fa-cloud-sun', gradient: 'var(--primary-light)', desc: 'REST API kullanarak anlik hava durumu bilgilerini gosteren modern bir web uygulamasi. Konum bazli otomatik hava durumu, 5 gunluk tahmin ve animasyonlu hava ikonlari iceriyor.', tech: ['JavaScript','REST API','CSS','Geolocation'] },
-      { name: 'Hesap Makinesi', icon: 'fa-calculator', gradient: 'var(--primary)', desc: 'Modern arayuzlu, bilimsel islemleri destekleyen gelismis hesap makinesi. Trigonometrik fonksiyonlar, logaritma, uslu sayilar ve gecmis islem kaydi ozellikleri bulunuyor.', tech: ['HTML','CSS Grid','JavaScript'] },
-      { name: 'Rastgele Alinti Uretici', icon: 'fa-quote-left', gradient: 'var(--primary-light)', desc: 'Her yenilediginde farkli motivasyon sozleri gosteren, sosyal medyada kolayca paylasim yapmanizi saglayan bir uygulama. API entegrasyonu ve animasyonlu gecisler ile zenginlestirilmistir.', tech: ['JavaScript','API','CSS Animations'] },
-      { name: 'CSS Gradient Uretici', icon: 'fa-paint-brush', gradient: 'var(--primary)', desc: 'Kolayca CSS gradient kodlari ureten, canli onizleme sunan bir gelistirici araci. Renk secici, yon ayari, gradient tipi secimi ve tek tikla kopyalama ozellikleri mevcut.', tech: ['HTML','CSS','JavaScript'] }
-    ];
+    function renderProjects() {
+      const projects = getProjects();
+      const grid = document.getElementById('projectsGrid');
+      const noMsg = document.getElementById('noProjects');
+      const currentFilter = document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all';
 
-    projCards.forEach((card, index) => {
-      card.style.cursor = 'pointer';
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('a')) return; // Don't open modal when clicking links
-        const data = projectData[index];
-        if (!data) return;
-        const modal = document.getElementById('projectModal');
-        document.getElementById('modalHeader').innerHTML = `
-          <div class="modal-icon" style="background: ${data.gradient};"><i class="fas ${data.icon}"></i></div>
-          <h3>${data.name}</h3>
-        `;
-        document.getElementById('modalBody').innerHTML = `
-          <p>${data.desc}</p>
-          <div class="tech-stack">${data.tech.map(t => '<span class="tag">' + t + '</span>').join('')}</div>
-          <div class="project-links">
-            <a href="#"><i class="fas fa-external-link-alt"></i> Canli Demo</a>
-            <a href="#"><i class="fab fa-github"></i> Kaynak Kod</a>
+      const filtered = currentFilter === 'all' ? projects : projects.filter(p => p.category === currentFilter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        noMsg.style.display = 'block';
+        return;
+      }
+
+      noMsg.style.display = 'none';
+      grid.innerHTML = filtered.map((p, i) => {
+        const techTags = (p.tech || []).map(t => '<span class="tag">' + escapeHtmlProj(t) + '</span>').join('');
+        const animClass = ['fade-left', 'fade-right', 'fade-up'][i % 3];
+        return `
+          <div class="project-card ${animClass}" data-category="${escapeHtmlProj(p.category)}" data-id="${p.id}">
+            <div class="card-image" style="background: var(--primary);">
+              <i class="fas ${escapeHtmlProj(p.icon || 'fa-code')}" style="color: white;"></i>
+            </div>
+            <div class="card-body">
+              <h3>${escapeHtmlProj(p.name)}</h3>
+              <p>${escapeHtmlProj(p.description || '')}</p>
+              ${p.role ? '<p style="font-size:0.85rem; color:var(--primary); font-weight:500; margin-top:4px;"><i class="fas fa-user-tag"></i> ' + escapeHtmlProj(p.role) + '</p>' : ''}
+              <div class="tech-stack">${techTags}</div>
+              <div class="project-links" style="gap:8px;">
+                <button class="btn-edit" onclick="event.stopPropagation(); editProject(${p.id});"><i class="fas fa-edit"></i> Duzenle</button>
+                <button class="btn-delete" onclick="event.stopPropagation(); deleteProject(${p.id});"><i class="fas fa-trash"></i> Sil</button>
+              </div>
+            </div>
           </div>
         `;
-        modal.classList.add('open');
+      }).join('');
+
+      // Add click handler for detail modal
+      document.querySelectorAll('.project-card').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-edit') || e.target.closest('.btn-delete')) return;
+          const id = Number(card.getAttribute('data-id'));
+          const proj = getProjects().find(p => p.id === id);
+          if (!proj) return;
+          const modal = document.getElementById('projectModal');
+          document.getElementById('modalHeader').innerHTML = `
+            <div class="modal-icon" style="background: var(--primary);"><i class="fas ${escapeHtmlProj(proj.icon || 'fa-code')}"></i></div>
+            <h3>${escapeHtmlProj(proj.name)}</h3>
+          `;
+          document.getElementById('modalBody').innerHTML = `
+            <p>${escapeHtmlProj(proj.description || '')}</p>
+            ${proj.role ? '<p style="margin-top:8px; color:var(--primary); font-weight:500;"><i class="fas fa-user-tag"></i> ' + escapeHtmlProj(proj.role) + '</p>' : ''}
+            <div class="tech-stack">${(proj.tech || []).map(t => '<span class="tag">' + escapeHtmlProj(t) + '</span>').join('')}</div>
+          `;
+          modal.classList.add('open');
+        });
+      });
+    }
+
+    // Form submit
+    document.getElementById('projectFormEl').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const projects = getProjects();
+      const editId = document.getElementById('projEditId').value;
+
+      const projectData = {
+        id: editId ? Number(editId) : Date.now(),
+        name: document.getElementById('projName').value.trim(),
+        description: document.getElementById('projDesc').value.trim(),
+        tech: document.getElementById('projTech').value.split(',').map(s => s.trim()).filter(Boolean),
+        role: document.getElementById('projRole').value.trim(),
+        category: document.getElementById('projCategory').value,
+        icon: document.getElementById('projIcon').value.trim() || 'fa-code'
+      };
+
+      if (editId) {
+        const idx = projects.findIndex(p => p.id === Number(editId));
+        if (idx !== -1) projects[idx] = projectData;
+      } else {
+        projects.push(projectData);
+      }
+
+      saveProjects(projects);
+      resetProjectForm();
+      renderProjects();
+    });
+
+    function editProject(id) {
+      const proj = getProjects().find(p => p.id === id);
+      if (!proj) return;
+      document.getElementById('projEditId').value = proj.id;
+      document.getElementById('projName').value = proj.name;
+      document.getElementById('projDesc').value = proj.description || '';
+      document.getElementById('projTech').value = (proj.tech || []).join(', ');
+      document.getElementById('projRole').value = proj.role || '';
+      document.getElementById('projCategory').value = proj.category;
+      document.getElementById('projIcon').value = proj.icon || 'fa-code';
+      document.getElementById('projectFormTitle').innerHTML = '<i class="fas fa-edit"></i> Projeyi Duzenle';
+      document.getElementById('projectForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteProject(id) {
+      if (!confirm('Bu projeyi silmek istediginize emin misiniz?')) return;
+      const projects = getProjects().filter(p => p.id !== id);
+      saveProjects(projects);
+      renderProjects();
+    }
+
+    function resetProjectForm() {
+      document.getElementById('projectFormEl').reset();
+      document.getElementById('projEditId').value = '';
+      document.getElementById('projIcon').value = 'fa-code';
+      document.getElementById('projectFormTitle').innerHTML = '<i class="fas fa-plus"></i> Yeni Proje Ekle';
+    }
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderProjects();
       });
     });
 
@@ -306,6 +326,9 @@
         document.getElementById('projectModal').classList.remove('open');
       }
     });
+
+    // Initial render
+    renderProjects();
   </script>
 </body>
 </html>

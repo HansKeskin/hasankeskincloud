@@ -245,6 +245,8 @@
           const readTime = calculateReadingTime(content);
           const categoryLabel = { yazilim: t('blog.filter_dev'), teknoloji: t('blog.filter_tech'), kisisel: t('blog.filter_personal') };
 
+          const postTags = (p.tags && p.tags.length > 0) ? '<div class="tech-stack" style="margin-top:8px;">' + p.tags.map(tg => '<span class="tag" style="font-size:0.7rem;">' + tg + '</span>').join('') + '</div>' : '';
+
           return `
             <div class="blog-card fade-in visible" data-category="${p.category}">
               <div class="card-image" style="background: ${p.gradient}; display: flex; align-items: center; justify-content: center;">
@@ -258,6 +260,7 @@
                 <span class="tag">${categoryLabel[p.category] || p.category}</span>
                 <h3>${title}</h3>
                 <p>${summary}</p>
+                ${postTags}
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
                   <a href="/blog-post/?id=${p.id}" class="read-more">${t('blog.read_more')} <i class="fas fa-arrow-right"></i></a>
                   <button class="bookmark-btn ${isBookmarked(p.id) ? 'bookmarked' : ''}" data-post-id="${p.id}" onclick="event.preventDefault(); toggleBookmark(${p.id});" title="Okuma Listesi">

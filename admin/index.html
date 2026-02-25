@@ -139,6 +139,10 @@
             <input type="text" id="icon" value="fa-file-alt" placeholder="fa-file-alt">
           </div>
         </div>
+        <div class="form-group">
+          <label>Etiketler (virgülle ayirin)</label>
+          <input type="text" id="tags" placeholder="devops, linux, docker, kubernetes...">
+        </div>
 
         <input type="hidden" id="editId" value="">
 
@@ -306,7 +310,8 @@
         date: new Date().toISOString().split('T')[0],
         icon: document.getElementById('icon').value || 'fa-file-alt',
         gradient: gradients[Math.floor(Math.random() * gradients.length)],
-        author: 'Hasan'
+        author: 'Hasan',
+        tags: document.getElementById('tags').value.split(',').map(s => s.trim()).filter(Boolean)
       };
 
       if (editId) {
@@ -335,6 +340,7 @@
       document.getElementById('contentEn').value = post.content.en || '';
       document.getElementById('category').value = post.category;
       document.getElementById('icon').value = post.icon;
+      document.getElementById('tags').value = (post.tags || []).join(', ');
       document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> Yaziyi Duzenle';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
