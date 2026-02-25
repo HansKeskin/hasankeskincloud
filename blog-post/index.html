@@ -11,8 +11,8 @@
   <meta property="og:site_name" content="Hasan Blog">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
@@ -33,13 +33,13 @@
   <!-- Navbar -->
   <nav class="navbar scrolled">
     <div class="container">
-      <a href="index.html" class="nav-logo">Hasan Keskin</a>
+      <a href="/" class="nav-logo">Hasan Keskin</a>
       <ul class="nav-links">
-        <li><a href="index.html" data-i18n="nav.home">Ana Sayfa</a></li>
-        <li><a href="blog.html" class="active" data-i18n="nav.blog">Blog</a></li>
-        <li><a href="projects.html" data-i18n="nav.projects">Projeler</a></li>
-        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
-        <li><a href="contact.html" data-i18n="nav.contact">Iletisim</a></li>
+        <li><a href="/" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="/blog/" class="active" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="/projects/" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="/cv/" data-i18n="nav.cv">CV</a></li>
+        <li><a href="/contact/" data-i18n="nav.contact">Iletisim</a></li>
       </ul>
       <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr'); renderPost();">EN</button>
       <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
@@ -119,7 +119,7 @@
             <div id="activityFeed"></div>
           </div>
           <div class="sidebar-card">
-            <a href="blog.html" class="btn btn-outline" style="width:100%; justify-content:center;">
+            <a href="/blog/" class="btn btn-outline" style="width:100%; justify-content:center;">
               <i class="fas fa-arrow-left"></i> <span data-i18n="blog.back">Blog'a Don</span>
             </a>
           </div>
@@ -181,13 +181,13 @@
         <div>
           <h4 data-i18n="footer.pages">Sayfalar</h4>
           <div class="footer-links">
-            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
-            <a href="blog.html" data-i18n="nav.blog">Blog</a>
-            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
-            <a href="cv.html" data-i18n="nav.cv">CV</a>
-            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
-            <a href="guestbook.html">Ziyaretci Defteri</a>
-            <a href="sitemap-page.html">Site Haritasi</a>
+            <a href="/" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="/blog/" data-i18n="nav.blog">Blog</a>
+            <a href="/projects/" data-i18n="nav.projects">Projeler</a>
+            <a href="/cv/" data-i18n="nav.cv">CV</a>
+            <a href="/contact/" data-i18n="nav.contact">Iletisim</a>
+            <a href="/guestbook/">Ziyaretci Defteri</a>
+            <a href="/sitemap-page/">Site Haritasi</a>
           </div>
         </div>
         <div>
@@ -205,10 +205,10 @@
     </div>
   </footer>
 
-  <script src="js/blog-data.js"></script>
-  <script src="js/i18n.js"></script>
-  <script src="js/components.js"></script>
-  <script src="js/main.js"></script>
+  <script src="/js/blog-data.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/main.js"></script>
   <script>
     function renderPost() {
       const params = new URLSearchParams(window.location.search);
@@ -352,7 +352,7 @@
         const title = p.title[lang] || p.title.tr;
         const summary = p.summary[lang] || p.summary.tr;
         return `
-          <a href="blog-post.html?id=${p.id}" class="related-card">
+          <a href="/blog-post/?id=${p.id}" class="related-card">
             <div class="related-icon" style="background: ${p.gradient};">
               <i class="fas ${p.icon}"></i>
             </div>
@@ -376,7 +376,7 @@
       const cloud = document.getElementById('tagCloud');
       if (!cloud) return;
       cloud.innerHTML = (tags[lang] || tags.tr).map(tag =>
-        `<a href="blog.html" class="tag-item">${tag}</a>`
+        `<a href="/blog/" class="tag-item">${tag}</a>`
       ).join('');
     }
 

@@ -10,8 +10,8 @@
   <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css">
   <style>
     .sitemap-container {
       max-width: 1000px;
@@ -172,13 +172,13 @@
   <!-- Navbar -->
   <nav class="navbar scrolled">
     <div class="container">
-      <a href="index.html" class="nav-logo">Hasan Keskin</a>
+      <a href="/" class="nav-logo">Hasan Keskin</a>
       <ul class="nav-links">
-        <li><a href="index.html" data-i18n="nav.home">Ana Sayfa</a></li>
-        <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
-        <li><a href="projects.html" data-i18n="nav.projects">Projeler</a></li>
-        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
-        <li><a href="contact.html" data-i18n="nav.contact">Iletisim</a></li>
+        <li><a href="/" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="/blog/" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="/projects/" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="/cv/" data-i18n="nav.cv">CV</a></li>
+        <li><a href="/contact/" data-i18n="nav.contact">Iletisim</a></li>
       </ul>
       <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr');">EN</button>
       <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
@@ -213,7 +213,7 @@
 
       <!-- Root Node -->
       <div class="sitemap-root fade-in">
-        <a href="index.html"><i class="fas fa-home"></i> Hasan.</a>
+        <a href="/"><i class="fas fa-home"></i> Hasan.</a>
       </div>
 
       <!-- Branches -->
@@ -221,21 +221,21 @@
 
         <!-- Ana Sayfa -->
         <div class="sitemap-branch fade-up">
-          <a href="index.html" class="sitemap-branch-header">
+          <a href="/" class="sitemap-branch-header">
             <i class="fas fa-home"></i> Ana Sayfa
           </a>
           <div class="sitemap-children">
-            <a href="index.html#hero" class="sitemap-child"><i class="fas fa-angle-right"></i> Hero</a>
-            <a href="index.html#about" class="sitemap-child"><i class="fas fa-angle-right"></i> Hakkimda</a>
-            <a href="index.html#stats" class="sitemap-child"><i class="fas fa-angle-right"></i> Istatistikler</a>
-            <a href="index.html#blog" class="sitemap-child"><i class="fas fa-angle-right"></i> Son Yazilar</a>
-            <a href="index.html#newsletter" class="sitemap-child"><i class="fas fa-angle-right"></i> Bulten</a>
+            <a href="/#hero" class="sitemap-child"><i class="fas fa-angle-right"></i> Hero</a>
+            <a href="/#about" class="sitemap-child"><i class="fas fa-angle-right"></i> Hakkimda</a>
+            <a href="/#stats" class="sitemap-child"><i class="fas fa-angle-right"></i> Istatistikler</a>
+            <a href="/#blog" class="sitemap-child"><i class="fas fa-angle-right"></i> Son Yazilar</a>
+            <a href="/#newsletter" class="sitemap-child"><i class="fas fa-angle-right"></i> Bulten</a>
           </div>
         </div>
 
         <!-- Blog -->
         <div class="sitemap-branch fade-up">
-          <a href="blog.html" class="sitemap-branch-header">
+          <a href="/blog/" class="sitemap-branch-header">
             <i class="fas fa-pen-fancy"></i> Blog
             <span class="badge" id="blogPostCount">0</span>
           </a>
@@ -246,53 +246,53 @@
 
         <!-- Projeler -->
         <div class="sitemap-branch fade-up">
-          <a href="projects.html" class="sitemap-branch-header">
+          <a href="/projects/" class="sitemap-branch-header">
             <i class="fas fa-code"></i> Projeler
           </a>
           <div class="sitemap-children">
-            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Kisisel Web Sitesi</a>
-            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Gorev Yonetici</a>
-            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Hava Durumu</a>
-            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Hesap Makinesi</a>
-            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Alinti Uretici</a>
-            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> CSS Gradient Uretici</a>
+            <a href="/projects/" class="sitemap-child"><i class="fas fa-angle-right"></i> Kisisel Web Sitesi</a>
+            <a href="/projects/" class="sitemap-child"><i class="fas fa-angle-right"></i> Gorev Yonetici</a>
+            <a href="/projects/" class="sitemap-child"><i class="fas fa-angle-right"></i> Hava Durumu</a>
+            <a href="/projects/" class="sitemap-child"><i class="fas fa-angle-right"></i> Hesap Makinesi</a>
+            <a href="/projects/" class="sitemap-child"><i class="fas fa-angle-right"></i> Alinti Uretici</a>
+            <a href="/projects/" class="sitemap-child"><i class="fas fa-angle-right"></i> CSS Gradient Uretici</a>
           </div>
         </div>
 
         <!-- CV -->
         <div class="sitemap-branch fade-up">
-          <a href="cv.html" class="sitemap-branch-header">
+          <a href="/cv/" class="sitemap-branch-header">
             <i class="fas fa-file-alt"></i> CV
           </a>
           <div class="sitemap-children">
-            <a href="cv.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Egitim</a>
-            <a href="cv.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Deneyim</a>
-            <a href="cv.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Yetenekler</a>
-            <a href="cv.html" class="sitemap-child"><i class="fas fa-angle-right"></i> PDF Indirme</a>
+            <a href="/cv/" class="sitemap-child"><i class="fas fa-angle-right"></i> Egitim</a>
+            <a href="/cv/" class="sitemap-child"><i class="fas fa-angle-right"></i> Deneyim</a>
+            <a href="/cv/" class="sitemap-child"><i class="fas fa-angle-right"></i> Yetenekler</a>
+            <a href="/cv/" class="sitemap-child"><i class="fas fa-angle-right"></i> PDF Indirme</a>
           </div>
         </div>
 
         <!-- Iletisim -->
         <div class="sitemap-branch fade-up">
-          <a href="contact.html" class="sitemap-branch-header">
+          <a href="/contact/" class="sitemap-branch-header">
             <i class="fas fa-envelope"></i> Iletisim
           </a>
           <div class="sitemap-children">
-            <a href="contact.html" class="sitemap-child"><i class="fas fa-angle-right"></i> E-posta</a>
-            <a href="contact.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Konum</a>
-            <a href="contact.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Iletisim Formu</a>
-            <a href="contact.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Sosyal Medya</a>
+            <a href="/contact/" class="sitemap-child"><i class="fas fa-angle-right"></i> E-posta</a>
+            <a href="/contact/" class="sitemap-child"><i class="fas fa-angle-right"></i> Konum</a>
+            <a href="/contact/" class="sitemap-child"><i class="fas fa-angle-right"></i> Iletisim Formu</a>
+            <a href="/contact/" class="sitemap-child"><i class="fas fa-angle-right"></i> Sosyal Medya</a>
           </div>
         </div>
 
         <!-- Ziyaretci Defteri -->
         <div class="sitemap-branch fade-up">
-          <a href="guestbook.html" class="sitemap-branch-header">
+          <a href="/guestbook/" class="sitemap-branch-header">
             <i class="fas fa-book-open"></i> Ziyaretci Defteri
           </a>
           <div class="sitemap-children">
-            <a href="guestbook.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Mesajlar</a>
-            <a href="guestbook.html#guestbookForm" class="sitemap-child"><i class="fas fa-angle-right"></i> Mesaj Birak</a>
+            <a href="/guestbook/" class="sitemap-child"><i class="fas fa-angle-right"></i> Mesajlar</a>
+            <a href="/guestbook/#guestbookForm" class="sitemap-child"><i class="fas fa-angle-right"></i> Mesaj Birak</a>
           </div>
         </div>
 
@@ -302,8 +302,8 @@
             <i class="fas fa-cog"></i> Diger
           </a>
           <div class="sitemap-children">
-            <a href="admin.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Admin Paneli</a>
-            <a href="sitemap-page.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Site Haritasi</a>
+            <a href="/admin/" class="sitemap-child"><i class="fas fa-angle-right"></i> Admin Paneli</a>
+            <a href="/sitemap-page/" class="sitemap-child"><i class="fas fa-angle-right"></i> Site Haritasi</a>
           </div>
         </div>
 
@@ -339,13 +339,13 @@
         <div>
           <h4 data-i18n="footer.pages">Sayfalar</h4>
           <div class="footer-links">
-            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
-            <a href="blog.html" data-i18n="nav.blog">Blog</a>
-            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
-            <a href="cv.html" data-i18n="nav.cv">CV</a>
-            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
-            <a href="guestbook.html">Ziyaretci Defteri</a>
-            <a href="sitemap-page.html">Site Haritasi</a>
+            <a href="/" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="/blog/" data-i18n="nav.blog">Blog</a>
+            <a href="/projects/" data-i18n="nav.projects">Projeler</a>
+            <a href="/cv/" data-i18n="nav.cv">CV</a>
+            <a href="/contact/" data-i18n="nav.contact">Iletisim</a>
+            <a href="/guestbook/">Ziyaretci Defteri</a>
+            <a href="/sitemap-page/">Site Haritasi</a>
           </div>
         </div>
         <div>
@@ -363,10 +363,10 @@
     </div>
   </footer>
 
-  <script src="js/blog-data.js"></script>
-  <script src="js/i18n.js"></script>
-  <script src="js/components.js"></script>
-  <script src="js/main.js"></script>
+  <script src="/js/blog-data.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/main.js"></script>
   <script>
     (function() {
       // Dynamically populate blog branch children from getAllPosts()
@@ -380,7 +380,7 @@
 
       blogContainer.innerHTML = posts.map(function(post) {
         var title = (typeof post.title === 'object') ? (post.title[lang] || post.title.tr) : post.title;
-        return '<a href="blog-post.html?id=' + post.id + '" class="sitemap-child"><i class="fas fa-angle-right"></i> ' + title + '</a>';
+        return '<a href="/blog-post/?id=' + post.id + '" class="sitemap-child"><i class="fas fa-angle-right"></i> ' + title + '</a>';
       }).join('');
 
       // Calculate and display stats

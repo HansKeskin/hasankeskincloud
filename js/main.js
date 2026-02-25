@@ -276,7 +276,7 @@ const pageTransition = document.querySelector('.page-transition');
 if (pageTransition) {
   document.querySelectorAll('a[href]').forEach(link => {
     const href = link.getAttribute('href');
-    if (href && href.endsWith('.html') && !href.startsWith('http') && !href.startsWith('#')) {
+    if (href && !href.startsWith('http') && !href.startsWith('#') && href !== window.location.pathname) {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         pageTransition.classList.add('active');
@@ -476,11 +476,11 @@ document.addEventListener('keydown', (e) => {
   }
   // H => go home
   if (e.key === 'h' && !isTyping) {
-    window.location.href = 'index.html';
+    window.location.href = '/';
   }
   // B => go blog
   if (e.key === 'b' && !isTyping) {
-    window.location.href = 'blog.html';
+    window.location.href = '/blog/';
   }
   // R => toggle reading mode
   if (e.key === 'r' && !isTyping) {
@@ -490,10 +490,10 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ===== ACTIVE NAV LINK =====
-const activePage = window.location.pathname.split('/').pop() || 'index.html';
+const currentPath = window.location.pathname;
 document.querySelectorAll('.nav-links a').forEach(link => {
   const href = link.getAttribute('href');
-  if (href === activePage || (activePage === '' && href === 'index.html')) {
+  if (href === currentPath || (currentPath === '/' && href === '/') || (currentPath.startsWith(href) && href !== '/')) {
     link.classList.add('active');
   }
 });
@@ -691,11 +691,11 @@ if (globalSearch) {
 
       // Search pages
       const pages = [
-        { title: 'Ana Sayfa', url: 'index.html', icon: 'fa-home', gradient: 'var(--primary)', keywords: 'ana sayfa home hasan blog' },
-        { title: 'Blog', url: 'blog.html', icon: 'fa-blog', gradient: 'var(--primary)', keywords: 'blog yazilar posts' },
-        { title: 'Projeler', url: 'projects.html', icon: 'fa-code', gradient: 'var(--primary)', keywords: 'projeler projects' },
-        { title: 'CV', url: 'cv.html', icon: 'fa-file-alt', gradient: 'var(--primary-light)', keywords: 'cv ozgecmis resume egitim deneyim' },
-        { title: 'Iletisim', url: 'contact.html', icon: 'fa-envelope', gradient: 'var(--primary-light)', keywords: 'iletisim contact email' }
+        { title: 'Ana Sayfa', url: '/', icon: 'fa-home', gradient: 'var(--primary)', keywords: 'ana sayfa home hasan blog' },
+        { title: 'Blog', url: '/blog/', icon: 'fa-blog', gradient: 'var(--primary)', keywords: 'blog yazilar posts' },
+        { title: 'Projeler', url: '/projects/', icon: 'fa-code', gradient: 'var(--primary)', keywords: 'projeler projects' },
+        { title: 'CV', url: '/cv/', icon: 'fa-file-alt', gradient: 'var(--primary-light)', keywords: 'cv ozgecmis resume egitim deneyim' },
+        { title: 'Iletisim', url: '/contact/', icon: 'fa-envelope', gradient: 'var(--primary-light)', keywords: 'iletisim contact email' }
       ];
 
       let results = [];
@@ -717,7 +717,7 @@ if (globalSearch) {
             results.push({
               title: post.title[lang] || post.title.tr,
               subtitle: post.category + ' | ' + post.date,
-              url: 'blog-post.html?id=' + post.id,
+              url: '/blog-post/?id=' + post.id,
               icon: post.icon,
               gradient: post.gradient
             });
@@ -1226,5 +1226,5 @@ function goToRandomPost() {
   const posts = getAllPosts();
   if (posts.length === 0) return;
   const random = posts[Math.floor(Math.random() * posts.length)];
-  window.location.href = 'blog-post.html?id=' + random.id;
+  window.location.href = '/blog-post/?id=' + random.id;
 }

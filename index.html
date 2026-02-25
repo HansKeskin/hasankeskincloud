@@ -35,13 +35,13 @@
   <!-- Navbar -->
   <nav class="navbar">
     <div class="container">
-      <a href="index.html" class="nav-logo">Hasan Keskin</a>
+      <a href="/" class="nav-logo">Hasan Keskin</a>
       <ul class="nav-links">
-        <li><a href="index.html" class="active" data-i18n="nav.home">Ana Sayfa</a></li>
-        <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
-        <li><a href="projects.html" data-i18n="nav.projects">Projeler</a></li>
-        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
-        <li><a href="contact.html" data-i18n="nav.contact">Iletisim</a></li>
+        <li><a href="/" class="active" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="/blog/" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="/projects/" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="/cv/" data-i18n="nav.cv">CV</a></li>
+        <li><a href="/contact/" data-i18n="nav.contact">Iletisim</a></li>
       </ul>
       <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr'); renderLatestPosts();">EN</button>
       <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
@@ -66,8 +66,8 @@
         <h1>Hasan<br><span class="typing-text" data-texts='["DevOps Engineer","Blogger"]'></span><span style="color: var(--primary);">|</span></h1>
         <p data-i18n="hero.description">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem. Blog yazilarim ve projelerime goz atabilirsiniz.</p>
         <div class="btn-group">
-          <a href="blog.html" class="btn btn-primary"><span data-i18n="hero.blog_btn">Blog Yazilarim</span> <i class="fas fa-arrow-right"></i></a>
-          <a href="contact.html" class="btn btn-outline" data-i18n="hero.contact_btn">Iletisime Gec</a>
+          <a href="/blog/" class="btn btn-primary"><span data-i18n="hero.blog_btn">Blog Yazilarim</span> <i class="fas fa-arrow-right"></i></a>
+          <a href="/contact/" class="btn btn-outline" data-i18n="hero.contact_btn">Iletisime Gec</a>
         </div>
       </div>
       <div class="hero-image">
@@ -146,7 +146,7 @@
       </div>
       <div class="blog-grid" id="latestPosts"></div>
       <div style="text-align: center; margin-top: 40px;" class="fade-in">
-        <a href="blog.html" class="btn btn-primary"><span data-i18n="latest.all_btn">Tum Yazilar</span> <i class="fas fa-arrow-right"></i></a>
+        <a href="/blog/" class="btn btn-primary"><span data-i18n="latest.all_btn">Tum Yazilar</span> <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
   </section>
@@ -176,13 +176,13 @@
         <div>
           <h4 data-i18n="footer.pages">Sayfalar</h4>
           <div class="footer-links">
-            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
-            <a href="blog.html" data-i18n="nav.blog">Blog</a>
-            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
-            <a href="cv.html" data-i18n="nav.cv">CV</a>
-            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
-            <a href="guestbook.html">Ziyaretci Defteri</a>
-            <a href="sitemap-page.html">Site Haritasi</a>
+            <a href="/" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="/blog/" data-i18n="nav.blog">Blog</a>
+            <a href="/projects/" data-i18n="nav.projects">Projeler</a>
+            <a href="/cv/" data-i18n="nav.cv">CV</a>
+            <a href="/contact/" data-i18n="nav.contact">Iletisim</a>
+            <a href="/guestbook/">Ziyaretci Defteri</a>
+            <a href="/sitemap-page/">Site Haritasi</a>
           </div>
         </div>
         <div>
@@ -228,7 +228,7 @@
               </div>
               <h3>${title}</h3>
               <p>${summary}</p>
-              <a href="blog-post.html?id=${p.id}" class="read-more">${lang === 'tr' ? 'Devamini Oku' : 'Read More'} <i class="fas fa-arrow-right"></i></a>
+              <a href="/blog-post/?id=${p.id}" class="read-more">${lang === 'tr' ? 'Devamini Oku' : 'Read More'} <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
         `;
