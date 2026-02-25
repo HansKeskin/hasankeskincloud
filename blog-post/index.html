@@ -139,6 +139,9 @@
           <div class="form-group">
             <textarea id="commentText" data-i18n="blog.comment_text" placeholder="Yorumunuz" rows="4"></textarea>
           </div>
+          <div class="hn-field" aria-hidden="true">
+            <input type="text" id="commentHoneypot" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> <span data-i18n="blog.comment_submit">Yorum Yap</span></button>
         </form>
 
@@ -279,8 +282,16 @@
       `; }).join('');
     }
 
+    if (typeof initSpamProtection === 'function') initSpamProtection('commentForm');
+
     document.getElementById('commentForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      if (typeof checkSpamProtection === 'function' && !checkSpamProtection('commentForm', 'commentHoneypot')) {
+        if (typeof showToast === 'function') showToast('Lutfen formu tekrar doldurun.', 'error');
+        return;
+      }
+
       const postId = new URLSearchParams(window.location.search).get('id');
       const name = document.getElementById('commentName').value.trim();
       const text = document.getElementById('commentText').value.trim();
@@ -340,13 +351,30 @@
       }
     }
 
-    // Related Posts
+    // Related Posts (score-based)
     async function renderRelatedPosts(currentPost) {
       const lang = getLang();
       const all = await getAllPosts();
-      const allPosts = all.filter(p => p.id !== currentPost.id);
-      const sameCat = allPosts.filter(p => p.category === currentPost.category);
-      const related = sameCat.length >= 3 ? sameCat.slice(0, 3) : [...sameCat, ...allPosts.filter(p => p.category !== currentPost.category)].slice(0, 3);
+      const others = all.filter(p => p.id !== currentPost.id);
+      const currentTags = currentPost.tags || [];
+      const currentDate = new Date(currentPost.date);
+      const oneYearMs = 365 * 24 * 60 * 60 * 1000;
+
+      const scored = others.map(p => {
+        let score = 0;
+        // Tag matches: 3 pts each
+        const pTags = p.tags || [];
+        currentTags.forEach(t => { if (pTags.includes(t)) score += 3; });
+        // Same category: 2 pts
+        if (p.category === currentPost.category) score += 2;
+        // Recency bonus: 0-1 pts (newer within 1 year = higher)
+        const diff = Math.abs(new Date(p.date) - currentDate);
+        if (diff < oneYearMs) score += 1 - (diff / oneYearMs);
+        return { post: p, score };
+      });
+
+      scored.sort((a, b) => b.score - a.score);
+      const related = scored.slice(0, 3).map(s => s.post);
 
       const grid = document.getElementById('relatedGrid');
       const container = document.getElementById('relatedPosts');
@@ -390,7 +418,7 @@
         return;
       }
       cloud.innerHTML = tags.map(tag =>
-        `<a href="/blog/" class="tag-item">${tag}</a>`
+        `<a href="/blog/?tag=${encodeURIComponent(tag)}" class="tag-item">${tag}</a>`
       ).join('');
     }
 

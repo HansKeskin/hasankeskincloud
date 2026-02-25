@@ -89,6 +89,9 @@
         <button class="filter-btn" data-filter="kisisel" data-i18n="blog.filter_personal">Kisisel</button>
       </div>
 
+      <!-- Tag Filters -->
+      <div class="tag-filters fade-in" id="blogTagFilters"></div>
+
       <!-- Toolbar: Sort + Random -->
       <div class="blog-toolbar fade-in">
         <div class="blog-sort">
@@ -178,6 +181,36 @@
     let currentFilter = 'all';
     let searchQuery = '';
     let currentSort = 'newest';
+    let selectedTags = [];
+
+    // Read ?tag= from URL
+    (function() {
+      const urlTag = new URLSearchParams(window.location.search).get('tag');
+      if (urlTag) selectedTags = [urlTag];
+    })();
+
+    async function renderTagFilters() {
+      const allPosts = await getAllPosts();
+      const tagSet = new Set();
+      allPosts.forEach(p => { if (p.tags) p.tags.forEach(t => tagSet.add(t)); });
+      const container = document.getElementById('blogTagFilters');
+      if (!container || tagSet.size === 0) return;
+      const tags = Array.from(tagSet).sort();
+      container.innerHTML = tags.map(tag =>
+        `<button class="tag-filter-btn ${selectedTags.includes(tag) ? 'active' : ''}" data-tag="${tag}">${tag}</button>`
+      ).join('');
+      container.querySelectorAll('.tag-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tag = btn.getAttribute('data-tag');
+          const idx = selectedTags.indexOf(tag);
+          if (idx >= 0) selectedTags.splice(idx, 1);
+          else selectedTags.push(tag);
+          btn.classList.toggle('active');
+          blogPage = 1;
+          renderBlog();
+        });
+      });
+    }
 
     async function getFilteredPosts() {
       const lang = getLang();
@@ -190,10 +223,17 @@
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
         posts = posts.filter(p => {
-          const title = (p.title[lang] || p.title.tr).toLowerCase();
-          const summary = (p.summary[lang] || p.summary.tr).toLowerCase();
-          return title.includes(q) || summary.includes(q);
+          const title = (p.title[lang] || p.title.tr);
+          const summary = (p.summary[lang] || p.summary.tr);
+          const tags = (p.tags || []).join(' ');
+          return (typeof fuzzyMatch === 'function')
+            ? fuzzyMatch(title, q) || fuzzyMatch(summary, q) || fuzzyMatch(tags, q)
+            : title.toLowerCase().includes(q) || summary.toLowerCase().includes(q);
         });
+      }
+
+      if (selectedTags.length > 0) {
+        posts = posts.filter(p => p.tags && selectedTags.some(t => p.tags.includes(t)));
       }
 
       // Sort
@@ -341,6 +381,7 @@
     // Show skeleton loading then render
     if (typeof showSkeletons === 'function') showSkeletons('blogGrid', 4);
     setTimeout(async () => {
+      await renderTagFilters();
       await renderBlog();
       await updateBlogStats();
     }, 800);

@@ -3584,3 +3584,47 @@ select:focus-visible {
 .md-preview a {
   color: var(--primary);
 }
+
+/* ===== HONEYPOT SPAM FIELD ===== */
+.hn-field {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ===== TAG FILTER BUTTONS ===== */
+.tag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tag-filter-btn {
+  padding: 6px 16px;
+  border-radius: 50px;
+  border: 2px solid var(--border);
+  background: var(--white);
+  color: var(--dark);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.tag-filter-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tag-filter-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}

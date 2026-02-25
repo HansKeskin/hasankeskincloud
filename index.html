@@ -279,6 +279,8 @@
       statProject.setAttribute('data-target', projects.length);
       statTech.setAttribute('data-target', techSet.size);
       statExp.setAttribute('data-target', experiences.length);
+
+      if (typeof animateStatCounters === 'function') animateStatCounters();
     }
     updateStats();
 

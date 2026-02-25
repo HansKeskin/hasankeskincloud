@@ -296,6 +296,9 @@
             <button type="button" data-emoji="&#10024;">&#10024;</button>
           </div>
           <textarea id="guestMessage" placeholder="Mesajiniz *" required></textarea>
+          <div class="hn-field" aria-hidden="true">
+            <input type="text" id="guestHoneypot" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <button type="submit" class="btn-submit" id="gbSubmitBtn"><i class="fas fa-paper-plane"></i> Mesaj Gonder</button>
         </form>
       </div>
@@ -368,9 +371,17 @@
     // Select the first emoji by default
     document.querySelector('.emoji-picker button').classList.add('selected');
 
+    // Spam protection
+    if (typeof initSpamProtection === 'function') initSpamProtection('guestbookForm');
+
     // Form submit handler
     document.getElementById('guestbookForm').addEventListener('submit', async function(e) {
       e.preventDefault();
+
+      if (typeof checkSpamProtection === 'function' && !checkSpamProtection('guestbookForm', 'guestHoneypot')) {
+        if (typeof showToast === 'function') showToast('Lutfen formu tekrar doldurun.', 'error');
+        return;
+      }
 
       var name = document.getElementById('guestName').value.trim();
       var location = document.getElementById('guestLocation').value.trim();

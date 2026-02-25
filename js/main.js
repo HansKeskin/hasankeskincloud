@@ -37,6 +37,47 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+// ===== FUZZY SEARCH =====
+function levenshteinDistance(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1]
+        ? dp[i - 1][j - 1]
+        : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+    }
+  }
+  return dp[m][n];
+}
+
+function fuzzyMatch(text, query) {
+  text = text.toLowerCase();
+  query = query.toLowerCase();
+  if (text.includes(query)) return true;
+  const tolerance = Math.floor(query.length / 3);
+  if (tolerance === 0) return false;
+  const words = text.split(/\s+/);
+  return words.some(word => levenshteinDistance(word, query) <= tolerance);
+}
+
+// ===== SPAM PROTECTION =====
+const _spamTimestamps = {};
+
+function initSpamProtection(formId) {
+  _spamTimestamps[formId] = Date.now();
+}
+
+function checkSpamProtection(formId, honeypotId) {
+  const honeypot = document.getElementById(honeypotId);
+  if (honeypot && honeypot.value) return false;
+  const elapsed = Date.now() - (_spamTimestamps[formId] || 0);
+  if (elapsed < 3000) return false;
+  return true;
+}
+
 // ===== RAF MANAGEMENT =====
 // Central registry for all requestAnimationFrame IDs so they can be cancelled
 const rafIds = {
@@ -223,8 +264,15 @@ filterBtns.forEach(btn => {
 const contactForm = document.querySelector('#contactForm');
 
 if (contactForm) {
+  initSpamProtection('contactForm');
   contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    if (!checkSpamProtection('contactForm', 'contactHoneypot')) {
+      if (typeof showToast === 'function') showToast('Lutfen formu tekrar doldurun.', 'error');
+      return;
+    }
+
     let isValid = true;
 
     // Reset errors
@@ -395,27 +443,23 @@ if (particleCanvas) {
 }
 
 // ===== STAT COUNTER =====
-document.querySelectorAll('.stat-number').forEach(el => {
-  const target = parseInt(el.getAttribute('data-target'));
-  const suffix = el.getAttribute('data-suffix') || '';
-  let counted = false;
+function animateStatCounters() {
+  document.querySelectorAll('.stat-number').forEach(el => {
+    const target = parseInt(el.getAttribute('data-target'));
+    const suffix = el.getAttribute('data-suffix') || '';
+    if (!target || target === 0) return;
+    if (el._animatedTarget === target) return;
+    el._animatedTarget = target;
 
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !counted) {
-        counted = true;
-        let current = 0;
-        const step = Math.ceil(target / 60);
-        const timer = setInterval(() => {
-          current += step;
-          if (current >= target) { current = target; clearInterval(timer); }
-          el.textContent = current + suffix;
-        }, 30);
-      }
-    });
-  }, { threshold: 0.5 });
-  counterObserver.observe(el);
-});
+    let current = 0;
+    const step = Math.ceil(target / 60);
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = current + suffix;
+    }, 30);
+  });
+}
 
 // ===== READING PROGRESS BAR (logic in consolidated scroll handler) =====
 const readingProgress = document.querySelector('.reading-progress');
@@ -724,9 +768,10 @@ if (globalSearch) {
         const lang = typeof getLang === 'function' ? getLang() : 'tr';
         const posts = await getAllPosts();
         posts.forEach(post => {
-          const title = (post.title[lang] || post.title.tr).toLowerCase();
-          const summary = (post.summary[lang] || post.summary.tr).toLowerCase();
-          if (title.includes(q) || summary.includes(q)) {
+          const title = (post.title[lang] || post.title.tr);
+          const summary = (post.summary[lang] || post.summary.tr);
+          const tags = (post.tags || []).join(' ');
+          if (fuzzyMatch(title, q) || fuzzyMatch(summary, q) || fuzzyMatch(tags, q)) {
             results.push({
               title: post.title[lang] || post.title.tr,
               subtitle: post.category + ' | ' + post.date,

@@ -120,6 +120,9 @@
             <textarea id="message" data-i18n="contact.form_message_ph" placeholder="Mesajinizi buraya yaziniz..."></textarea>
             <span class="error-msg" data-i18n="contact.err_message">Lutfen mesajinizi giriniz (en az 10 karakter)</span>
           </div>
+          <div class="hn-field" aria-hidden="true">
+            <input type="text" id="contactHoneypot" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
             <i class="fas fa-paper-plane"></i> <span data-i18n="contact.form_submit">Mesaj Gonder</span>
           </button>
