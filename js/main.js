@@ -57,10 +57,14 @@ function fuzzyMatch(text, query) {
   text = text.toLowerCase();
   query = query.toLowerCase();
   if (text.includes(query)) return true;
-  const tolerance = Math.floor(query.length / 3);
-  if (tolerance === 0) return false;
-  const words = text.split(/\s+/);
-  return words.some(word => levenshteinDistance(word, query) <= tolerance);
+  const textWords = text.split(/\s+/);
+  const queryWords = query.split(/\s+/);
+  return queryWords.every(qw => {
+    const tolerance = Math.floor(qw.length / 3);
+    if (text.includes(qw)) return true;
+    if (tolerance === 0) return false;
+    return textWords.some(tw => levenshteinDistance(tw, qw) <= tolerance);
+  });
 }
 
 // ===== SPAM PROTECTION =====
@@ -443,7 +447,10 @@ if (particleCanvas) {
 }
 
 // ===== STAT COUNTER =====
+let _statsVisible = false;
+
 function animateStatCounters() {
+  if (!_statsVisible) return;
   document.querySelectorAll('.stat-number').forEach(el => {
     const target = parseInt(el.getAttribute('data-target'));
     const suffix = el.getAttribute('data-suffix') || '';
@@ -460,6 +467,21 @@ function animateStatCounters() {
     }, 30);
   });
 }
+
+// Observe stats section visibility
+(function() {
+  const statsGrid = document.getElementById('statsGrid');
+  if (!statsGrid) return;
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        _statsVisible = true;
+        animateStatCounters();
+      }
+    });
+  }, { threshold: 0.3 });
+  statsObserver.observe(statsGrid);
+})();
 
 // ===== READING PROGRESS BAR (logic in consolidated scroll handler) =====
 const readingProgress = document.querySelector('.reading-progress');

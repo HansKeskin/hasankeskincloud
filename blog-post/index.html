@@ -167,6 +167,9 @@
         <p data-i18n="newsletter.desc">Yeni yazilarimdan haberdar olmak icin e-posta adresinizi birakin.</p>
         <form class="newsletter-form" id="newsletterForm">
           <input type="email" data-i18n="newsletter.placeholder" placeholder="E-posta adresiniz" required>
+          <div class="hn-field" aria-hidden="true">
+            <input type="text" id="nlHoneypot" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <button type="submit" class="btn btn-primary" data-i18n="newsletter.btn">Abone Ol</button>
         </form>
       </div>
@@ -494,16 +497,21 @@
     // Newsletter form handler
     const nlForm = document.getElementById('newsletterForm');
     if (nlForm) {
+      if (typeof initSpamProtection === 'function') initSpamProtection('newsletterForm');
       nlForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = e.target.querySelector('input').value.trim();
+        if (typeof checkSpamProtection === 'function' && !checkSpamProtection('newsletterForm', 'nlHoneypot')) {
+          if (typeof showToast === 'function') showToast('Lutfen formu tekrar doldurun.', 'error');
+          return;
+        }
+        const email = e.target.querySelector('input[type="email"]').value.trim();
         if (!email) return;
         try {
           await insertNewsletterSub(email);
         } catch (err) {
           console.error('Newsletter error:', err);
         }
-        e.target.querySelector('input').value = '';
+        e.target.querySelector('input[type="email"]').value = '';
         const btn = e.target.querySelector('button');
         btn.textContent = t('newsletter.success');
         if (typeof launchConfetti === 'function') launchConfetti();
