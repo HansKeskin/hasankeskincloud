@@ -1,7 +1,7 @@
 // ===== SUPABASE CLIENT =====
 // Supabase URL ve anon key - kendi degerlerinizle degistirin
 const SUPABASE_URL = 'https://sydrlrecxpoyrdxefavc.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_aM16dPGghE85_bOMe7uAYA_ZI6f9oGQ';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5ZHJscmVjeHBveXJkeGVmYXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMDg1ODksImV4cCI6MjA4NzU4NDU4OX0.nLihElmWt2hrg42MabBFuc5oMIup1ObuYEZbm4etsIo';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
