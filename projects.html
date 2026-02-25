@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeler - Hasan</title>
+  <meta name="description" content="Hasan'in projeleri - Web gelistirme ve yazilim projeleri">
+  <meta property="og:title" content="Projeler - Hasan">
+  <meta property="og:description" content="Web gelistirme ve yazilim projeleri">
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Skip to Content -->
+  <a href="#main-content" class="skip-to-content">Icerigi Atla</a>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-spinner"></div>
+      <div class="preloader-text">Hasan Keskin.</div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="index.html" class="nav-logo">Hasan Keskin.</a>
+      <ul class="nav-links">
+        <li><a href="index.html" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="projects.html" class="active" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Iletisim</a></li>
+      </ul>
+      <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr');">EN</button>
+      <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+      <div class="hamburger" role="button" aria-label="Menuyu Ac/Kapat" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="parallax-bg">
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+    </div>
+    <div class="container">
+      <h1 data-i18n="projects.page_title">Projelerim</h1>
+      <p data-i18n="projects.page_subtitle">Gelistirdigim ve uzerinde calistigim projeler</p>
+    </div>
+  </div>
+
+  <!-- Projects Section -->
+  <section class="section" id="main-content">
+    <div class="container">
+
+      <!-- Project Filters -->
+      <div class="blog-filters fade-in">
+        <button class="filter-btn active" data-filter="all" data-i18n="projects.filter_all">Tumu</button>
+        <button class="filter-btn" data-filter="web" data-i18n="projects.filter_web">Web</button>
+        <button class="filter-btn" data-filter="tool" data-i18n="projects.filter_tool">Arac</button>
+        <button class="filter-btn" data-filter="app" data-i18n="projects.filter_app">Uygulama</button>
+      </div>
+
+      <div class="projects-grid">
+
+        <div class="project-card fade-left" data-category="web">
+          <div class="card-image" style="background: var(--primary);">
+            <i class="fas fa-globe" style="color: white;"></i>
+          </div>
+          <div class="card-body">
+            <h3>Kisisel Web Sitesi</h3>
+            <p>HTML, CSS ve JavaScript ile gelistirdigim kisisel web sitem. Blog, CV ve proje vitrinim.</p>
+            <div class="tech-stack">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
+              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card fade-right" data-category="app">
+          <div class="card-image" style="background: var(--primary);">
+            <i class="fas fa-tasks" style="color: white;"></i>
+          </div>
+          <div class="card-body">
+            <h3>Gorev Yonetici Uygulamasi</h3>
+            <p>Gunluk gorevlerinizi takip edebileceginiz, kategorize edebileceginiz bir to-do uygulamasi.</p>
+            <div class="tech-stack">
+              <span class="tag">JavaScript</span>
+              <span class="tag">LocalStorage</span>
+              <span class="tag">CSS</span>
+            </div>
+            <div class="project-links">
+              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
+              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card fade-up" data-category="web">
+          <div class="card-image" style="background: var(--primary-light);">
+            <i class="fas fa-cloud-sun" style="color: white;"></i>
+          </div>
+          <div class="card-body">
+            <h3>Hava Durumu Uygulamasi</h3>
+            <p>API kullanarak anlik hava durumu bilgilerini gosteren modern bir web uygulamasi.</p>
+            <div class="tech-stack">
+              <span class="tag">JavaScript</span>
+              <span class="tag">REST API</span>
+              <span class="tag">CSS</span>
+            </div>
+            <div class="project-links">
+              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
+              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card fade-left" data-category="tool">
+          <div class="card-image" style="background: var(--primary);">
+            <i class="fas fa-calculator" style="color: white;"></i>
+          </div>
+          <div class="card-body">
+            <h3>Hesap Makinesi</h3>
+            <p>Modern arayuzlu, bilimsel islemleri destekleyen gelismis hesap makinesi uygulamasi.</p>
+            <div class="tech-stack">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS Grid</span>
+              <span class="tag">JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
+              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card fade-right" data-category="app">
+          <div class="card-image" style="background: var(--primary-light);">
+            <i class="fas fa-quote-left" style="color: white;"></i>
+          </div>
+          <div class="card-body">
+            <h3>Rastgele Alinti Uretici</h3>
+            <p>Her yenilediginde farkli motivasyon sozleri gosteren, paylasim ozellikli bir uygulama.</p>
+            <div class="tech-stack">
+              <span class="tag">JavaScript</span>
+              <span class="tag">API</span>
+              <span class="tag">CSS Animations</span>
+            </div>
+            <div class="project-links">
+              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
+              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card fade-up" data-category="tool">
+          <div class="card-image" style="background: var(--primary);">
+            <i class="fas fa-paint-brush" style="color: white;"></i>
+          </div>
+          <div class="card-body">
+            <h3>CSS Gradient Uretici</h3>
+            <p>Kolayca CSS gradient kodlari ureten, canli onizleme sunan bir arac.</p>
+            <div class="tech-stack">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.live">Canli Demo</span></a>
+              <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.source">Kaynak Kod</span></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Detail Modal -->
+  <div class="project-modal" id="projectModal">
+    <div class="project-modal-content" style="position:relative;">
+      <button class="project-modal-close" onclick="document.getElementById('projectModal').classList.remove('open');">&times;</button>
+      <div class="project-modal-header" id="modalHeader"></div>
+      <div class="project-modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">Hasan Keskin.</div>
+          <p data-i18n="footer.desc">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.pages">Sayfalar</h4>
+          <div class="footer-links">
+            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
+            <a href="cv.html" data-i18n="nav.cv">CV</a>
+            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
+            <a href="guestbook.html">Ziyaretci Defteri</a>
+            <a href="sitemap-page.html">Site Haritasi</a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="footer.social">Sosyal Medya</h4>
+          <div class="footer-links">
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Hasan. <span data-i18n="footer.rights">Tum haklari saklidir.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Project filtering
+    const projFilterBtns = document.querySelectorAll('.filter-btn');
+    const projCards = document.querySelectorAll('.project-card');
+
+    projFilterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        projFilterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter');
+
+        projCards.forEach(card => {
+          if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = 'block';
+            setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 50);
+          } else {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => { card.style.display = 'none'; }, 300);
+          }
+        });
+      });
+    });
+
+    // Project detail modal
+    const projectData = [
+      { name: 'Kisisel Web Sitesi', icon: 'fa-globe', gradient: 'var(--primary)', desc: 'HTML, CSS ve JavaScript ile sifirdan gelistirdigim kisisel web sitem. Blog sistemi, CV sayfasi, proje vitrini, admin paneli, coklu dil destegi ve bircok interaktif ozellik barindiriyor. Tum veriler LocalStorage ile yonetiliyor.', tech: ['HTML','CSS','JavaScript','LocalStorage'] },
+      { name: 'Gorev Yonetici Uygulamasi', icon: 'fa-tasks', gradient: 'var(--primary)', desc: 'Gunluk gorevlerinizi kolayca takip edebileceginiz, kategorize edebileceginiz ve onceliklendirebileceginiz bir to-do uygulamasi. Drag & drop destegi ve hatirlatici ozelligi ile uretkenliginizi artirin.', tech: ['JavaScript','LocalStorage','CSS'] },
+      { name: 'Hava Durumu Uygulamasi', icon: 'fa-cloud-sun', gradient: 'var(--primary-light)', desc: 'REST API kullanarak anlik hava durumu bilgilerini gosteren modern bir web uygulamasi. Konum bazli otomatik hava durumu, 5 gunluk tahmin ve animasyonlu hava ikonlari iceriyor.', tech: ['JavaScript','REST API','CSS','Geolocation'] },
+      { name: 'Hesap Makinesi', icon: 'fa-calculator', gradient: 'var(--primary)', desc: 'Modern arayuzlu, bilimsel islemleri destekleyen gelismis hesap makinesi. Trigonometrik fonksiyonlar, logaritma, uslu sayilar ve gecmis islem kaydi ozellikleri bulunuyor.', tech: ['HTML','CSS Grid','JavaScript'] },
+      { name: 'Rastgele Alinti Uretici', icon: 'fa-quote-left', gradient: 'var(--primary-light)', desc: 'Her yenilediginde farkli motivasyon sozleri gosteren, sosyal medyada kolayca paylasim yapmanizi saglayan bir uygulama. API entegrasyonu ve animasyonlu gecisler ile zenginlestirilmistir.', tech: ['JavaScript','API','CSS Animations'] },
+      { name: 'CSS Gradient Uretici', icon: 'fa-paint-brush', gradient: 'var(--primary)', desc: 'Kolayca CSS gradient kodlari ureten, canli onizleme sunan bir gelistirici araci. Renk secici, yon ayari, gradient tipi secimi ve tek tikla kopyalama ozellikleri mevcut.', tech: ['HTML','CSS','JavaScript'] }
+    ];
+
+    projCards.forEach((card, index) => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return; // Don't open modal when clicking links
+        const data = projectData[index];
+        if (!data) return;
+        const modal = document.getElementById('projectModal');
+        document.getElementById('modalHeader').innerHTML = `
+          <div class="modal-icon" style="background: ${data.gradient};"><i class="fas ${data.icon}"></i></div>
+          <h3>${data.name}</h3>
+        `;
+        document.getElementById('modalBody').innerHTML = `
+          <p>${data.desc}</p>
+          <div class="tech-stack">${data.tech.map(t => '<span class="tag">' + t + '</span>').join('')}</div>
+          <div class="project-links">
+            <a href="#"><i class="fas fa-external-link-alt"></i> Canli Demo</a>
+            <a href="#"><i class="fab fa-github"></i> Kaynak Kod</a>
+          </div>
+        `;
+        modal.classList.add('open');
+      });
+    });
+
+    // Close modal on overlay click
+    document.getElementById('projectModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('projectModal')) {
+        document.getElementById('projectModal').classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

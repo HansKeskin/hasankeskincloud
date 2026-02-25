@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziyaretci Defteri - Hasan</title>
+  <meta name="description" content="Ziyaretcilerimiz icin mesaj defteri">
+  <meta property="og:title" content="Ziyaretci Defteri - Hasan">
+  <meta property="og:description" content="Ziyaretcilerimiz icin mesaj defteri">
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .guestbook-form {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow);
+      margin-bottom: 40px;
+    }
+
+    .guestbook-form h3 {
+      font-size: 1.5rem;
+      color: var(--dark);
+      margin-bottom: 24px;
+    }
+
+    .guestbook-form h3 i {
+      color: var(--primary);
+      margin-right: 10px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .guestbook-form input,
+    .guestbook-form textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      background: var(--bg);
+      color: var(--dark);
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .guestbook-form input:focus,
+    .guestbook-form textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+    }
+
+    .guestbook-form textarea {
+      min-height: 120px;
+      resize: vertical;
+      margin-bottom: 16px;
+    }
+
+    .emoji-picker {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .emoji-picker button {
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emoji-picker button:hover {
+      border-color: var(--primary-light);
+      transform: scale(1.1);
+    }
+
+    .emoji-picker button.selected {
+      border-color: var(--primary);
+      background: rgba(108, 92, 231, 0.1);
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+      transform: scale(1.15);
+    }
+
+    .guestbook-form .btn-submit {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .guestbook-form .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
+    }
+
+    .message-count {
+      text-align: center;
+      color: var(--dark-light);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+
+    .message-count span {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .guestbook-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .guestbook-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      animation: fadeInUp 0.4s ease;
+    }
+
+    .guestbook-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .guestbook-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .guestbook-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .guestbook-meta {
+      flex: 1;
+    }
+
+    .guestbook-name {
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 1rem;
+    }
+
+    .guestbook-date {
+      font-size: 0.82rem;
+      color: var(--dark-light);
+    }
+
+    .guestbook-location {
+      font-size: 0.82rem;
+      color: var(--dark-light);
+    }
+
+    .guestbook-location i {
+      margin-right: 4px;
+    }
+
+    .guestbook-emoji {
+      font-size: 1.5rem;
+    }
+
+    .guestbook-text {
+      color: var(--dark);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip to Content -->
+  <a href="#guestbookForm" class="skip-to-content">Icerigi Atla</a>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-spinner"></div>
+      <div class="preloader-text">Hasan Keskin.</div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="index.html" class="nav-logo">Hasan Keskin.</a>
+      <ul class="nav-links">
+        <li><a href="index.html" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Iletisim</a></li>
+      </ul>
+      <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr'); loadMessages(); updateGuestbookLang();">EN</button>
+      <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+      <div class="hamburger" role="button" aria-label="Menuyu Ac/Kapat" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="parallax-bg">
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+    </div>
+    <div class="container">
+      <h1 id="gbTitle">Ziyaretci Defteri</h1>
+      <p id="gbSubtitle">Ziyaretcilerimiz icin mesaj defteri</p>
+    </div>
+  </div>
+
+  <!-- Guestbook Content -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Guestbook Form -->
+      <div class="guestbook-form fade-in">
+        <h3 id="gbFormTitle"><i class="fas fa-pen"></i> Mesaj Birakin</h3>
+        <form id="guestbookForm">
+          <div class="form-row">
+            <input type="text" id="guestName" placeholder="Adiniz *" required>
+            <input type="text" id="guestLocation" placeholder="Konum (istege bagli)">
+          </div>
+          <div class="emoji-picker">
+            <button type="button" data-emoji="&#128522;">&#128522;</button>
+            <button type="button" data-emoji="&#10084;&#65039;">&#10084;&#65039;</button>
+            <button type="button" data-emoji="&#128293;">&#128293;</button>
+            <button type="button" data-emoji="&#128079;">&#128079;</button>
+            <button type="button" data-emoji="&#127881;">&#127881;</button>
+            <button type="button" data-emoji="&#10024;">&#10024;</button>
+          </div>
+          <textarea id="guestMessage" placeholder="Mesajiniz *" required></textarea>
+          <button type="submit" class="btn-submit" id="gbSubmitBtn"><i class="fas fa-paper-plane"></i> Mesaj Gonder</button>
+        </form>
+      </div>
+
+      <!-- Message Count -->
+      <div class="message-count fade-in" id="messageCount"></div>
+
+      <!-- Guestbook Messages -->
+      <div class="guestbook-messages" id="guestbookMessages"></div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">Hasan Keskin.</div>
+          <p data-i18n="footer.desc">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.pages">Sayfalar</h4>
+          <div class="footer-links">
+            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
+            <a href="cv.html" data-i18n="nav.cv">CV</a>
+            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
+            <a href="guestbook.html">Ziyaretci Defteri</a>
+            <a href="sitemap-page.html">Site Haritasi</a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="footer.social">Sosyal Medya</h4>
+          <div class="footer-links">
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Hasan. <span data-i18n="footer.rights">Tum haklari saklidir.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Selected emoji (default)
+    var selectedEmoji = '\u{1F60A}';
+
+    // Emoji picker click handler
+    document.querySelectorAll('.emoji-picker button').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.emoji-picker button').forEach(function(b) {
+          b.classList.remove('selected');
+        });
+        btn.classList.add('selected');
+        selectedEmoji = btn.getAttribute('data-emoji');
+      });
+    });
+
+    // Select the first emoji by default
+    document.querySelector('.emoji-picker button').classList.add('selected');
+
+    // Load messages from localStorage
+    function loadMessages() {
+      var messages = JSON.parse(localStorage.getItem('guestbook_messages') || '[]');
+      var container = document.getElementById('guestbookMessages');
+      var countEl = document.getElementById('messageCount');
+
+      countEl.innerHTML = 'Toplam <span>' + messages.length + '</span> mesaj';
+
+      if (messages.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color: var(--dark-light); padding: 40px 0;">Henuz mesaj yok. Ilk mesaji siz birakin!</p>';
+        return;
+      }
+
+      // Show newest first
+      var sorted = messages.slice().reverse();
+      container.innerHTML = sorted.map(function(msg) {
+        var firstLetter = msg.name.charAt(0).toUpperCase();
+        var locationHtml = msg.location ? '<div class="guestbook-location"><i class="fas fa-map-marker-alt"></i> ' + escapeHtml(msg.location) + '</div>' : '';
+        return '<div class="guestbook-card">' +
+          '<div class="guestbook-card-header">' +
+            '<div class="guestbook-avatar">' + firstLetter + '</div>' +
+            '<div class="guestbook-meta">' +
+              '<div class="guestbook-name">' + escapeHtml(msg.name) + '</div>' +
+              '<div class="guestbook-date">' + msg.date + '</div>' +
+              locationHtml +
+            '</div>' +
+            '<div class="guestbook-emoji">' + msg.emoji + '</div>' +
+          '</div>' +
+          '<div class="guestbook-text">' + escapeHtml(msg.message) + '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    // Form submit handler
+    document.getElementById('guestbookForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var name = document.getElementById('guestName').value.trim();
+      var location = document.getElementById('guestLocation').value.trim();
+      var message = document.getElementById('guestMessage').value.trim();
+
+      // Validation
+      if (name.length < 2) {
+        alert('Adiniz en az 2 karakter olmalidir.');
+        return;
+      }
+      if (message.length < 5) {
+        alert('Mesajiniz en az 5 karakter olmalidir.');
+        return;
+      }
+
+      // Create message object
+      var now = new Date();
+      var dateStr = now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      var msgObj = {
+        name: name,
+        location: location,
+        emoji: selectedEmoji,
+        message: message,
+        date: dateStr
+      };
+
+      // Save to localStorage
+      var messages = JSON.parse(localStorage.getItem('guestbook_messages') || '[]');
+      messages.push(msgObj);
+      localStorage.setItem('guestbook_messages', JSON.stringify(messages));
+
+      // Reload messages
+      loadMessages();
+
+      // Show confetti if available
+      if (typeof launchConfetti === 'function') {
+        launchConfetti();
+      }
+
+      // Show toast if available
+      if (typeof showToast === 'function') {
+        showToast('Mesajiniz basariyla eklendi!', 'success');
+      }
+
+      // Reset form
+      document.getElementById('guestbookForm').reset();
+      document.querySelectorAll('.emoji-picker button').forEach(function(b) {
+        b.classList.remove('selected');
+      });
+      document.querySelector('.emoji-picker button').classList.add('selected');
+      selectedEmoji = '\u{1F60A}';
+    });
+
+    // Update guestbook UI texts based on language
+    function updateGuestbookLang() {
+      var lang = (typeof getLang === 'function') ? getLang() : 'tr';
+      var titleEl = document.getElementById('gbTitle');
+      var subtitleEl = document.getElementById('gbSubtitle');
+      var formTitleEl = document.getElementById('gbFormTitle');
+      var submitBtn = document.getElementById('gbSubmitBtn');
+      var nameInput = document.getElementById('guestName');
+      var locInput = document.getElementById('guestLocation');
+      var msgInput = document.getElementById('guestMessage');
+      var countEl = document.getElementById('messageCount');
+
+      if (lang === 'en') {
+        if (titleEl) titleEl.textContent = 'Guestbook';
+        if (subtitleEl) subtitleEl.textContent = 'A message book for our visitors';
+        if (formTitleEl) formTitleEl.innerHTML = '<i class="fas fa-pen"></i> Leave a Message';
+        if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+        if (nameInput) nameInput.placeholder = 'Your Name *';
+        if (locInput) locInput.placeholder = 'Location (optional)';
+        if (msgInput) msgInput.placeholder = 'Your Message *';
+      } else {
+        if (titleEl) titleEl.textContent = 'Ziyaretci Defteri';
+        if (subtitleEl) subtitleEl.textContent = 'Ziyaretcilerimiz icin mesaj defteri';
+        if (formTitleEl) formTitleEl.innerHTML = '<i class="fas fa-pen"></i> Mesaj Birakin';
+        if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Mesaj Gonder';
+        if (nameInput) nameInput.placeholder = 'Adiniz *';
+        if (locInput) locInput.placeholder = 'Konum (istege bagli)';
+        if (msgInput) msgInput.placeholder = 'Mesajiniz *';
+      }
+
+      // Update message count text
+      var messages = JSON.parse(localStorage.getItem('guestbook_messages') || '[]');
+      if (countEl) {
+        countEl.innerHTML = (lang === 'en' ? 'Total ' : 'Toplam ') + '<span>' + messages.length + '</span>' + (lang === 'en' ? ' messages' : ' mesaj');
+      }
+    }
+
+    // Load messages on page load
+    loadMessages();
+    updateGuestbookLang();
+  </script>
+</body>
+</html>

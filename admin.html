@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Yonetimi - Hasan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Skip to Content -->
+  <a href="#postForm" class="skip-to-content">Icerigi Atla</a>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-spinner"></div>
+      <div class="preloader-text">Hasan Keskin.</div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="index.html" class="nav-logo">Hasan Keskin.</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Ana Sayfa</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="projects.html">Projeler</a></li>
+        <li><a href="cv.html">CV</a></li>
+        <li><a href="contact.html">Iletisim</a></li>
+      </ul>
+      <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+      <div class="hamburger" role="button" aria-label="Menuyu Ac/Kapat" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1><i class="fas fa-cog"></i> Blog Yonetimi</h1>
+      <p>Yazi ekle, duzenle ve sil (LocalStorage)</p>
+    </div>
+  </div>
+
+  <!-- Admin Section -->
+  <section class="section">
+    <div class="container">
+
+      <form class="admin-form" id="postForm">
+        <h3 style="margin-bottom: 24px;" id="formTitle"><i class="fas fa-plus"></i> Yeni Yazi Ekle</h3>
+
+        <div class="form-group">
+          <label>Baslik (TR)</label>
+          <input type="text" id="titleTr" placeholder="Turkce baslik..." required>
+        </div>
+        <div class="form-group">
+          <label>Baslik (EN)</label>
+          <input type="text" id="titleEn" placeholder="English title...">
+        </div>
+        <div class="form-group">
+          <label>Ozet (TR)</label>
+          <textarea id="summaryTr" rows="2" placeholder="Kisa ozet..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Ozet (EN)</label>
+          <textarea id="summaryEn" rows="2" placeholder="Short summary..."></textarea>
+        </div>
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <label style="margin:0;">Icerik (TR) - Markdown & HTML destekler</label>
+            <div class="md-toolbar">
+              <button type="button" class="md-btn" onclick="mdInsert('contentTr','**','**')" title="Kalin"><i class="fas fa-bold"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentTr','*','*')" title="Italik"><i class="fas fa-italic"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentTr','## ','')" title="Baslik"><i class="fas fa-heading"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentTr','[','](url)')" title="Link"><i class="fas fa-link"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentTr','- ','')" title="Liste"><i class="fas fa-list-ul"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentTr','`','`')" title="Kod"><i class="fas fa-code"></i></button>
+              <button type="button" class="md-btn md-preview-btn" onclick="togglePreview('contentTr','previewTr')" title="Onizleme"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <textarea id="contentTr" rows="8" placeholder="# Baslik&#10;&#10;Paragraf metni. **Kalin** ve *italik* yazi.&#10;&#10;- Liste ogesi 1&#10;- Liste ogesi 2&#10;&#10;`kod parcasi`"></textarea>
+          <div class="md-preview" id="previewTr" style="display:none;"></div>
+        </div>
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <label style="margin:0;">Icerik (EN) - Markdown & HTML destekler</label>
+            <div class="md-toolbar">
+              <button type="button" class="md-btn" onclick="mdInsert('contentEn','**','**')" title="Bold"><i class="fas fa-bold"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentEn','*','*')" title="Italic"><i class="fas fa-italic"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentEn','## ','')" title="Heading"><i class="fas fa-heading"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentEn','[','](url)')" title="Link"><i class="fas fa-link"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentEn','- ','')" title="List"><i class="fas fa-list-ul"></i></button>
+              <button type="button" class="md-btn" onclick="mdInsert('contentEn','`','`')" title="Code"><i class="fas fa-code"></i></button>
+              <button type="button" class="md-btn md-preview-btn" onclick="togglePreview('contentEn','previewEn')" title="Preview"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <textarea id="contentEn" rows="8" placeholder="# Heading&#10;&#10;Paragraph text. **Bold** and *italic* text.&#10;&#10;- List item 1&#10;- List item 2&#10;&#10;`code snippet`"></textarea>
+          <div class="md-preview" id="previewEn" style="display:none;"></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label>Kategori</label>
+            <select id="category">
+              <option value="yazilim">Yazilim</option>
+              <option value="teknoloji">Teknoloji</option>
+              <option value="kisisel">Kisisel</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Ikon (FontAwesome)</label>
+            <input type="text" id="icon" value="fa-file-alt" placeholder="fa-file-alt">
+          </div>
+        </div>
+
+        <input type="hidden" id="editId" value="">
+
+        <div class="btn-group" style="margin-top: 16px;">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Kaydet</button>
+          <button type="button" class="btn btn-outline" onclick="resetForm();">Iptal</button>
+        </div>
+      </form>
+
+      <!-- Existing Posts -->
+      <div class="admin-posts-list" id="adminPostsList">
+        <h3 style="margin-bottom: 20px;"><i class="fas fa-list"></i> Mevcut Yazilar (LocalStorage)</h3>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Hasan. Admin Paneli</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/blog-data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // ===== MARKDOWN SUPPORT =====
+    function markdownToHtml(md) {
+      let html = md;
+      // Code blocks (```)
+      html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+      // Inline code
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+      // Headers
+      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+      // Bold and italic
+      html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      // Images (must be before links)
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+      // Links
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+      // Unordered lists
+      html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+      html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+      // Horizontal rule
+      html = html.replace(/^---$/gm, '<hr>');
+      // Blockquotes
+      html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+      // Paragraphs (double newline)
+      html = html.replace(/\n\n(?!<)/g, '</p><p>');
+      // Single newlines to <br> (if not inside tags)
+      html = html.replace(/(?<!\>)\n(?!\<)/g, '<br>');
+      // Wrap in paragraph if no block elements at start
+      if (!html.startsWith('<')) html = '<p>' + html + '</p>';
+      return html;
+    }
+
+    function mdInsert(textareaId, before, after) {
+      const ta = document.getElementById(textareaId);
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const selected = ta.value.substring(start, end);
+      ta.value = ta.value.substring(0, start) + before + selected + after + ta.value.substring(end);
+      ta.focus();
+      ta.selectionStart = start + before.length;
+      ta.selectionEnd = start + before.length + selected.length;
+    }
+
+    function togglePreview(textareaId, previewId) {
+      const ta = document.getElementById(textareaId);
+      const preview = document.getElementById(previewId);
+      if (preview.style.display === 'none') {
+        const content = ta.value;
+        // If content looks like HTML (starts with <), show as-is; otherwise convert from Markdown
+        preview.innerHTML = content.trim().startsWith('<') ? content : markdownToHtml(content);
+        preview.style.display = 'block';
+        ta.style.display = 'none';
+      } else {
+        preview.style.display = 'none';
+        ta.style.display = '';
+      }
+    }
+
+    function getCustomPosts() {
+      return JSON.parse(localStorage.getItem('customBlogPosts') || '[]');
+    }
+
+    function saveCustomPosts(posts) {
+      localStorage.setItem('customBlogPosts', JSON.stringify(posts));
+    }
+
+    function renderAdminList() {
+      const posts = getCustomPosts();
+      const list = document.getElementById('adminPostsList');
+
+      if (posts.length === 0) {
+        list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Yazilar (LocalStorage)</h3><p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz ozel yazi eklenmemis.</p>';
+        return;
+      }
+
+      list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Yazilar (LocalStorage)</h3>' +
+        posts.map(p => `
+          <div class="admin-post-item">
+            <div class="post-info">
+              <h4>${p.title.tr}</h4>
+              <span>${p.category} | ${p.date}</span>
+            </div>
+            <div class="post-actions">
+              <button class="btn-edit" onclick="editPost(${p.id})"><i class="fas fa-edit"></i> Duzenle</button>
+              <button class="btn-delete" onclick="deletePost(${p.id})"><i class="fas fa-trash"></i> Sil</button>
+            </div>
+          </div>
+        `).join('');
+    }
+
+    document.getElementById('postForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const posts = getCustomPosts();
+      const editId = document.getElementById('editId').value;
+      const gradients = [
+        'var(--primary)', 'var(--primary-light)',
+        'var(--gradient-1)'
+      ];
+
+      const postData = {
+        id: editId ? Number(editId) : Date.now(),
+        title: { tr: document.getElementById('titleTr').value, en: document.getElementById('titleEn').value || document.getElementById('titleTr').value },
+        summary: { tr: document.getElementById('summaryTr').value, en: document.getElementById('summaryEn').value || document.getElementById('summaryTr').value },
+        content: {
+          tr: (function() { const v = document.getElementById('contentTr').value; return v.trim().startsWith('<') ? v : markdownToHtml(v); })(),
+          en: (function() { const v = document.getElementById('contentEn').value || document.getElementById('contentTr').value; return v.trim().startsWith('<') ? v : markdownToHtml(v); })()
+        },
+        category: document.getElementById('category').value,
+        date: new Date().toISOString().split('T')[0],
+        icon: document.getElementById('icon').value || 'fa-file-alt',
+        gradient: gradients[Math.floor(Math.random() * gradients.length)],
+        author: 'Hasan'
+      };
+
+      if (editId) {
+        const idx = posts.findIndex(p => p.id === Number(editId));
+        if (idx !== -1) posts[idx] = postData;
+      } else {
+        posts.push(postData);
+      }
+
+      saveCustomPosts(posts);
+      resetForm();
+      renderAdminList();
+    });
+
+    function editPost(id) {
+      const posts = getCustomPosts();
+      const post = posts.find(p => p.id === id);
+      if (!post) return;
+
+      document.getElementById('editId').value = post.id;
+      document.getElementById('titleTr').value = post.title.tr;
+      document.getElementById('titleEn').value = post.title.en || '';
+      document.getElementById('summaryTr').value = post.summary.tr;
+      document.getElementById('summaryEn').value = post.summary.en || '';
+      document.getElementById('contentTr').value = post.content.tr;
+      document.getElementById('contentEn').value = post.content.en || '';
+      document.getElementById('category').value = post.category;
+      document.getElementById('icon').value = post.icon;
+      document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> Yaziyi Duzenle';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deletePost(id) {
+      if (!confirm('Bu yaziyi silmek istediginize emin misiniz?')) return;
+      const posts = getCustomPosts().filter(p => p.id !== id);
+      saveCustomPosts(posts);
+      renderAdminList();
+    }
+
+    function resetForm() {
+      document.getElementById('postForm').reset();
+      document.getElementById('editId').value = '';
+      document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus"></i> Yeni Yazi Ekle';
+    }
+
+    renderAdminList();
+  </script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Hasan</title>
+  <meta name="description" content="Hasan'in blogu - Teknoloji, yazilim ve hayata dair yazilar">
+  <meta property="og:title" content="Blog - Hasan">
+  <meta property="og:description" content="Teknoloji, yazilim ve hayata dair yazilar">
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Skip to Content -->
+  <a href="#blogGrid" class="skip-to-content">Icerigi Atla</a>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-spinner"></div>
+      <div class="preloader-text">Hasan Keskin.</div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="index.html" class="nav-logo">Hasan Keskin.</a>
+      <ul class="nav-links">
+        <li><a href="index.html" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="blog.html" class="active" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Iletisim</a></li>
+      </ul>
+      <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr'); renderBlog();">EN</button>
+      <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+      <div class="hamburger" role="button" aria-label="Menuyu Ac/Kapat" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="parallax-bg">
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+    </div>
+    <div class="container">
+      <h1 data-i18n="blog.page_title">Blog</h1>
+      <p data-i18n="blog.page_subtitle">Teknoloji, yazilim ve hayata dair yazilarim</p>
+    </div>
+  </div>
+
+  <!-- Blog Section -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Blog Stats -->
+      <div class="blog-stats-bar fade-up" id="blogStatsBar">
+        <div class="blog-stat-item"><i class="fas fa-file-alt"></i> <strong id="statTotalPosts">0</strong> Yazi</div>
+        <div class="blog-stat-item"><i class="fas fa-eye"></i> <strong id="statTotalViews">0</strong> Goruntulenme</div>
+        <div class="blog-stat-item"><i class="fas fa-bookmark"></i> <strong id="bookmarkCount">0</strong> Kaydedilen</div>
+      </div>
+
+      <!-- Search -->
+      <div class="blog-search fade-in">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="blogSearch" data-i18n="blog.search_placeholder" placeholder="Yazi ara...">
+      </div>
+
+      <!-- Filters -->
+      <div class="blog-filters fade-in">
+        <button class="filter-btn active" data-filter="all" data-i18n="blog.filter_all">Tumunu Goster</button>
+        <button class="filter-btn" data-filter="teknoloji" data-i18n="blog.filter_tech">Teknoloji</button>
+        <button class="filter-btn" data-filter="yazilim" data-i18n="blog.filter_dev">Yazilim</button>
+        <button class="filter-btn" data-filter="kisisel" data-i18n="blog.filter_personal">Kisisel</button>
+      </div>
+
+      <!-- Toolbar: Sort + Random -->
+      <div class="blog-toolbar fade-in">
+        <div class="blog-sort">
+          <select id="blogSort" onchange="currentSort=this.value; blogPage=1; renderBlog();">
+            <option value="newest">En Yeni</option>
+            <option value="oldest">En Eski</option>
+            <option value="popular">En Populer</option>
+            <option value="reading">Okuma Suresi</option>
+            <option value="liked">En Begenilen</option>
+          </select>
+        </div>
+        <button class="random-post-btn" onclick="goToRandomPost();">
+          <i class="fas fa-dice"></i> Rastgele Yazi
+        </button>
+      </div>
+
+      <!-- Blog Grid (rendered by JS) -->
+      <div class="blog-grid" id="blogGrid"></div>
+
+      <!-- No results -->
+      <div class="no-results" id="noResults" data-i18n="blog.no_results">Aramanizla eslesen yazi bulunamadi.</div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box fade-in">
+        <h3 data-i18n="newsletter.title">Bulten Aboneligi</h3>
+        <p data-i18n="newsletter.desc">Yeni yazilarimdan haberdar olmak icin e-posta adresinizi birakin.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" data-i18n="newsletter.placeholder" placeholder="E-posta adresiniz" required>
+          <button type="submit" class="btn btn-primary" data-i18n="newsletter.btn">Abone Ol</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">Hasan Keskin.</div>
+          <p data-i18n="footer.desc">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.pages">Sayfalar</h4>
+          <div class="footer-links">
+            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
+            <a href="cv.html" data-i18n="nav.cv">CV</a>
+            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
+            <a href="guestbook.html">Ziyaretci Defteri</a>
+            <a href="sitemap-page.html">Site Haritasi</a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="footer.social">Sosyal Medya</h4>
+          <div class="footer-links">
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Hasan. <span data-i18n="footer.rights">Tum haklari saklidir.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/blog-data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    const POSTS_PER_PAGE = 4;
+    let blogPage = 1;
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let currentSort = 'newest';
+
+    function getFilteredPosts() {
+      const lang = getLang();
+      let posts = getAllPosts();
+
+      if (currentFilter !== 'all') {
+        posts = posts.filter(p => p.category === currentFilter);
+      }
+
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        posts = posts.filter(p => {
+          const title = (p.title[lang] || p.title.tr).toLowerCase();
+          const summary = (p.summary[lang] || p.summary.tr).toLowerCase();
+          return title.includes(q) || summary.includes(q);
+        });
+      }
+
+      // Sort
+      const likes = JSON.parse(localStorage.getItem('post_likes') || '{}');
+      const views = JSON.parse(localStorage.getItem('post_views') || '{}');
+      switch(currentSort) {
+        case 'oldest':
+          posts.sort((a, b) => new Date(a.date) - new Date(b.date));
+          break;
+        case 'popular':
+          posts.sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0));
+          break;
+        case 'reading':
+          posts.sort((a, b) => {
+            const ca = a.content[lang] || a.content.tr;
+            const cb = b.content[lang] || b.content.tr;
+            return calculateReadingTime(ca) - calculateReadingTime(cb);
+          });
+          break;
+        case 'liked':
+          posts.sort((a, b) => (likes[b.id] || 0) - (likes[a.id] || 0));
+          break;
+        default: // newest
+          posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+      }
+
+      return posts;
+    }
+
+    function renderBlog() {
+      const lang = getLang();
+      const posts = getFilteredPosts();
+      const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+      if (blogPage > totalPages) blogPage = totalPages;
+
+      const start = (blogPage - 1) * POSTS_PER_PAGE;
+      const pagePosts = posts.slice(start, start + POSTS_PER_PAGE);
+
+      const grid = document.getElementById('blogGrid');
+      const noRes = document.getElementById('noResults');
+
+      if (posts.length === 0) {
+        grid.innerHTML = '';
+        noRes.style.display = 'block';
+      } else {
+        noRes.style.display = 'none';
+        grid.innerHTML = pagePosts.map(p => {
+          const title = p.title[lang] || p.title.tr;
+          const summary = p.summary[lang] || p.summary.tr;
+          const content = p.content[lang] || p.content.tr;
+          const readTime = calculateReadingTime(content);
+          const categoryLabel = { yazilim: t('blog.filter_dev'), teknoloji: t('blog.filter_tech'), kisisel: t('blog.filter_personal') };
+
+          return `
+            <div class="blog-card fade-in visible" data-category="${p.category}">
+              <div class="card-image" style="background: ${p.gradient}; display: flex; align-items: center; justify-content: center;">
+                <i class="fas ${p.icon}" style="font-size: 4rem; color: white;"></i>
+              </div>
+              <div class="card-body">
+                <div class="card-meta">
+                  <span><i class="far fa-calendar"></i> ${formatDate(p.date, lang)}</span>
+                  <span><i class="far fa-clock"></i> ${readTime} ${t('blog.reading_time')}</span>
+                </div>
+                <span class="tag">${categoryLabel[p.category] || p.category}</span>
+                <h3>${title}</h3>
+                <p>${summary}</p>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                  <a href="blog-post.html?id=${p.id}" class="read-more">${t('blog.read_more')} <i class="fas fa-arrow-right"></i></a>
+                  <button class="bookmark-btn ${isBookmarked(p.id) ? 'bookmarked' : ''}" data-post-id="${p.id}" onclick="event.preventDefault(); toggleBookmark(${p.id});" title="Okuma Listesi">
+                    <i class="${isBookmarked(p.id) ? 'fas' : 'far'} fa-bookmark"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Pagination
+      const pag = document.getElementById('pagination');
+      if (totalPages <= 1) {
+        pag.innerHTML = '';
+        return;
+      }
+
+      let pagHtml = `<button ${blogPage === 1 ? 'disabled' : ''} onclick="blogPage--; renderBlog();"><i class="fas fa-chevron-left"></i></button>`;
+      for (let i = 1; i <= totalPages; i++) {
+        pagHtml += `<button class="${i === blogPage ? 'active' : ''}" onclick="blogPage=${i}; renderBlog();">${i}</button>`;
+      }
+      pagHtml += `<button ${blogPage === totalPages ? 'disabled' : ''} onclick="blogPage++; renderBlog();"><i class="fas fa-chevron-right"></i></button>`;
+      pag.innerHTML = pagHtml;
+    }
+
+    // Search
+    document.getElementById('blogSearch').addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      blogPage = 1;
+      renderBlog();
+    });
+
+    // Filters
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        blogPage = 1;
+        renderBlog();
+      });
+    });
+
+    // Newsletter
+    document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = e.target.querySelector('input').value.trim();
+      if (!email) return;
+      const subs = JSON.parse(localStorage.getItem('newsletter_subs') || '[]');
+      if (!subs.includes(email)) {
+        subs.push(email);
+        localStorage.setItem('newsletter_subs', JSON.stringify(subs));
+      }
+      e.target.querySelector('input').value = '';
+      const btn = e.target.querySelector('button');
+      btn.textContent = t('newsletter.success');
+      btn.style.background = '#059669';
+      if (typeof launchConfetti === 'function') launchConfetti();
+      if (typeof logActivity === 'function') logActivity('newsletter', 'Bultene abone olundu');
+      setTimeout(() => { btn.textContent = t('newsletter.btn'); btn.style.background = ''; }, 3000);
+    });
+
+    // Update blog stats
+    function updateBlogStats() {
+      const allPosts = getAllPosts();
+      const el1 = document.getElementById('statTotalPosts');
+      const el2 = document.getElementById('statTotalViews');
+      const el3 = document.getElementById('bookmarkCount');
+      if (el1) el1.textContent = allPosts.length;
+      if (el2) el2.textContent = typeof getTotalViews === 'function' ? getTotalViews() : 0;
+      if (el3) el3.textContent = typeof getBookmarks === 'function' ? getBookmarks().length : 0;
+    }
+
+    // Show skeleton loading then render
+    if (typeof showSkeletons === 'function') showSkeletons('blogGrid', 4);
+    setTimeout(() => {
+      renderBlog();
+      updateBlogStats();
+    }, 800);
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iletisim - Hasan</title>
+  <meta name="description" content="Hasan ile iletisime gecin">
+  <meta property="og:title" content="Iletisim - Hasan">
+  <meta property="og:description" content="Benimle iletisime gecmek icin formu kullanabilirsiniz">
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Skip to Content -->
+  <a href="#contactForm" class="skip-to-content">Icerigi Atla</a>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-spinner"></div>
+      <div class="preloader-text">Hasan Keskin.</div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="index.html" class="nav-logo">Hasan Keskin.</a>
+      <ul class="nav-links">
+        <li><a href="index.html" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
+        <li><a href="contact.html" class="active" data-i18n="nav.contact">Iletisim</a></li>
+      </ul>
+      <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr');">EN</button>
+      <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+      <div class="hamburger" role="button" aria-label="Menuyu Ac/Kapat" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="parallax-bg">
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+    </div>
+    <div class="container">
+      <h1 data-i18n="contact.page_title">Iletisim</h1>
+      <p data-i18n="contact.page_subtitle">Benimle iletisime gecmek icin asagidaki formu kullanabilirsiniz</p>
+    </div>
+  </div>
+
+  <!-- Contact Section -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-wrapper">
+
+        <div class="contact-info fade-in">
+          <div class="info-item">
+            <div class="icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <h4 data-i18n="contact.email">E-posta</h4>
+              <p>hasan@example.com</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <h4 data-i18n="contact.location">Konum</h4>
+              <p>Turkiye</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="icon"><i class="fas fa-clock"></i></div>
+            <div>
+              <h4 data-i18n="contact.hours">Calisma Saatleri</h4>
+              <p data-i18n="contact.hours_val">Pazartesi - Cuma: 09:00 - 18:00</p>
+            </div>
+          </div>
+          <div class="social-links">
+            <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <form class="contact-form fade-in" id="contactForm">
+          <div class="form-group">
+            <label data-i18n="contact.form_name">Adiniz Soyadiniz</label>
+            <input type="text" id="name" data-i18n="contact.form_name_ph" placeholder="Adinizi giriniz...">
+            <span class="error-msg" data-i18n="contact.err_name">Lutfen adinizi giriniz (en az 2 karakter)</span>
+          </div>
+          <div class="form-group">
+            <label data-i18n="contact.form_email">E-posta Adresiniz</label>
+            <input type="email" id="email" data-i18n="contact.form_email_ph" placeholder="E-posta adresinizi giriniz...">
+            <span class="error-msg" data-i18n="contact.err_email">Lutfen gecerli bir e-posta adresi giriniz</span>
+          </div>
+          <div class="form-group">
+            <label data-i18n="contact.form_subject">Konu</label>
+            <input type="text" id="subject" data-i18n="contact.form_subject_ph" placeholder="Mesajinizin konusu...">
+            <span class="error-msg" data-i18n="contact.err_subject">Lutfen bir konu giriniz (en az 3 karakter)</span>
+          </div>
+          <div class="form-group">
+            <label data-i18n="contact.form_message">Mesajiniz</label>
+            <textarea id="message" data-i18n="contact.form_message_ph" placeholder="Mesajinizi buraya yaziniz..."></textarea>
+            <span class="error-msg" data-i18n="contact.err_message">Lutfen mesajinizi giriniz (en az 10 karakter)</span>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <i class="fas fa-paper-plane"></i> <span data-i18n="contact.form_submit">Mesaj Gonder</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">Hasan Keskin.</div>
+          <p data-i18n="footer.desc">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.pages">Sayfalar</h4>
+          <div class="footer-links">
+            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
+            <a href="cv.html" data-i18n="nav.cv">CV</a>
+            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
+            <a href="guestbook.html">Ziyaretci Defteri</a>
+            <a href="sitemap-page.html">Site Haritasi</a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="footer.social">Sosyal Medya</h4>
+          <div class="footer-links">
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Hasan. <span data-i18n="footer.rights">Tum haklari saklidir.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    const cForm = document.getElementById('contactForm');
+    if (cForm) {
+      cForm.addEventListener('submit', (e) => {
+        // Check if form is valid before confetti (the existing validation in main.js runs first)
+        const valid = document.querySelectorAll('#contactForm .form-group.error').length === 0;
+        if (valid && typeof launchConfetti === 'function') {
+          setTimeout(() => launchConfetti(), 300);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

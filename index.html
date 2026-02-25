@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hasan - Kisisel Web Sitesi</title>
+  <meta name="description" content="Hasan'in kisisel web sitesi - Teknoloji, yazilim ve hayata dair dusunceler, blog yazilari ve projeler">
+  <meta name="keywords" content="Hasan, blog, yazilim, web gelistirme, teknoloji, projeler">
+  <meta name="author" content="Hasan">
+  <meta property="og:title" content="Hasan - Kisisel Web Sitesi">
+  <meta property="og:description" content="Teknoloji, yazilim ve hayata dair dusunceler, blog yazilari ve projeler">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Hasan">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hasan - Kisisel Web Sitesi">
+  <meta name="twitter:description" content="Teknoloji, yazilim ve hayata dair dusunceler">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Skip to Content -->
+  <a href="#hero" class="skip-to-content">Icerigi Atla</a>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-spinner"></div>
+      <div class="preloader-text">Hasan Keskin.</div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo">Hasan Keskin.</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Iletisim</a></li>
+      </ul>
+      <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr'); renderLatestPosts();">EN</button>
+      <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+      <div class="hamburger" role="button" aria-label="Menuyu Ac/Kapat" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+    <div class="container">
+      <div class="hero-content">
+        <p class="greeting" data-i18n="hero.greeting">Merhaba, ben</p>
+        <h1>Hasan<br><span class="typing-text" data-texts='["Yazilimci","Blogger","Ogrenci"]'></span><span style="color: var(--primary);">|</span></h1>
+        <p data-i18n="hero.description">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem. Blog yazilarim ve projelerime goz atabilirsiniz.</p>
+        <div class="btn-group">
+          <a href="blog.html" class="btn btn-primary"><span data-i18n="hero.blog_btn">Blog Yazilarim</span> <i class="fas fa-arrow-right"></i></a>
+          <a href="contact.html" class="btn btn-outline" data-i18n="hero.contact_btn">Iletisime Gec</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="avatar-wrapper">
+          <div class="avatar-inner">
+            <img src="images/profile.jpeg" alt="Hasan profil fotoğrafı">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hakkimda -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2 class="glow-text"><span data-i18n="about.title_1">Hakkimda</span> <span data-i18n="about.title_2">Kisaca</span></h2>
+        <p data-i18n="about.subtitle">Kim oldugumu ve neler yaptigimi ogrenmek ister misiniz?</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+        <div class="card fade-left" style="text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 16px; color: var(--primary);">
+            <i class="fas fa-code"></i>
+          </div>
+          <h3 data-i18n="about.dev">Yazilim</h3>
+          <p style="color: var(--dark-light); margin-top: 8px;" data-i18n="about.dev_desc">Web gelistirme ve yazilim projelerine ilgi duyuyorum.</p>
+        </div>
+        <div class="card fade-up" style="text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 16px; color: var(--primary);">
+            <i class="fas fa-pen-fancy"></i>
+          </div>
+          <h3 data-i18n="about.blog">Blog</h3>
+          <p style="color: var(--dark-light); margin-top: 8px;" data-i18n="about.blog_desc">Teknoloji, yazilim ve hayata dair yazilar yaziyorum.</p>
+        </div>
+        <div class="card fade-right" style="text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 16px; color: var(--primary);">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h3 data-i18n="about.projects">Projeler</h3>
+          <p style="color: var(--dark-light); margin-top: 8px;" data-i18n="about.projects_desc">Fikirlerimi hayata gecirdigim projelerimi inceleyebilirsiniz.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Counter -->
+  <section class="stats-section" id="stats">
+    <div class="container">
+      <div class="stats-grid fade-in">
+        <div class="stat-item">
+          <div class="stat-number" data-target="6" data-suffix="+">0</div>
+          <div class="stat-label">Blog Yazisi</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="6" data-suffix="+">0</div>
+          <div class="stat-label">Proje</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="9" data-suffix="+">0</div>
+          <div class="stat-label">Teknoloji</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="3" data-suffix="+">0</div>
+          <div class="stat-label">Yil Deneyim</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Son Blog Yazilari -->
+  <section class="section" id="blog" style="background: var(--white);">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2 class="glow-text"><span data-i18n="latest.title_1">Son</span> <span data-i18n="latest.title_2">Yazilarim</span></h2>
+        <p data-i18n="latest.subtitle">En son paylastigim blog yazilarim</p>
+      </div>
+      <div class="blog-grid" id="latestPosts"></div>
+      <div style="text-align: center; margin-top: 40px;" class="fade-in">
+        <a href="blog.html" class="btn btn-primary"><span data-i18n="latest.all_btn">Tum Yazilar</span> <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter-section" id="newsletter">
+    <div class="container">
+      <div class="newsletter-box fade-in">
+        <h3 data-i18n="newsletter.title">Bulten Aboneligi</h3>
+        <p data-i18n="newsletter.desc">Yeni yazilarimdan haberdar olmak icin e-posta adresinizi birakin.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" data-i18n="newsletter.placeholder" placeholder="E-posta adresiniz" required>
+          <button type="submit" class="btn btn-primary" data-i18n="newsletter.btn">Abone Ol</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">Hasan Keskin.</div>
+          <p data-i18n="footer.desc">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.pages">Sayfalar</h4>
+          <div class="footer-links">
+            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
+            <a href="cv.html" data-i18n="nav.cv">CV</a>
+            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
+            <a href="guestbook.html">Ziyaretci Defteri</a>
+            <a href="sitemap-page.html">Site Haritasi</a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="footer.social">Sosyal Medya</h4>
+          <div class="footer-links">
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Hasan. <span data-i18n="footer.rights">Tum haklari saklidir.</span> &nbsp; <span class="visitor-badge"><i class="fas fa-eye"></i> <span id="visitorCount">0</span> ziyaretci</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/blog-data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    function renderLatestPosts() {
+      const lang = getLang();
+      const posts = getAllPosts().slice(0, 3);
+      const grid = document.getElementById('latestPosts');
+
+      grid.innerHTML = posts.map(p => {
+        const title = p.title[lang] || p.title.tr;
+        const summary = p.summary[lang] || p.summary.tr;
+        const content = p.content[lang] || p.content.tr;
+        const readTime = calculateReadingTime(content);
+        return `
+          <div class="blog-card fade-in visible">
+            <div class="card-image" style="background: ${p.gradient}; display: flex; align-items: center; justify-content: center;">
+              <i class="fas ${p.icon}" style="font-size: 4rem; color: white;"></i>
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span><i class="far fa-calendar"></i> ${formatDate(p.date, lang)}</span>
+                <span><i class="far fa-clock"></i> ${readTime} ${lang === 'tr' ? 'dk' : 'min'}</span>
+              </div>
+              <h3>${title}</h3>
+              <p>${summary}</p>
+              <a href="blog-post.html?id=${p.id}" class="read-more">${lang === 'tr' ? 'Devamini Oku' : 'Read More'} <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Newsletter
+    const nlForm = document.getElementById('newsletterForm');
+    if (nlForm) {
+      nlForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = e.target.querySelector('input').value.trim();
+        if (!email) return;
+        const subs = JSON.parse(localStorage.getItem('newsletter_subs') || '[]');
+        if (!subs.includes(email)) { subs.push(email); localStorage.setItem('newsletter_subs', JSON.stringify(subs)); }
+        e.target.querySelector('input').value = '';
+        const btn = e.target.querySelector('button');
+        btn.textContent = t('newsletter.success');
+        if (typeof launchConfetti === 'function') launchConfetti();
+        if (typeof logActivity === 'function') logActivity('newsletter', 'Bultene abone olundu');
+        setTimeout(() => { btn.textContent = t('newsletter.btn'); }, 3000);
+      });
+    }
+
+    // Show skeleton then render
+    if (typeof showSkeletons === 'function') showSkeletons('latestPosts', 3);
+    setTimeout(() => { renderLatestPosts(); }, 800);
+  </script>
+</body>
+</html>

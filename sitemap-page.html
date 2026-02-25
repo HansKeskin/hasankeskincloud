@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Haritasi - Hasan</title>
+  <meta name="description" content="Tum sayfa ve icerikler - Site Haritasi">
+  <meta property="og:title" content="Site Haritasi - Hasan">
+  <meta property="og:description" content="Tum sayfa ve icerikler">
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .sitemap-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .sitemap-root {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .sitemap-root a {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .sitemap-root a i {
+      font-size: 1.6rem;
+      color: var(--primary);
+    }
+
+    .sitemap-root a:hover {
+      transform: scale(1.05);
+    }
+
+    .sitemap-branches {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    .sitemap-branch {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .sitemap-branch:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .sitemap-branch-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark);
+      text-decoration: none;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .sitemap-branch-header:hover {
+      color: var(--primary);
+    }
+
+    .sitemap-branch-header i {
+      color: var(--primary);
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .sitemap-branch-header .badge {
+      margin-left: auto;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .sitemap-children {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sitemap-child {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: var(--dark);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .sitemap-child:hover {
+      background: rgba(108, 92, 231, 0.08);
+      color: var(--primary);
+      padding-left: 18px;
+    }
+
+    .sitemap-child i {
+      color: var(--primary-light);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .sitemap-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .sitemap-stat {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .sitemap-stat .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .sitemap-stat .stat-label {
+      font-size: 0.9rem;
+      color: var(--dark-light);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip to Content -->
+  <a href="#main-content" class="skip-to-content">Icerigi Atla</a>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-spinner"></div>
+      <div class="preloader-text">Hasan Keskin.</div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="index.html" class="nav-logo">Hasan Keskin.</a>
+      <ul class="nav-links">
+        <li><a href="index.html" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Iletisim</a></li>
+      </ul>
+      <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr');">EN</button>
+      <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+      <div class="hamburger" role="button" aria-label="Menuyu Ac/Kapat" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="parallax-bg">
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+    </div>
+    <div class="container">
+      <h1>Site Haritasi</h1>
+      <p>Tum sayfa ve icerikler</p>
+    </div>
+  </div>
+
+  <!-- Sitemap Content -->
+  <section class="section" id="main-content">
+    <div class="container sitemap-container">
+
+      <!-- Root Node -->
+      <div class="sitemap-root fade-in">
+        <a href="index.html"><i class="fas fa-home"></i> Hasan.</a>
+      </div>
+
+      <!-- Branches -->
+      <div class="sitemap-branches">
+
+        <!-- Ana Sayfa -->
+        <div class="sitemap-branch fade-up">
+          <a href="index.html" class="sitemap-branch-header">
+            <i class="fas fa-home"></i> Ana Sayfa
+          </a>
+          <div class="sitemap-children">
+            <a href="index.html#hero" class="sitemap-child"><i class="fas fa-angle-right"></i> Hero</a>
+            <a href="index.html#about" class="sitemap-child"><i class="fas fa-angle-right"></i> Hakkimda</a>
+            <a href="index.html#stats" class="sitemap-child"><i class="fas fa-angle-right"></i> Istatistikler</a>
+            <a href="index.html#blog" class="sitemap-child"><i class="fas fa-angle-right"></i> Son Yazilar</a>
+            <a href="index.html#newsletter" class="sitemap-child"><i class="fas fa-angle-right"></i> Bulten</a>
+          </div>
+        </div>
+
+        <!-- Blog -->
+        <div class="sitemap-branch fade-up">
+          <a href="blog.html" class="sitemap-branch-header">
+            <i class="fas fa-pen-fancy"></i> Blog
+            <span class="badge" id="blogPostCount">0</span>
+          </a>
+          <div class="sitemap-children" id="blogBranchChildren">
+            <!-- Dynamically populated from blog-data.js -->
+          </div>
+        </div>
+
+        <!-- Projeler -->
+        <div class="sitemap-branch fade-up">
+          <a href="projects.html" class="sitemap-branch-header">
+            <i class="fas fa-code"></i> Projeler
+          </a>
+          <div class="sitemap-children">
+            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Kisisel Web Sitesi</a>
+            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Gorev Yonetici</a>
+            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Hava Durumu</a>
+            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Hesap Makinesi</a>
+            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Alinti Uretici</a>
+            <a href="projects.html" class="sitemap-child"><i class="fas fa-angle-right"></i> CSS Gradient Uretici</a>
+          </div>
+        </div>
+
+        <!-- CV -->
+        <div class="sitemap-branch fade-up">
+          <a href="cv.html" class="sitemap-branch-header">
+            <i class="fas fa-file-alt"></i> CV
+          </a>
+          <div class="sitemap-children">
+            <a href="cv.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Egitim</a>
+            <a href="cv.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Deneyim</a>
+            <a href="cv.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Yetenekler</a>
+            <a href="cv.html" class="sitemap-child"><i class="fas fa-angle-right"></i> PDF Indirme</a>
+          </div>
+        </div>
+
+        <!-- Iletisim -->
+        <div class="sitemap-branch fade-up">
+          <a href="contact.html" class="sitemap-branch-header">
+            <i class="fas fa-envelope"></i> Iletisim
+          </a>
+          <div class="sitemap-children">
+            <a href="contact.html" class="sitemap-child"><i class="fas fa-angle-right"></i> E-posta</a>
+            <a href="contact.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Konum</a>
+            <a href="contact.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Iletisim Formu</a>
+            <a href="contact.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Sosyal Medya</a>
+          </div>
+        </div>
+
+        <!-- Ziyaretci Defteri -->
+        <div class="sitemap-branch fade-up">
+          <a href="guestbook.html" class="sitemap-branch-header">
+            <i class="fas fa-book-open"></i> Ziyaretci Defteri
+          </a>
+          <div class="sitemap-children">
+            <a href="guestbook.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Mesajlar</a>
+            <a href="guestbook.html#guestbookForm" class="sitemap-child"><i class="fas fa-angle-right"></i> Mesaj Birak</a>
+          </div>
+        </div>
+
+        <!-- Diger -->
+        <div class="sitemap-branch fade-up">
+          <a href="#" class="sitemap-branch-header">
+            <i class="fas fa-cog"></i> Diger
+          </a>
+          <div class="sitemap-children">
+            <a href="admin.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Admin Paneli</a>
+            <a href="sitemap-page.html" class="sitemap-child"><i class="fas fa-angle-right"></i> Site Haritasi</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Stats -->
+      <div class="sitemap-stats fade-in">
+        <div class="sitemap-stat">
+          <div class="stat-number" id="statPages">0</div>
+          <div class="stat-label">Toplam Sayfa</div>
+        </div>
+        <div class="sitemap-stat">
+          <div class="stat-number" id="statPosts">0</div>
+          <div class="stat-label">Blog Yazisi</div>
+        </div>
+        <div class="sitemap-stat">
+          <div class="stat-number" id="statFeatures">0</div>
+          <div class="stat-label">Toplam Ozellik</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">Hasan Keskin.</div>
+          <p data-i18n="footer.desc">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.pages">Sayfalar</h4>
+          <div class="footer-links">
+            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
+            <a href="cv.html" data-i18n="nav.cv">CV</a>
+            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
+            <a href="guestbook.html">Ziyaretci Defteri</a>
+            <a href="sitemap-page.html">Site Haritasi</a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="footer.social">Sosyal Medya</h4>
+          <div class="footer-links">
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Hasan. <span data-i18n="footer.rights">Tum haklari saklidir.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/blog-data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      // Dynamically populate blog branch children from getAllPosts()
+      var posts = getAllPosts();
+      var blogContainer = document.getElementById('blogBranchChildren');
+      var blogCountBadge = document.getElementById('blogPostCount');
+
+      blogCountBadge.textContent = posts.length;
+
+      var lang = (typeof getLang === 'function') ? getLang() : 'tr';
+
+      blogContainer.innerHTML = posts.map(function(post) {
+        var title = (typeof post.title === 'object') ? (post.title[lang] || post.title.tr) : post.title;
+        return '<a href="blog-post.html?id=' + post.id + '" class="sitemap-child"><i class="fas fa-angle-right"></i> ' + title + '</a>';
+      }).join('');
+
+      // Calculate and display stats
+      var totalPages = 9; // index, blog, blog-post, projects, cv, contact, guestbook, admin, sitemap-page
+      var totalPosts = posts.length;
+      // Count all children across all branches
+      var allChildren = document.querySelectorAll('.sitemap-child');
+      var totalFeatures = allChildren.length;
+
+      document.getElementById('statPages').textContent = totalPages;
+      document.getElementById('statPosts').textContent = totalPosts;
+      document.getElementById('statFeatures').textContent = totalFeatures;
+    })();
+  </script>
+</body>
+</html>

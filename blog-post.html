@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Yazisi - Hasan</title>
+  <meta name="description" content="Hasan'in kisisel blogu - Teknoloji, yazilim ve hayata dair yazilar">
+  <meta property="og:title" content="Blog Yazisi - Hasan">
+  <meta property="og:description" content="Hasan'in kisisel blogu - Teknoloji, yazilim ve hayata dair yazilar">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Hasan Blog">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Skip to Content -->
+  <a href="#postContent" class="skip-to-content">Icerigi Atla</a>
+
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-spinner"></div>
+      <div class="preloader-text">Hasan Keskin.</div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="index.html" class="nav-logo">Hasan Keskin.</a>
+      <ul class="nav-links">
+        <li><a href="index.html" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="blog.html" class="active" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="cv.html" data-i18n="nav.cv">CV</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Iletisim</a></li>
+      </ul>
+      <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr'); renderPost();">EN</button>
+      <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+      <div class="hamburger" role="button" aria-label="Menuyu Ac/Kapat" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="parallax-bg">
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+    </div>
+    <div class="container">
+      <h1 id="postTitle">Yukleniyor...</h1>
+      <p id="postMeta"></p>
+    </div>
+  </div>
+
+  <!-- Reading Time Remaining -->
+  <div class="reading-remaining" id="readingRemaining"></div>
+
+  <!-- Blog Post Content -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Table of Contents -->
+      <div class="toc" id="tocContainer" style="display:none;">
+        <h4><i class="fas fa-list-ol"></i> Icindekiler <i class="fas fa-chevron-down toggle-icon"></i></h4>
+        <ul class="toc-list"></ul>
+      </div>
+
+      <div class="post-layout">
+        <article class="post-content" id="postContent">
+          <p>Yukleniyor...</p>
+        </article>
+        <!-- Like Button -->
+        <div class="like-section" id="likeSection">
+          <button class="like-btn" id="likeBtn" onclick="toggleLike()">
+            <i class="far fa-heart" id="likeIcon"></i>
+            <span id="likeCount">0</span>
+            <span data-i18n="blog.likes">Begeni</span>
+          </button>
+        </div>
+        <aside class="post-sidebar">
+          <div class="sidebar-card">
+            <h4><i class="fas fa-share-alt"></i> <span data-i18n="blog.share">Paylas</span></h4>
+            <div class="share-buttons">
+              <a href="#" id="shareTwitter" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" id="shareLinkedin" class="share-btn linkedin"><i class="fab fa-linkedin-in"></i></a>
+              <button class="share-btn copy" id="shareCopy" title="Linki Kopyala"><i class="fas fa-link"></i></button>
+            </div>
+          </div>
+          <!-- Bookmark -->
+          <div class="sidebar-card" style="text-align:center;">
+            <button class="bookmark-btn" id="postBookmarkBtn" onclick="toggleBookmark(new URLSearchParams(window.location.search).get('id'));" style="font-size:1.1rem; padding:8px 20px;">
+              <i class="far fa-bookmark"></i> <span>Okuma Listesine Ekle</span>
+            </button>
+          </div>
+          <!-- Tag Cloud -->
+          <div class="sidebar-card">
+            <h4><i class="fas fa-tags"></i> <span data-i18n="blog.tags">Etiketler</span></h4>
+            <div class="tag-cloud" id="tagCloud"></div>
+          </div>
+          <!-- Activity Feed -->
+          <div class="sidebar-card activity-feed">
+            <h4><span class="pulse-dot"></span> Aktivite</h4>
+            <div id="activityFeed"></div>
+          </div>
+          <div class="sidebar-card">
+            <a href="blog.html" class="btn btn-outline" style="width:100%; justify-content:center;">
+              <i class="fas fa-arrow-left"></i> <span data-i18n="blog.back">Blog'a Don</span>
+            </a>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Comments Section -->
+      <div class="comments-section fade-in">
+        <h3><i class="fas fa-comments"></i> <span data-i18n="blog.comments">Yorumlar</span> (<span id="commentCount">0</span>)</h3>
+
+        <form class="comment-form" id="commentForm">
+          <div class="comment-form-row">
+            <div class="form-group">
+              <input type="text" id="commentName" data-i18n="blog.comment_name" placeholder="Adiniz">
+            </div>
+          </div>
+          <div class="form-group">
+            <textarea id="commentText" data-i18n="blog.comment_text" placeholder="Yorumunuz" rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> <span data-i18n="blog.comment_submit">Yorum Yap</span></button>
+        </form>
+
+        <div class="comments-list" id="commentsList">
+          <p class="no-comments" data-i18n="blog.no_comments">Henuz yorum yok. Ilk yorumu siz yapin!</p>
+        </div>
+      </div>
+
+      <!-- Related Posts -->
+      <div class="related-posts fade-in" id="relatedPosts">
+        <h3><i class="fas fa-newspaper"></i> <span data-i18n="blog.related">Ilgili Yazilar</span></h3>
+        <div class="related-grid" id="relatedGrid"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box fade-in">
+        <h3 data-i18n="newsletter.title">Bulten Aboneligi</h3>
+        <p data-i18n="newsletter.desc">Yeni yazilarimdan haberdar olmak icin e-posta adresinizi birakin.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" data-i18n="newsletter.placeholder" placeholder="E-posta adresiniz" required>
+          <button type="submit" class="btn btn-primary" data-i18n="newsletter.btn">Abone Ol</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">Hasan Keskin.</div>
+          <p data-i18n="footer.desc">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.pages">Sayfalar</h4>
+          <div class="footer-links">
+            <a href="index.html" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+            <a href="projects.html" data-i18n="nav.projects">Projeler</a>
+            <a href="cv.html" data-i18n="nav.cv">CV</a>
+            <a href="contact.html" data-i18n="nav.contact">Iletisim</a>
+            <a href="guestbook.html">Ziyaretci Defteri</a>
+            <a href="sitemap-page.html">Site Haritasi</a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="footer.social">Sosyal Medya</h4>
+          <div class="footer-links">
+            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Hasan. <span data-i18n="footer.rights">Tum haklari saklidir.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/blog-data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    function renderPost() {
+      const params = new URLSearchParams(window.location.search);
+      const postId = params.get('id');
+      const post = getPostById(postId);
+      const lang = getLang();
+
+      if (!post) {
+        document.getElementById('postTitle').textContent = lang === 'tr' ? 'Yazi bulunamadi' : 'Post not found';
+        document.getElementById('postContent').innerHTML = '<p>' + (lang === 'tr' ? 'Aradiginiz yazi bulunamadi.' : 'The post you are looking for was not found.') + '</p>';
+        return;
+      }
+
+      const title = post.title[lang] || post.title.tr;
+      const content = post.content[lang] || post.content.tr;
+      const readTime = calculateReadingTime(content);
+
+      document.title = title + ' - Hasan';
+      document.getElementById('postTitle').textContent = title;
+      document.getElementById('postMeta').innerHTML =
+        '<i class="far fa-calendar"></i> ' + formatDate(post.date, lang) +
+        ' &nbsp; <i class="far fa-clock"></i> ' + readTime + ' ' + t('blog.reading_time') +
+        ' &nbsp; <i class="far fa-user"></i> ' + post.author;
+      document.getElementById('postContent').innerHTML = content;
+
+      // Share links
+      const url = window.location.href;
+      document.getElementById('shareTwitter').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url);
+      document.getElementById('shareLinkedin').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url);
+      document.getElementById('shareCopy').onclick = () => {
+        navigator.clipboard.writeText(url);
+        document.getElementById('shareCopy').innerHTML = '<i class="fas fa-check"></i>';
+        setTimeout(() => { document.getElementById('shareCopy').innerHTML = '<i class="fas fa-link"></i>'; }, 2000);
+      };
+
+      loadComments(postId);
+    }
+
+    // Comments
+    function loadComments(postId) {
+      const comments = JSON.parse(localStorage.getItem('comments_' + postId) || '[]');
+      const list = document.getElementById('commentsList');
+      const count = document.getElementById('commentCount');
+      count.textContent = comments.length;
+
+      if (comments.length === 0) {
+        list.innerHTML = '<p class="no-comments">' + t('blog.no_comments') + '</p>';
+        return;
+      }
+
+      list.innerHTML = comments.map(c => {
+        const safeName = escapeHtml(c.name);
+        const safeText = escapeHtml(c.text);
+        return `
+        <div class="comment-item">
+          <div class="comment-avatar">${safeName.charAt(0).toUpperCase()}</div>
+          <div class="comment-body">
+            <div class="comment-header">
+              <strong>${safeName}</strong>
+              <span>${formatDate(c.date, getLang())}</span>
+            </div>
+            <p>${safeText}</p>
+          </div>
+        </div>
+      `; }).join('');
+    }
+
+    document.getElementById('commentForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const postId = new URLSearchParams(window.location.search).get('id');
+      const name = document.getElementById('commentName').value.trim();
+      const text = document.getElementById('commentText').value.trim();
+      if (name.length < 2 || text.length < 3) return;
+
+      const comments = JSON.parse(localStorage.getItem('comments_' + postId) || '[]');
+      comments.push({ name, text, date: new Date().toISOString().split('T')[0] });
+      localStorage.setItem('comments_' + postId, JSON.stringify(comments));
+
+      document.getElementById('commentName').value = '';
+      document.getElementById('commentText').value = '';
+      loadComments(postId);
+      if (typeof launchConfetti === 'function') launchConfetti();
+      if (typeof logActivity === 'function') logActivity('comment', name + ' yorum yapti');
+    });
+
+    // Like System
+    function toggleLike() {
+      const postId = new URLSearchParams(window.location.search).get('id');
+      const likes = JSON.parse(localStorage.getItem('post_likes') || '{}');
+      const likedPosts = JSON.parse(localStorage.getItem('liked_posts') || '[]');
+      const currentLikes = likes[postId] || 0;
+      const isLiked = likedPosts.includes(postId);
+
+      if (isLiked) {
+        likes[postId] = Math.max(0, currentLikes - 1);
+        const idx = likedPosts.indexOf(postId);
+        likedPosts.splice(idx, 1);
+      } else {
+        likes[postId] = currentLikes + 1;
+        likedPosts.push(postId);
+        if (typeof logActivity === 'function') logActivity('like', 'Yazi begenildi');
+      }
+
+      localStorage.setItem('post_likes', JSON.stringify(likes));
+      localStorage.setItem('liked_posts', JSON.stringify(likedPosts));
+      updateLikeUI(postId);
+    }
+
+    function updateLikeUI(postId) {
+      const likes = JSON.parse(localStorage.getItem('post_likes') || '{}');
+      const likedPosts = JSON.parse(localStorage.getItem('liked_posts') || '[]');
+      const isLiked = likedPosts.includes(postId);
+
+      document.getElementById('likeCount').textContent = likes[postId] || 0;
+      const icon = document.getElementById('likeIcon');
+      const btn = document.getElementById('likeBtn');
+      if (isLiked) {
+        icon.className = 'fas fa-heart';
+        btn.classList.add('liked');
+      } else {
+        icon.className = 'far fa-heart';
+        btn.classList.remove('liked');
+      }
+    }
+
+    // Related Posts
+    function renderRelatedPosts(currentPost) {
+      const lang = getLang();
+      const allPosts = getAllPosts().filter(p => p.id !== currentPost.id);
+      const sameCat = allPosts.filter(p => p.category === currentPost.category);
+      const related = sameCat.length >= 3 ? sameCat.slice(0, 3) : [...sameCat, ...allPosts.filter(p => p.category !== currentPost.category)].slice(0, 3);
+
+      const grid = document.getElementById('relatedGrid');
+      const container = document.getElementById('relatedPosts');
+      if (related.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      grid.innerHTML = related.map(p => {
+        const title = p.title[lang] || p.title.tr;
+        const summary = p.summary[lang] || p.summary.tr;
+        return `
+          <a href="blog-post.html?id=${p.id}" class="related-card">
+            <div class="related-icon" style="background: ${p.gradient};">
+              <i class="fas ${p.icon}"></i>
+            </div>
+            <div class="related-info">
+              <h4>${title}</h4>
+              <p>${summary.substring(0, 80)}...</p>
+              <span><i class="far fa-calendar"></i> ${formatDate(p.date, lang)}</span>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // Tag Cloud
+    function renderTagCloud() {
+      const lang = getLang();
+      const tags = {
+        tr: ['JavaScript', 'HTML', 'CSS', 'React', 'Node.js', 'Python', 'Web', 'AI', 'Guvenlik', 'Veritabani', 'Frontend', 'Backend'],
+        en: ['JavaScript', 'HTML', 'CSS', 'React', 'Node.js', 'Python', 'Web', 'AI', 'Security', 'Database', 'Frontend', 'Backend']
+      };
+      const cloud = document.getElementById('tagCloud');
+      if (!cloud) return;
+      cloud.innerHTML = (tags[lang] || tags.tr).map(tag =>
+        `<a href="blog.html" class="tag-item">${tag}</a>`
+      ).join('');
+    }
+
+    // Override renderPost to include new features
+    const originalRenderPost = renderPost;
+    renderPost = function() {
+      originalRenderPost();
+      const params = new URLSearchParams(window.location.search);
+      const postId = params.get('id');
+      const post = getPostById(postId);
+      if (post) {
+        updateLikeUI(postId);
+        renderRelatedPosts(post);
+
+        // Track view (only once per page load)
+        if (!window._viewTracked) {
+          window._viewTracked = true;
+          if (typeof trackPostView === 'function') trackPostView(postId);
+          const lang = getLang();
+          if (typeof logActivity === 'function') {
+            logActivity('view', (post.title[lang] || post.title.tr) + ' okundu');
+          }
+        }
+
+        const lang = getLang();
+
+        // Render activity feed
+        if (typeof renderActivityFeed === 'function') renderActivityFeed();
+
+        // Generate Table of Contents
+        if (typeof generateTOC === 'function') generateTOC();
+
+        // Reading time remaining
+        const content = post.content[lang] || post.content.tr;
+        const readTime = calculateReadingTime(content);
+        if (typeof initReadingRemaining === 'function') initReadingRemaining(readTime);
+
+        // Update bookmark button
+        const bmBtn = document.getElementById('postBookmarkBtn');
+        if (bmBtn && typeof isBookmarked === 'function') {
+          const bm = isBookmarked(postId);
+          bmBtn.setAttribute('data-post-id', postId);
+          bmBtn.classList.toggle('bookmarked', bm);
+          bmBtn.querySelector('i').className = bm ? 'fas fa-bookmark' : 'far fa-bookmark';
+          bmBtn.querySelector('span').textContent = bm ? 'Okuma Listesinde' : 'Okuma Listesine Ekle';
+          // Wrap toggleBookmark to log activity
+          const origToggle = window.toggleBookmark;
+          if (origToggle && !bmBtn._patched) {
+            bmBtn._patched = true;
+            bmBtn.onclick = function() {
+              origToggle(postId);
+              if (typeof logActivity === 'function') logActivity('bookmark', 'Yazi kaydedildi');
+              renderPost();
+            };
+          }
+        }
+      }
+      renderTagCloud();
+    };
+
+    renderPost();
+
+    // Newsletter form handler
+    const nlForm = document.getElementById('newsletterForm');
+    if (nlForm) {
+      nlForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = e.target.querySelector('input').value.trim();
+        if (!email) return;
+        const subs = JSON.parse(localStorage.getItem('newsletter_subs') || '[]');
+        if (!subs.includes(email)) { subs.push(email); localStorage.setItem('newsletter_subs', JSON.stringify(subs)); }
+        e.target.querySelector('input').value = '';
+        const btn = e.target.querySelector('button');
+        btn.textContent = t('newsletter.success');
+        if (typeof launchConfetti === 'function') launchConfetti();
+        if (typeof logActivity === 'function') logActivity('newsletter', 'Bultene abone olundu');
+        setTimeout(() => { btn.textContent = t('newsletter.btn'); }, 3000);
+      });
+    }
+  </script>
+</body>
+</html>
