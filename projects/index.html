@@ -81,52 +81,7 @@
 
       <!-- No Projects Message -->
       <div class="no-results" id="noProjects" style="display:none;">
-        Henuz proje eklenmemis. Asagidaki formu kullanarak proje ekleyebilirsiniz.
-      </div>
-
-      <!-- Project Add/Edit Form -->
-      <div class="admin-form" id="projectForm" style="margin-top: 40px;">
-        <h3 style="margin-bottom: 24px;" id="projectFormTitle"><i class="fas fa-plus"></i> Yeni Proje Ekle</h3>
-
-        <form id="projectFormEl">
-          <div class="form-group">
-            <label>Proje Adi</label>
-            <input type="text" id="projName" placeholder="Proje adi..." required>
-          </div>
-          <div class="form-group">
-            <label>Aciklama</label>
-            <textarea id="projDesc" rows="3" placeholder="Projenin ne oldugu, kisa aciklama..."></textarea>
-          </div>
-          <div class="form-group">
-            <label>Kullanilan Teknolojiler (virgülle ayirin)</label>
-            <input type="text" id="projTech" placeholder="HTML, CSS, JavaScript, Docker...">
-          </div>
-          <div class="form-group">
-            <label>Rolu / Gorevim</label>
-            <input type="text" id="projRole" placeholder="Frontend Developer, DevOps Engineer...">
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div class="form-group">
-              <label>Kategori</label>
-              <select id="projCategory">
-                <option value="web">Web</option>
-                <option value="app">Uygulama</option>
-                <option value="tool">Arac</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Ikon (FontAwesome)</label>
-              <input type="text" id="projIcon" value="fa-code" placeholder="fa-code">
-            </div>
-          </div>
-
-          <input type="hidden" id="projEditId" value="">
-
-          <div class="btn-group" style="margin-top: 16px;">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Kaydet</button>
-            <button type="button" class="btn btn-outline" onclick="resetProjectForm();"><i class="fas fa-times"></i> Iptal</button>
-          </div>
-        </form>
+        Henuz proje eklenmemis. Admin panelinden proje ekleyebilirsiniz.
       </div>
 
     </div>
@@ -180,13 +135,9 @@
   <script src="/js/components.js"></script>
   <script src="/js/main.js"></script>
   <script>
-    // ===== PROJECTS CRUD (localStorage) =====
+    // ===== PROJECTS DISPLAY (read-only, data from localStorage) =====
     function getProjects() {
       return JSON.parse(localStorage.getItem('projects') || '[]');
-    }
-
-    function saveProjects(projects) {
-      localStorage.setItem('projects', JSON.stringify(projects));
     }
 
     function escapeHtmlProj(str) {
@@ -223,10 +174,6 @@
               <p>${escapeHtmlProj(p.description || '')}</p>
               ${p.role ? '<p style="font-size:0.85rem; color:var(--primary); font-weight:500; margin-top:4px;"><i class="fas fa-user-tag"></i> ' + escapeHtmlProj(p.role) + '</p>' : ''}
               <div class="tech-stack">${techTags}</div>
-              <div class="project-links" style="gap:8px;">
-                <button class="btn-edit" onclick="event.stopPropagation(); editProject(${p.id});"><i class="fas fa-edit"></i> Duzenle</button>
-                <button class="btn-delete" onclick="event.stopPropagation(); deleteProject(${p.id});"><i class="fas fa-trash"></i> Sil</button>
-              </div>
             </div>
           </div>
         `;
@@ -236,7 +183,6 @@
       document.querySelectorAll('.project-card').forEach(card => {
         card.style.cursor = 'pointer';
         card.addEventListener('click', (e) => {
-          if (e.target.closest('.btn-edit') || e.target.closest('.btn-delete')) return;
           const id = Number(card.getAttribute('data-id'));
           const proj = getProjects().find(p => p.id === id);
           if (!proj) return;
@@ -253,62 +199,6 @@
           modal.classList.add('open');
         });
       });
-    }
-
-    // Form submit
-    document.getElementById('projectFormEl').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const projects = getProjects();
-      const editId = document.getElementById('projEditId').value;
-
-      const projectData = {
-        id: editId ? Number(editId) : Date.now(),
-        name: document.getElementById('projName').value.trim(),
-        description: document.getElementById('projDesc').value.trim(),
-        tech: document.getElementById('projTech').value.split(',').map(s => s.trim()).filter(Boolean),
-        role: document.getElementById('projRole').value.trim(),
-        category: document.getElementById('projCategory').value,
-        icon: document.getElementById('projIcon').value.trim() || 'fa-code'
-      };
-
-      if (editId) {
-        const idx = projects.findIndex(p => p.id === Number(editId));
-        if (idx !== -1) projects[idx] = projectData;
-      } else {
-        projects.push(projectData);
-      }
-
-      saveProjects(projects);
-      resetProjectForm();
-      renderProjects();
-    });
-
-    function editProject(id) {
-      const proj = getProjects().find(p => p.id === id);
-      if (!proj) return;
-      document.getElementById('projEditId').value = proj.id;
-      document.getElementById('projName').value = proj.name;
-      document.getElementById('projDesc').value = proj.description || '';
-      document.getElementById('projTech').value = (proj.tech || []).join(', ');
-      document.getElementById('projRole').value = proj.role || '';
-      document.getElementById('projCategory').value = proj.category;
-      document.getElementById('projIcon').value = proj.icon || 'fa-code';
-      document.getElementById('projectFormTitle').innerHTML = '<i class="fas fa-edit"></i> Projeyi Duzenle';
-      document.getElementById('projectForm').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function deleteProject(id) {
-      if (!confirm('Bu projeyi silmek istediginize emin misiniz?')) return;
-      const projects = getProjects().filter(p => p.id !== id);
-      saveProjects(projects);
-      renderProjects();
-    }
-
-    function resetProjectForm() {
-      document.getElementById('projectFormEl').reset();
-      document.getElementById('projEditId').value = '';
-      document.getElementById('projIcon').value = 'fa-code';
-      document.getElementById('projectFormTitle').innerHTML = '<i class="fas fa-plus"></i> Yeni Proje Ekle';
     }
 
     // Filter buttons

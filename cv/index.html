@@ -83,18 +83,23 @@
       <div class="timeline">
         <div class="timeline-item fade-in">
           <div class="timeline-content">
-            <span class="date">2022 - Devam Ediyor</span>
-            <h3>Bilgisayar Muhendisligi</h3>
-            <p class="company">Universite</p>
-            <p>Bilgisayar bilimleri, yazilim muhendisligi, veri yapilari ve algoritmalar uzerine egitim.</p>
+            <span class="date">2025 - 2029</span>
+            <h3>Endustri Muhendisligi</h3>
+            <p class="company">Erciyes Universitesi</p>
           </div>
         </div>
         <div class="timeline-item fade-in">
           <div class="timeline-content">
-            <span class="date">2018 - 2022</span>
+            <span class="date">2019 - 2025</span>
+            <h3>Gemi Makine Muhendisligi</h3>
+            <p class="company">Yildiz Teknik Universitesi</p>
+          </div>
+        </div>
+        <div class="timeline-item fade-in">
+          <div class="timeline-content">
+            <span class="date">2015 - 2019</span>
             <h3>Lise Egitimi</h3>
             <p class="company">Anadolu Lisesi</p>
-            <p>Sayisal bolumde egitim. Matematik ve fen bilimlerinde ustun basari.</p>
           </div>
         </div>
       </div>
@@ -108,31 +113,11 @@
         <h2><span data-i18n="cv.exp_title_1">Deneyim ve</span> <span data-i18n="cv.exp_title_2">Projeler</span></h2>
         <p data-i18n="cv.exp_subtitle">Is ve proje deneyimlerim</p>
       </div>
-      <div class="timeline">
-        <div class="timeline-item fade-in">
-          <div class="timeline-content">
-            <span class="date">2025 - Devam Ediyor</span>
-            <h3>DevOps Engineer</h3>
-            <p class="company">DevOps & Altyapi Yonetimi</p>
-            <p>CI/CD pipeline'lari, container orchestration, altyapi otomasyonu ve bulut servisleri uzerine calisma.</p>
-          </div>
-        </div>
-        <div class="timeline-item fade-in">
-          <div class="timeline-content">
-            <span class="date">2024</span>
-            <h3>Staj - Yazilim Gelistirme</h3>
-            <p class="company">Teknoloji Firmasi</p>
-            <p>Frontend gelistirme, bug fix ve yeni ozellik ekleme uzerine calisma.</p>
-          </div>
-        </div>
-        <div class="timeline-item fade-in">
-          <div class="timeline-content">
-            <span class="date">2023</span>
-            <h3>Acik Kaynak Katkilar</h3>
-            <p class="company">GitHub</p>
-            <p>Cesitli acik kaynak projelere katki. Dokumantasyon iyilestirme ve bug raporlama.</p>
-          </div>
-        </div>
+      <div class="timeline" id="experienceTimeline">
+        <!-- Deneyimler localStorage'dan yuklenir -->
+      </div>
+      <div id="noExperience" style="display:none; text-align:center; padding:20px; color:var(--dark-light);">
+        Henuz deneyim eklenmemis. Admin panelinden ekleyebilirsiniz.
       </div>
     </div>
   </section>
@@ -237,5 +222,27 @@
   <script src="/js/i18n.js"></script>
   <script src="/js/components.js"></script>
   <script src="/js/main.js"></script>
+  <script>
+    // Render experiences from localStorage
+    (function() {
+      const experiences = JSON.parse(localStorage.getItem('experiences') || '[]');
+      const timeline = document.getElementById('experienceTimeline');
+      const noExp = document.getElementById('noExperience');
+      if (experiences.length === 0) {
+        noExp.style.display = 'block';
+        return;
+      }
+      timeline.innerHTML = experiences.map(exp => `
+        <div class="timeline-item fade-in">
+          <div class="timeline-content">
+            <span class="date">${exp.date || ''}</span>
+            <h3>${exp.title || ''}</h3>
+            <p class="company">${exp.company || ''}</p>
+            ${exp.description ? '<p>' + exp.description + '</p>' : ''}
+          </div>
+        </div>
+      `).join('');
+    })();
+  </script>
 </body>
 </html>

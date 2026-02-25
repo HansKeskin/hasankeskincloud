@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Yonetimi - Hasan</title>
+  <title>Admin Paneli - Hasan</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -65,8 +65,8 @@
   <!-- Page Header -->
   <div class="page-header">
     <div class="container">
-      <h1><i class="fas fa-cog"></i> Blog Yonetimi</h1>
-      <p>Yazi ekle, duzenle ve sil (LocalStorage)</p>
+      <h1><i class="fas fa-cog"></i> Admin Paneli</h1>
+      <p>Blog, Proje ve Deneyim Yonetimi (LocalStorage)</p>
     </div>
   </div>
 
@@ -155,6 +155,86 @@
       <!-- Existing Posts -->
       <div class="admin-posts-list" id="adminPostsList">
         <h3 style="margin-bottom: 20px;"><i class="fas fa-list"></i> Mevcut Yazilar (LocalStorage)</h3>
+      </div>
+
+      <!-- ===== PROJE YONETIMI ===== -->
+      <div class="admin-form" id="projectSection" style="margin-top:40px;">
+        <h3 style="margin-bottom: 24px;" id="projectFormTitle"><i class="fas fa-folder-plus"></i> Proje Yonetimi</h3>
+
+        <form id="projectFormEl">
+          <div class="form-group">
+            <label>Proje Adi</label>
+            <input type="text" id="projName" placeholder="Proje adi..." required>
+          </div>
+          <div class="form-group">
+            <label>Aciklama</label>
+            <textarea id="projDesc" rows="3" placeholder="Projenin ne oldugu, kisa aciklama..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Kullanilan Teknolojiler (virgülle ayirin)</label>
+            <input type="text" id="projTech" placeholder="HTML, CSS, JavaScript, Docker...">
+          </div>
+          <div class="form-group">
+            <label>Rolu / Gorevim</label>
+            <input type="text" id="projRole" placeholder="Frontend Developer, DevOps Engineer...">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label>Kategori</label>
+              <select id="projCategory">
+                <option value="web">Web</option>
+                <option value="app">Uygulama</option>
+                <option value="tool">Arac</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Ikon (FontAwesome)</label>
+              <input type="text" id="projIcon" value="fa-code" placeholder="fa-code">
+            </div>
+          </div>
+          <input type="hidden" id="projEditId" value="">
+          <div class="btn-group" style="margin-top: 16px;">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Kaydet</button>
+            <button type="button" class="btn btn-outline" onclick="resetProjectForm();">Iptal</button>
+          </div>
+        </form>
+
+        <div class="admin-posts-list" id="adminProjectsList" style="margin-top:24px;">
+          <h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Projeler</h3>
+        </div>
+      </div>
+
+      <!-- ===== DENEYIM YONETIMI ===== -->
+      <div class="admin-form" id="experienceSection" style="margin-top:40px;">
+        <h3 style="margin-bottom: 24px;" id="expFormTitle"><i class="fas fa-briefcase"></i> Deneyim Yonetimi</h3>
+
+        <form id="experienceFormEl">
+          <div class="form-group">
+            <label>Pozisyon / Baslik</label>
+            <input type="text" id="expTitle" placeholder="DevOps Engineer, Stajyer..." required>
+          </div>
+          <div class="form-group">
+            <label>Sirket / Kurum</label>
+            <input type="text" id="expCompany" placeholder="Sirket adi...">
+          </div>
+          <div class="form-group">
+            <label>Tarih</label>
+            <input type="text" id="expDate" placeholder="2025 - Devam Ediyor">
+          </div>
+          <div class="form-group">
+            <label>Aciklama (opsiyonel)</label>
+            <textarea id="expDescription" rows="2" placeholder="Kisa aciklama..."></textarea>
+          </div>
+          <input type="hidden" id="expEditId" value="">
+          <div class="btn-group" style="margin-top: 16px;">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Kaydet</button>
+            <button type="button" class="btn btn-outline" onclick="resetExpForm();">Iptal</button>
+          </div>
+        </form>
+
+        <div class="admin-posts-list" id="adminExpList" style="margin-top:24px;">
+          <h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Deneyimler</h3>
+        </div>
       </div>
 
       <!-- Password Change -->
@@ -359,6 +439,165 @@
     }
 
     renderAdminList();
+
+    // ===== PROJECT MANAGEMENT =====
+    function getProjects() {
+      return JSON.parse(localStorage.getItem('projects') || '[]');
+    }
+    function saveProjects(projects) {
+      localStorage.setItem('projects', JSON.stringify(projects));
+    }
+    function renderProjectList() {
+      const projects = getProjects();
+      const list = document.getElementById('adminProjectsList');
+      if (projects.length === 0) {
+        list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Projeler</h3><p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz proje eklenmemis.</p>';
+        return;
+      }
+      list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Projeler</h3>' +
+        projects.map(p => `
+          <div class="admin-post-item">
+            <div class="post-info">
+              <h4><i class="fas ${p.icon || 'fa-code'}"></i> ${p.name}</h4>
+              <span>${p.category} | ${(p.tech || []).join(', ')}</span>
+            </div>
+            <div class="post-actions">
+              <button class="btn-edit" onclick="editProject(${p.id})"><i class="fas fa-edit"></i> Duzenle</button>
+              <button class="btn-delete" onclick="deleteProject(${p.id})"><i class="fas fa-trash"></i> Sil</button>
+            </div>
+          </div>
+        `).join('');
+    }
+
+    document.getElementById('projectFormEl').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const projects = getProjects();
+      const editId = document.getElementById('projEditId').value;
+      const projectData = {
+        id: editId ? Number(editId) : Date.now(),
+        name: document.getElementById('projName').value.trim(),
+        description: document.getElementById('projDesc').value.trim(),
+        tech: document.getElementById('projTech').value.split(',').map(s => s.trim()).filter(Boolean),
+        role: document.getElementById('projRole').value.trim(),
+        category: document.getElementById('projCategory').value,
+        icon: document.getElementById('projIcon').value.trim() || 'fa-code'
+      };
+      if (editId) {
+        const idx = projects.findIndex(p => p.id === Number(editId));
+        if (idx !== -1) projects[idx] = projectData;
+      } else {
+        projects.push(projectData);
+      }
+      saveProjects(projects);
+      resetProjectForm();
+      renderProjectList();
+    });
+
+    function editProject(id) {
+      const proj = getProjects().find(p => p.id === id);
+      if (!proj) return;
+      document.getElementById('projEditId').value = proj.id;
+      document.getElementById('projName').value = proj.name;
+      document.getElementById('projDesc').value = proj.description || '';
+      document.getElementById('projTech').value = (proj.tech || []).join(', ');
+      document.getElementById('projRole').value = proj.role || '';
+      document.getElementById('projCategory').value = proj.category;
+      document.getElementById('projIcon').value = proj.icon || 'fa-code';
+      document.getElementById('projectFormTitle').innerHTML = '<i class="fas fa-edit"></i> Projeyi Duzenle';
+      document.getElementById('projectSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteProject(id) {
+      if (!confirm('Bu projeyi silmek istediginize emin misiniz?')) return;
+      saveProjects(getProjects().filter(p => p.id !== id));
+      renderProjectList();
+    }
+
+    function resetProjectForm() {
+      document.getElementById('projectFormEl').reset();
+      document.getElementById('projEditId').value = '';
+      document.getElementById('projIcon').value = 'fa-code';
+      document.getElementById('projectFormTitle').innerHTML = '<i class="fas fa-folder-plus"></i> Proje Yonetimi';
+    }
+
+    renderProjectList();
+
+    // ===== EXPERIENCE MANAGEMENT =====
+    function getExperiences() {
+      return JSON.parse(localStorage.getItem('experiences') || '[]');
+    }
+    function saveExperiences(exps) {
+      localStorage.setItem('experiences', JSON.stringify(exps));
+    }
+    function renderExpList() {
+      const exps = getExperiences();
+      const list = document.getElementById('adminExpList');
+      if (exps.length === 0) {
+        list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Deneyimler</h3><p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz deneyim eklenmemis.</p>';
+        return;
+      }
+      list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Deneyimler</h3>' +
+        exps.map(exp => `
+          <div class="admin-post-item">
+            <div class="post-info">
+              <h4>${exp.title}</h4>
+              <span>${exp.company} | ${exp.date}</span>
+            </div>
+            <div class="post-actions">
+              <button class="btn-edit" onclick="editExp(${exp.id})"><i class="fas fa-edit"></i> Duzenle</button>
+              <button class="btn-delete" onclick="deleteExp(${exp.id})"><i class="fas fa-trash"></i> Sil</button>
+            </div>
+          </div>
+        `).join('');
+    }
+
+    document.getElementById('experienceFormEl').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const exps = getExperiences();
+      const editId = document.getElementById('expEditId').value;
+      const expData = {
+        id: editId ? Number(editId) : Date.now(),
+        title: document.getElementById('expTitle').value.trim(),
+        company: document.getElementById('expCompany').value.trim(),
+        date: document.getElementById('expDate').value.trim(),
+        description: document.getElementById('expDescription').value.trim()
+      };
+      if (editId) {
+        const idx = exps.findIndex(e => e.id === Number(editId));
+        if (idx !== -1) exps[idx] = expData;
+      } else {
+        exps.push(expData);
+      }
+      saveExperiences(exps);
+      resetExpForm();
+      renderExpList();
+    });
+
+    function editExp(id) {
+      const exp = getExperiences().find(e => e.id === id);
+      if (!exp) return;
+      document.getElementById('expEditId').value = exp.id;
+      document.getElementById('expTitle').value = exp.title;
+      document.getElementById('expCompany').value = exp.company || '';
+      document.getElementById('expDate').value = exp.date || '';
+      document.getElementById('expDescription').value = exp.description || '';
+      document.getElementById('expFormTitle').innerHTML = '<i class="fas fa-edit"></i> Deneyimi Duzenle';
+      document.getElementById('experienceSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteExp(id) {
+      if (!confirm('Bu deneyimi silmek istediginize emin misiniz?')) return;
+      saveExperiences(getExperiences().filter(e => e.id !== id));
+      renderExpList();
+    }
+
+    function resetExpForm() {
+      document.getElementById('experienceFormEl').reset();
+      document.getElementById('expEditId').value = '';
+      document.getElementById('expFormTitle').innerHTML = '<i class="fas fa-briefcase"></i> Deneyim Yonetimi';
+    }
+
+    renderExpList();
 
     // ===== LOGIN & PASSWORD MANAGEMENT =====
     (function() {
