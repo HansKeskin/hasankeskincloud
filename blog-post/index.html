@@ -296,6 +296,7 @@
       document.getElementById('commentText').value = '';
       await loadComments(postId);
       if (typeof launchConfetti === 'function') launchConfetti();
+      if (typeof showToast === 'function') showToast('Yorumunuz admin onayina gonderildi!', 'success');
       if (typeof logActivity === 'function') logActivity('comment', name + ' yorum yapti');
     });
 

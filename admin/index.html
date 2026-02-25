@@ -239,6 +239,18 @@
         </div>
       </div>
 
+      <!-- ===== YORUM YONETIMI ===== -->
+      <div class="admin-form" id="commentsSection" style="margin-top:40px;">
+        <h3 style="margin-bottom: 24px;"><i class="fas fa-comments"></i> Yorum Onaylama</h3>
+        <div class="admin-posts-list" id="adminCommentsList"></div>
+      </div>
+
+      <!-- ===== ZIYARETCI MESAJLARI ===== -->
+      <div class="admin-form" id="guestbookSection" style="margin-top:40px;">
+        <h3 style="margin-bottom: 24px;"><i class="fas fa-envelope-open-text"></i> Ziyaretci Mesajlari</h3>
+        <div class="admin-posts-list" id="adminGuestbookList"></div>
+      </div>
+
       <!-- Password Change -->
       <div style="margin-top:40px;padding:24px;background:var(--card-bg,#1a1a2e);border-radius:12px;border:1px solid var(--border,#333);">
         <h3 style="margin-bottom:16px;"><i class="fas fa-key"></i> Sifre Degistir</h3>
@@ -601,6 +613,99 @@
       document.getElementById('expFormTitle').innerHTML = '<i class="fas fa-briefcase"></i> Deneyim Yonetimi';
     }
 
+    // ===== COMMENT MANAGEMENT (Supabase) =====
+    async function renderCommentsList() {
+      const comments = await fetchAllComments();
+      const list = document.getElementById('adminCommentsList');
+
+      if (comments.length === 0) {
+        list.innerHTML = '<p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz yorum yok.</p>';
+        return;
+      }
+
+      list.innerHTML = comments.map(c => {
+        const statusBadge = c.approved
+          ? '<span style="color:#2ed573; font-size:0.8rem;"><i class="fas fa-check-circle"></i> Onaylandi</span>'
+          : '<span style="color:#D97706; font-size:0.8rem;"><i class="fas fa-clock"></i> Onay Bekliyor</span>';
+        const approveBtn = c.approved ? '' : `<button class="btn-edit" onclick="handleApproveComment(${c.id})"><i class="fas fa-check"></i> Onayla</button>`;
+        const dateStr = c.created_at ? new Date(c.created_at).toLocaleDateString('tr-TR') : '';
+        return `
+          <div class="admin-post-item">
+            <div class="post-info">
+              <h4>${escapeHtml(c.name)} <small style="color:var(--dark-light);">(Yazi #${c.post_id})</small></h4>
+              <p style="margin:4px 0; font-size:0.9rem;">${escapeHtml(c.text)}</p>
+              <span>${dateStr} | ${statusBadge}</span>
+            </div>
+            <div class="post-actions">
+              ${approveBtn}
+              <button class="btn-delete" onclick="handleDeleteComment(${c.id})"><i class="fas fa-trash"></i> Sil</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleApproveComment(id) {
+      try {
+        await approveComment(id);
+        await renderCommentsList();
+        if (typeof showToast === 'function') showToast('Yorum onaylandi!', 'success');
+      } catch (err) {
+        console.error('Approve error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
+      }
+    }
+
+    async function handleDeleteComment(id) {
+      if (!confirm('Bu yorumu silmek istediginize emin misiniz?')) return;
+      try {
+        await deleteComment(id);
+        await renderCommentsList();
+        if (typeof showToast === 'function') showToast('Yorum silindi', 'info');
+      } catch (err) {
+        console.error('Delete error:', err);
+      }
+    }
+
+    // ===== GUESTBOOK MANAGEMENT (Supabase) =====
+    async function renderGuestbookList() {
+      const messages = await fetchGuestbookMessages();
+      const list = document.getElementById('adminGuestbookList');
+
+      if (messages.length === 0) {
+        list.innerHTML = '<p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz mesaj yok.</p>';
+        return;
+      }
+
+      list.innerHTML = messages.map(msg => {
+        const dateStr = msg.created_at ? new Date(msg.created_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+        const locationStr = msg.location ? ' | <i class="fas fa-map-marker-alt"></i> ' + escapeHtml(msg.location) : '';
+        return `
+          <div class="admin-post-item">
+            <div class="post-info">
+              <h4>${msg.emoji || ''} ${escapeHtml(msg.name)}</h4>
+              <p style="margin:4px 0; font-size:0.9rem;">${escapeHtml(msg.message)}</p>
+              <span>${dateStr}${locationStr}</span>
+            </div>
+            <div class="post-actions">
+              <button class="btn-delete" onclick="handleDeleteGuestbook(${msg.id})"><i class="fas fa-trash"></i> Sil</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleDeleteGuestbook(id) {
+      if (!confirm('Bu mesaji silmek istediginize emin misiniz?')) return;
+      try {
+        await deleteGuestbookMessage(id);
+        await renderGuestbookList();
+        if (typeof showToast === 'function') showToast('Mesaj silindi', 'info');
+      } catch (err) {
+        console.error('Delete error:', err);
+      }
+    }
+
     // ===== LOGIN & AUTH (Supabase) =====
     (async function() {
       var overlay = document.getElementById('loginOverlay');
@@ -613,6 +718,8 @@
         renderAdminList();
         renderProjectList();
         renderExpList();
+        renderCommentsList();
+        renderGuestbookList();
       }
 
       // Check existing session

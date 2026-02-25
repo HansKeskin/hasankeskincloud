@@ -259,6 +259,15 @@ async function fetchComments(postId) {
   return data;
 }
 
+async function fetchAllComments() {
+  const { data, error } = await _supabase
+    .from('comments')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) { console.error('fetchAllComments error:', error); return []; }
+  return data;
+}
+
 async function insertComment(postId, name, text) {
   const { data, error } = await _supabase
     .from('comments')
@@ -271,6 +280,14 @@ async function insertComment(postId, name, text) {
     .single();
   if (error) throw error;
   return data;
+}
+
+async function approveComment(id) {
+  const { error } = await _supabase
+    .from('comments')
+    .update({ approved: true })
+    .eq('id', id);
+  if (error) throw error;
 }
 
 async function deleteComment(id) {
