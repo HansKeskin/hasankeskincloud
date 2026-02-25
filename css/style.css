@@ -904,6 +904,69 @@ img {
   color: var(--dark-light);
 }
 
+/* Snake Easter Egg Hint */
+.snake-hint {
+  display: inline-block;
+  margin-left: 12px;
+  position: relative;
+  cursor: default;
+  opacity: 0;
+  animation: snakeAppear 0.6s ease forwards;
+  animation-delay: 2s;
+}
+
+@keyframes snakeAppear {
+  from { opacity: 0; transform: scale(0.5) rotate(-20deg); }
+  to { opacity: 0.4; transform: scale(1) rotate(0deg); }
+}
+
+.snake-hint:hover {
+  opacity: 1 !important;
+}
+
+.snake-hint .snake-emoji {
+  font-size: 0.95rem;
+  transition: transform 0.3s ease;
+}
+
+.snake-hint:hover .snake-emoji {
+  transform: scale(1.3);
+}
+
+.snake-hint .snake-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--dark);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.snake-hint .snake-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--dark);
+}
+
+.snake-hint:hover .snake-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
 /* ===== PAGE HEADER (inner pages) ===== */
 .page-header {
   padding: 140px 0 60px;

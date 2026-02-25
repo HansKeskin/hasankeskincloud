@@ -110,6 +110,20 @@ if (themeToggle) {
       setTimeout(() => overlay.remove(), 700);
     });
   });
+
+  // Dark mode tooltip (once per user)
+  if (!localStorage.getItem('dark_mode_hint')) {
+    setTimeout(() => {
+      const tip = document.createElement('div');
+      tip.style.cssText = 'position:absolute;top:calc(100% + 10px);right:0;background:var(--dark,#1a1a2e);color:#fff;padding:8px 14px;border-radius:8px;font-size:0.8rem;font-family:Poppins,sans-serif;white-space:nowrap;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.3);animation:fadeInUp 0.3s ease;pointer-events:none;';
+      tip.innerHTML = '<kbd style="background:rgba(255,255,255,0.2);padding:1px 6px;border-radius:4px;font-size:0.75rem;">D</kbd> tusuna basarak tema degistirebilirsiniz';
+      themeToggle.style.position = 'relative';
+      themeToggle.appendChild(tip);
+      localStorage.setItem('dark_mode_hint', 'true');
+      setTimeout(() => { tip.style.opacity = '0'; tip.style.transition = 'opacity 0.5s'; }, 2500);
+      setTimeout(() => tip.remove(), 3000);
+    }, 2000);
+  }
 }
 
 // ===== PARALLAX EFFECT (data collected, logic in consolidated scroll handler) =====
@@ -455,12 +469,10 @@ document.addEventListener('keydown', (e) => {
     const gs = document.querySelector('.global-search');
     if (gs) { gs.classList.add('open'); const inp = gs.querySelector('input'); if (inp) setTimeout(() => inp.focus(), 100); }
   }
-  // D => toggle dark mode
+  // D => toggle dark mode (trigger button click for animation)
   if (e.key === 'd' && !isTyping) {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+    const toggleBtn = document.querySelector('.theme-toggle');
+    if (toggleBtn) toggleBtn.click();
   }
   // ? => show shortcuts
   if (e.key === '?' && shortcutsModal) {
@@ -1229,3 +1241,29 @@ async function goToRandomPost() {
   const random = posts[Math.floor(Math.random() * posts.length)];
   window.location.href = '/blog-post/?id=' + random.id;
 }
+
+// ===== SNAKE EASTER EGG HINT (Progressive Discovery) =====
+(function() {
+  // Track unique visits
+  var visits = parseInt(localStorage.getItem('site_visits') || '0');
+  var lastVisitDate = localStorage.getItem('site_visit_date') || '';
+  var today = new Date().toISOString().split('T')[0];
+
+  // Count only once per day
+  if (lastVisitDate !== today) {
+    visits++;
+    localStorage.setItem('site_visits', visits);
+    localStorage.setItem('site_visit_date', today);
+  }
+
+  // Show snake hint after 3+ visits
+  if (visits >= 3) {
+    var footerBottom = document.querySelector('.footer-bottom');
+    if (footerBottom) {
+      var hint = document.createElement('span');
+      hint.className = 'snake-hint';
+      hint.innerHTML = '<span class="snake-emoji">\u{1F40D}</span><span class="snake-tooltip">Shhh... Ctrl+G</span>';
+      footerBottom.appendChild(hint);
+    }
+  }
+})();

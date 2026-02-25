@@ -453,6 +453,16 @@
 
     renderPost();
 
+    // Reading mode hint (once per user)
+    if (!localStorage.getItem('reading_mode_hint')) {
+      setTimeout(() => {
+        if (typeof showToast === 'function') {
+          showToast('<kbd style="background:rgba(255,255,255,0.2);padding:2px 6px;border-radius:4px;">R</kbd> tusuna basarak okuma modunu acabilirsiniz', 'info');
+          localStorage.setItem('reading_mode_hint', 'true');
+        }
+      }, 3000);
+    }
+
     // Newsletter form handler
     const nlForm = document.getElementById('newsletterForm');
     if (nlForm) {
