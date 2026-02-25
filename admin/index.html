@@ -660,7 +660,7 @@
         }
 
         try {
-          await supabase.auth.updateUser({ password: newPwd });
+          await _supabase.auth.updateUser({ password: newPwd });
           msgEl.style.color = '#2ed573';
           msgEl.textContent = 'Sifre basariyla guncellendi!';
           document.getElementById('changePasswordForm').reset();

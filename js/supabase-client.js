@@ -3,22 +3,22 @@
 const SUPABASE_URL = 'https://sydrlrecxpoyrdxefavc.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5ZHJscmVjeHBveXJkeGVmYXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMDg1ODksImV4cCI6MjA4NzU4NDU4OX0.nLihElmWt2hrg42MabBFuc5oMIup1ObuYEZbm4etsIo';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ===== AUTH HELPERS =====
 async function signIn(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
   if (error) throw error;
   return data;
 }
 
 async function signOut() {
-  const { error } = await supabase.auth.signOut();
+  const { error } = await _supabase.auth.signOut();
   if (error) throw error;
 }
 
 async function getSession() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await _supabase.auth.getSession();
   return session;
 }
 
