@@ -40,7 +40,7 @@ function transformPost(row) {
 }
 
 async function fetchAllPosts() {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('blog_posts')
     .select('*')
     .order('date', { ascending: false });
@@ -49,7 +49,7 @@ async function fetchAllPosts() {
 }
 
 async function fetchPostById(id) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('blog_posts')
     .select('*')
     .eq('id', id)
@@ -59,7 +59,7 @@ async function fetchPostById(id) {
 }
 
 async function insertBlogPost(post) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('blog_posts')
     .insert({
       title_tr: post.title.tr,
@@ -82,7 +82,7 @@ async function insertBlogPost(post) {
 }
 
 async function updateBlogPost(id, post) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('blog_posts')
     .update({
       title_tr: post.title.tr,
@@ -106,7 +106,7 @@ async function updateBlogPost(id, post) {
 }
 
 async function deleteBlogPost(id) {
-  const { error } = await supabase
+  const { error } = await _supabase
     .from('blog_posts')
     .delete()
     .eq('id', id);
@@ -115,7 +115,7 @@ async function deleteBlogPost(id) {
 
 // ===== PROJECTS =====
 async function fetchProjects() {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('projects')
     .select('*')
     .order('created_at', { ascending: false });
@@ -124,7 +124,7 @@ async function fetchProjects() {
 }
 
 async function insertProject(project) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('projects')
     .insert({
       name: project.name,
@@ -141,7 +141,7 @@ async function insertProject(project) {
 }
 
 async function updateProject(id, project) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('projects')
     .update({
       name: project.name,
@@ -159,7 +159,7 @@ async function updateProject(id, project) {
 }
 
 async function deleteProject(id) {
-  const { error } = await supabase
+  const { error } = await _supabase
     .from('projects')
     .delete()
     .eq('id', id);
@@ -168,7 +168,7 @@ async function deleteProject(id) {
 
 // ===== EXPERIENCES =====
 async function fetchExperiences() {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('experiences')
     .select('*')
     .order('created_at', { ascending: false });
@@ -177,7 +177,7 @@ async function fetchExperiences() {
 }
 
 async function insertExperience(exp) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('experiences')
     .insert({
       title: exp.title,
@@ -192,7 +192,7 @@ async function insertExperience(exp) {
 }
 
 async function updateExperience(id, exp) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('experiences')
     .update({
       title: exp.title,
@@ -208,7 +208,7 @@ async function updateExperience(id, exp) {
 }
 
 async function deleteExperience(id) {
-  const { error } = await supabase
+  const { error } = await _supabase
     .from('experiences')
     .delete()
     .eq('id', id);
@@ -217,7 +217,7 @@ async function deleteExperience(id) {
 
 // ===== GUESTBOOK =====
 async function fetchGuestbookMessages() {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('guestbook_messages')
     .select('*')
     .order('created_at', { ascending: false });
@@ -226,7 +226,7 @@ async function fetchGuestbookMessages() {
 }
 
 async function insertGuestbookMessage(msg) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('guestbook_messages')
     .insert({
       name: msg.name,
@@ -241,7 +241,7 @@ async function insertGuestbookMessage(msg) {
 }
 
 async function deleteGuestbookMessage(id) {
-  const { error } = await supabase
+  const { error } = await _supabase
     .from('guestbook_messages')
     .delete()
     .eq('id', id);
@@ -250,7 +250,7 @@ async function deleteGuestbookMessage(id) {
 
 // ===== COMMENTS =====
 async function fetchComments(postId) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('comments')
     .select('*')
     .eq('post_id', postId)
@@ -260,7 +260,7 @@ async function fetchComments(postId) {
 }
 
 async function insertComment(postId, name, text) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('comments')
     .insert({
       post_id: postId,
@@ -274,7 +274,7 @@ async function insertComment(postId, name, text) {
 }
 
 async function deleteComment(id) {
-  const { error } = await supabase
+  const { error } = await _supabase
     .from('comments')
     .delete()
     .eq('id', id);
@@ -283,7 +283,7 @@ async function deleteComment(id) {
 
 // ===== NEWSLETTER =====
 async function insertNewsletterSub(email) {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('newsletter_subs')
     .insert({ email })
     .select()
@@ -293,7 +293,7 @@ async function insertNewsletterSub(email) {
 }
 
 async function fetchNewsletterSubs() {
-  const { data, error } = await supabase
+  const { data, error } = await _supabase
     .from('newsletter_subs')
     .select('*')
     .order('created_at', { ascending: false });
