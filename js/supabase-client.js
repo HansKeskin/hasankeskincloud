@@ -30,7 +30,7 @@ function transformPost(row) {
     title: { tr: row.title_tr, en: row.title_en || row.title_tr },
     summary: { tr: row.summary_tr || '', en: row.summary_en || row.summary_tr || '' },
     content: { tr: row.content_tr || '', en: row.content_en || row.content_tr || '' },
-    category: row.category || 'yazilim',
+    category: row.category || 'devops',
     icon: row.icon || 'fa-file-alt',
     gradient: row.gradient || 'var(--primary)',
     tags: row.tags || [],
@@ -43,7 +43,8 @@ async function fetchAllPosts() {
   const { data, error } = await _supabase
     .from('blog_posts')
     .select('*')
-    .order('date', { ascending: false });
+    .order('date', { ascending: false })
+    .order('created_at', { ascending: false });
   if (error) { console.error('fetchAllPosts error:', error); return []; }
   return data.map(transformPost);
 }

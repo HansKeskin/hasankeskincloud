@@ -88,7 +88,7 @@
       <div class="blog-filters fade-in">
         <button class="filter-btn active" data-filter="all" data-i18n="blog.filter_all">Tumunu Goster</button>
         <button class="filter-btn" data-filter="teknoloji" data-i18n="blog.filter_tech">Teknoloji</button>
-        <button class="filter-btn" data-filter="yazilim" data-i18n="blog.filter_dev">Yazilim</button>
+        <button class="filter-btn" data-filter="devops" data-i18n="blog.filter_dev">DevOps</button>
         <button class="filter-btn" data-filter="kisisel" data-i18n="blog.filter_personal">Kisisel</button>
       </div>
 
@@ -195,11 +195,18 @@
 
     async function renderTagFilters() {
       const allPosts = await getAllPosts();
+      // Kategori seciliyse sadece o kategorideki postlarin taglerini goster
+      const filteredPosts = currentFilter !== 'all'
+        ? allPosts.filter(p => p.category === currentFilter)
+        : allPosts;
       const tagSet = new Set();
-      allPosts.forEach(p => { if (p.tags) p.tags.forEach(t => tagSet.add(t)); });
+      filteredPosts.forEach(p => { if (p.tags) p.tags.forEach(t => tagSet.add(t)); });
       const container = document.getElementById('blogTagFilters');
-      if (!container || tagSet.size === 0) return;
+      if (!container) return;
+      if (tagSet.size === 0) { container.innerHTML = ''; return; }
       const tags = Array.from(tagSet).sort();
+      // Kategori degistiginde, artik gecersiz olan tagleri temizle
+      selectedTags = selectedTags.filter(t => tagSet.has(t));
       container.innerHTML = tags.map(tag =>
         `<button class="tag-filter-btn ${selectedTags.includes(tag) ? 'active' : ''}" data-tag="${tag}">${tag}</button>`
       ).join('');
@@ -253,7 +260,7 @@
       const views = JSON.parse(localStorage.getItem('post_views') || '{}');
       switch(currentSort) {
         case 'oldest':
-          posts.sort((a, b) => new Date(a.date) - new Date(b.date));
+          posts.sort((a, b) => new Date(a.date) - new Date(b.date) || a.id - b.id);
           break;
         case 'popular':
           posts.sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0));
@@ -269,7 +276,7 @@
           posts.sort((a, b) => (likes[b.id] || 0) - (likes[a.id] || 0));
           break;
         default: // newest
-          posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+          posts.sort((a, b) => new Date(b.date) - new Date(a.date) || b.id - a.id);
       }
 
       return posts;
@@ -297,7 +304,7 @@
           const summary = p.summary[lang] || p.summary.tr;
           const content = p.content[lang] || p.content.tr;
           const readTime = calculateReadingTime(content);
-          const categoryLabel = { yazilim: t('blog.filter_dev'), teknoloji: t('blog.filter_tech'), kisisel: t('blog.filter_personal') };
+          const categoryLabel = { devops: t('blog.filter_dev'), teknoloji: t('blog.filter_tech'), kisisel: t('blog.filter_personal') };
 
           const postTags = (p.tags && p.tags.length > 0) ? '<div class="tech-stack" style="margin-top:8px;">' + p.tags.map(tg => '<span class="tag" style="font-size:0.7rem;">' + tg + '</span>').join('') + '</div>' : '';
 
@@ -351,11 +358,12 @@
 
     // Filters
     document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentFilter = btn.getAttribute('data-filter');
         blogPage = 1;
+        await renderTagFilters();
         renderBlog();
       });
     });
