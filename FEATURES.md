@@ -131,6 +131,25 @@
 - [x] animateStatCounters() tekrar cagrilabilir fonksiyon
 - [x] _statsVisible flag ile goruntuleme alani kontrolu
 
+## Blog Serileri
+- [x] Blog Serileri Ozelligi (/series/ sayfasi)
+- [x] Seri Veritabani (blog_series tablosu + blog_posts.series_id/series_order)
+- [x] Seri CRUD (Supabase: fetchAllSeries, insertSeries, updateSeries, deleteSeries)
+- [x] Seri Cache Katmani (getAllSeries, getSeriesById, getSeriesWithPostCount, getSeriesNavigation)
+- [x] Seri Sayfasi - Liste Gorunumu (kartlar, durum badge, yazi sayisi)
+- [x] Seri Sayfasi - Detay Gorunumu (?id=X, bolum listesi)
+- [x] Yazi Detayinda Seri Banner (sticky: seri adi, ilerleme cubugu, onceki/sonraki)
+- [x] Yazi Detayinda Sidebar Seri Icerigi (TOC: aktif bolum vurgulu)
+- [x] Blog Kartlarinda Seri Badge + Bolum Numarasi
+- [x] Blog Sayfasinda Aktif Seriler Spotlight
+- [x] Ana Sayfada Aktif Seriler Bolumu (max 3)
+- [x] Admin Panelinde Seri Yonetim Paneli (CRUD + durum)
+- [x] Admin Yazi Formunda Seri Dropdown + Sira
+- [x] TR/EN Ceviri Destegi (series.* anahtarlari)
+- [x] Navbar + Footer Guncellemesi (tum sayfalarda /series/ linki)
+- [x] Sitemap Guncellemesi (sitemap.xml + gorsel site haritasi)
+- [x] Responsive Tasarim (mobil uyumlu seri bilesenler)
+
 ## Kaldirilan Ozellikler
 - [x] Cookie Banner (KVKK/GDPR) - gereksiz, kaldirildi
 - [x] Ziyaretci Sayaci (localStorage) - yaniltici, kaldirildi

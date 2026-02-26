@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Serileri - Hasan</title>
+  <meta name="description" content="Hasan'in blog serileri - Adim adim ogrenin, seri seri okuyun">
+  <meta property="og:title" content="Blog Serileri - Hasan">
+  <meta property="og:description" content="Adim adim ogrenin, seri seri okuyun">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/images/profile.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/images/profile.jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Skip to Content -->
+  <a href="#seriesContent" class="skip-to-content">Icerigi Atla</a>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-spinner"></div>
+      <div class="preloader-text"></div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container">
+      <a href="/" class="nav-logo">Hasan Keskin</a>
+      <ul class="nav-links">
+        <li><a href="/" data-i18n="nav.home">Ana Sayfa</a></li>
+        <li><a href="/blog/" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="/series/" class="active" data-i18n="nav.series">Seriler</a></li>
+        <li><a href="/projects/" data-i18n="nav.projects">Projeler</a></li>
+        <li><a href="/cv/" data-i18n="nav.cv">CV</a></li>
+        <li><a href="/contact/" data-i18n="nav.contact">Iletisim</a></li>
+      </ul>
+      <button class="lang-toggle" aria-label="Dil Degistir" onclick="setLang(getLang()==='tr'?'en':'tr'); renderSeriesPage();">EN</button>
+      <button class="theme-toggle" aria-label="Tema Degistir" title="Tema Degistir">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+      <div class="hamburger" role="button" aria-label="Menuyu Ac/Kapat" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="parallax-bg">
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+      <div class="parallax-shape"></div>
+    </div>
+    <div class="container">
+      <h1 data-i18n="series.page_title">Blog Serileri</h1>
+      <p data-i18n="series.page_subtitle">Adim adim ogrenin, seri seri okuyun</p>
+    </div>
+  </div>
+
+  <!-- Series Content -->
+  <section class="section" id="seriesContent">
+    <div class="container">
+      <div id="seriesContainer"></div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box fade-in">
+        <h3 data-i18n="newsletter.title">Bulten Aboneligi</h3>
+        <p data-i18n="newsletter.desc">Yeni yazilarimdan haberdar olmak icin e-posta adresinizi birakin.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" data-i18n="newsletter.placeholder" placeholder="E-posta adresiniz" required>
+          <div class="hn-field" aria-hidden="true">
+            <input type="text" id="nlHoneypot" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <button type="submit" class="btn btn-primary" data-i18n="newsletter.btn">Abone Ol</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">Hasan Keskin</div>
+          <p data-i18n="footer.desc">Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.pages">Sayfalar</h4>
+          <div class="footer-links">
+            <a href="/" data-i18n="nav.home">Ana Sayfa</a>
+            <a href="/blog/" data-i18n="nav.blog">Blog</a>
+            <a href="/series/" data-i18n="nav.series">Seriler</a>
+            <a href="/projects/" data-i18n="nav.projects">Projeler</a>
+            <a href="/cv/" data-i18n="nav.cv">CV</a>
+            <a href="/contact/" data-i18n="nav.contact">Iletisim</a>
+            <a href="/guestbook/">Ziyaretci Defteri</a>
+            <a href="/sitemap-page/">Site Haritasi</a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="footer.social">Sosyal Medya</h4>
+          <div class="footer-links">
+            <a href="https://www.linkedin.com/in/hasan-keskin-7989572a1/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="https://medium.com/@hasann.keskiin" aria-label="Medium" target="_blank" rel="noopener noreferrer"><i class="fab fa-medium"></i> Medium</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/supabase-client.js"></script>
+  <script src="/js/blog-data.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    async function renderSeriesPage() {
+      const lang = getLang();
+      const params = new URLSearchParams(window.location.search);
+      const seriesId = params.get('id');
+
+      if (seriesId) {
+        await renderSeriesDetail(seriesId, lang);
+      } else {
+        await renderSeriesList(lang);
+      }
+    }
+
+    async function renderSeriesList(lang) {
+      const container = document.getElementById('seriesContainer');
+      const seriesWithCount = await getSeriesWithPostCount();
+      // Filter out drafts for public view
+      const publicSeries = seriesWithCount.filter(s => s.status !== 'draft');
+
+      if (publicSeries.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:var(--dark-light); padding:40px;">' + t('series.no_series') + '</p>';
+        return;
+      }
+
+      const statusLabels = {
+        active: t('series.status_active'),
+        completed: t('series.status_completed')
+      };
+
+      container.innerHTML = '<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap:20px;">' +
+        publicSeries.map(s => {
+          const title = s.title[lang] || s.title.tr;
+          const desc = s.description[lang] || s.description.tr;
+          const statusClass = 'series-status-' + s.status;
+          return `
+            <a href="/series/?id=${s.id}" class="series-card fade-in visible">
+              <div class="series-card-header">
+                <div class="series-card-icon" style="background: ${s.gradient};">
+                  <i class="fas ${s.icon}"></i>
+                </div>
+                <div>
+                  <h3>${title}</h3>
+                </div>
+              </div>
+              <p>${desc}</p>
+              <div class="series-card-footer">
+                <span><i class="fas fa-file-alt"></i> ${s.postCount} ${t('series.posts_count')}</span>
+                <span class="${statusClass}">${statusLabels[s.status] || s.status}</span>
+              </div>
+            </a>
+          `;
+        }).join('') +
+      '</div>';
+    }
+
+    async function renderSeriesDetail(seriesId, lang) {
+      const container = document.getElementById('seriesContainer');
+      const series = await getSeriesById(seriesId);
+
+      if (!series || series.status === 'draft') {
+        container.innerHTML = '<p style="text-align:center; color:var(--dark-light); padding:40px;">' + t('series.no_series') + '</p>';
+        return;
+      }
+
+      const title = series.title[lang] || series.title.tr;
+      const desc = series.description[lang] || series.description.tr;
+      const posts = await fetchPostsBySeries(seriesId);
+
+      document.title = title + ' - Hasan';
+
+      let html = `
+        <div class="series-detail-header">
+          <div style="margin-bottom:16px;">
+            <a href="/series/" class="btn btn-outline" style="display:inline-flex; font-size:0.85rem; padding:6px 16px;">
+              <i class="fas fa-arrow-left"></i> ${t('series.page_title')}
+            </a>
+          </div>
+          <div style="display:inline-flex; align-items:center; justify-content:center; width:64px; height:64px; border-radius:16px; background:${series.gradient}; color:#fff; font-size:1.8rem; margin-bottom:16px;">
+            <i class="fas ${series.icon}"></i>
+          </div>
+          <h2>${title}</h2>
+          <p>${desc}</p>
+          <div style="margin-top:12px;">
+            <span class="series-status-${series.status}" style="font-size:0.82rem;">
+              ${series.status === 'active' ? t('series.status_active') : series.status === 'completed' ? t('series.status_completed') : t('series.status_draft')}
+            </span>
+            <span style="margin-left:12px; color:var(--dark-light); font-size:0.85rem;">
+              <i class="fas fa-file-alt"></i> ${posts.length} ${t('series.posts_count')}
+            </span>
+          </div>
+        </div>
+      `;
+
+      if (posts.length === 0) {
+        html += '<p style="text-align:center; color:var(--dark-light); padding:20px;">' + (lang === 'tr' ? 'Bu seride henuz yazi yok.' : 'No posts in this series yet.') + '</p>';
+      } else {
+        html += '<div class="series-post-list">' +
+          posts.map((p, i) => {
+            const pTitle = p.title[lang] || p.title.tr;
+            const readTime = calculateReadingTime(p.content[lang] || p.content.tr);
+            return `
+              <a href="/blog-post/?id=${p.id}" class="series-post-item fade-in visible">
+                <div class="series-post-num">${i + 1}</div>
+                <div class="series-post-info">
+                  <h4>${pTitle}</h4>
+                  <span><i class="far fa-calendar"></i> ${formatDate(p.date, lang)} &nbsp; <i class="far fa-clock"></i> ${readTime} ${t('blog.reading_time')}</span>
+                </div>
+                <div class="series-post-arrow">
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </a>
+            `;
+          }).join('') +
+        '</div>';
+      }
+
+      container.innerHTML = html;
+    }
+
+    // Newsletter
+    const nlForm = document.getElementById('newsletterForm');
+    if (nlForm) {
+      if (typeof initSpamProtection === 'function') initSpamProtection('newsletterForm');
+      nlForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (typeof checkSpamProtection === 'function' && !checkSpamProtection('newsletterForm', 'nlHoneypot')) {
+          if (typeof showToast === 'function') showToast('Lutfen formu tekrar doldurun.', 'error');
+          return;
+        }
+        const email = e.target.querySelector('input[type="email"]').value.trim();
+        if (!email) return;
+        try {
+          await insertNewsletterSub(email);
+        } catch (err) {
+          console.error('Newsletter error:', err);
+        }
+        e.target.querySelector('input[type="email"]').value = '';
+        const btn = e.target.querySelector('button');
+        btn.textContent = t('newsletter.success');
+        if (typeof markFormSubmitted === 'function') markFormSubmitted('newsletterForm');
+        if (typeof launchConfetti === 'function') launchConfetti();
+        if (typeof logActivity === 'function') logActivity('newsletter', 'Bultene abone olundu');
+        setTimeout(() => { btn.textContent = t('newsletter.btn'); }, 3000);
+      });
+    }
+
+    // Show skeleton then render
+    if (typeof showSkeletons === 'function') showSkeletons('seriesContainer', 3);
+    setTimeout(() => { renderSeriesPage(); }, 800);
+  </script>
+</body>
+</html>

@@ -41,6 +41,7 @@
       <ul class="nav-links">
         <li><a href="/" class="active" data-i18n="nav.home">Ana Sayfa</a></li>
         <li><a href="/blog/" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="/series/" data-i18n="nav.series">Seriler</a></li>
         <li><a href="/projects/" data-i18n="nav.projects">Projeler</a></li>
         <li><a href="/cv/" data-i18n="nav.cv">CV</a></li>
         <li><a href="/contact/" data-i18n="nav.contact">Iletisim</a></li>
@@ -153,6 +154,20 @@
     </div>
   </section>
 
+  <!-- Active Series -->
+  <section class="section active-series-section" id="activeSeries" style="display:none;">
+    <div class="container">
+      <div class="section-header fade-up">
+        <h2 class="glow-text"><span data-i18n="series.active_series">Aktif Seriler</span></h2>
+        <p data-i18n="series.page_subtitle">Adim adim ogrenin, seri seri okuyun</p>
+      </div>
+      <div class="active-series-grid" id="activeSeriesGrid"></div>
+      <div style="text-align: center; margin-top: 24px;" class="fade-in">
+        <a href="/series/" class="btn btn-outline"><span data-i18n="series.view_all">Tum Seriyi Gor</span> <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
   <!-- Newsletter -->
   <section class="newsletter-section" id="newsletter">
     <div class="container">
@@ -183,6 +198,7 @@
           <div class="footer-links">
             <a href="/" data-i18n="nav.home">Ana Sayfa</a>
             <a href="/blog/" data-i18n="nav.blog">Blog</a>
+            <a href="/series/" data-i18n="nav.series">Seriler</a>
             <a href="/projects/" data-i18n="nav.projects">Projeler</a>
             <a href="/cv/" data-i18n="nav.cv">CV</a>
             <a href="/contact/" data-i18n="nav.contact">Iletisim</a>
@@ -292,9 +308,42 @@
     }
     updateStats();
 
+    // Active Series
+    async function renderActiveSeries() {
+      const lang = getLang();
+      const seriesWithCount = await getSeriesWithPostCount();
+      const activeSeries = seriesWithCount.filter(s => s.status === 'active' && s.postCount > 0).slice(0, 3);
+      const section = document.getElementById('activeSeries');
+      const grid = document.getElementById('activeSeriesGrid');
+      if (!section || !grid || activeSeries.length === 0) return;
+
+      section.style.display = '';
+      grid.innerHTML = activeSeries.map(s => {
+        const title = s.title[lang] || s.title.tr;
+        const desc = s.description[lang] || s.description.tr;
+        return `
+          <a href="/series/?id=${s.id}" class="series-card fade-in visible">
+            <div class="series-card-header">
+              <div class="series-card-icon" style="background: ${s.gradient};">
+                <i class="fas ${s.icon}"></i>
+              </div>
+              <div>
+                <h3>${title}</h3>
+              </div>
+            </div>
+            <p>${desc}</p>
+            <div class="series-card-footer">
+              <span><i class="fas fa-file-alt"></i> ${s.postCount} ${t('series.posts_count')}</span>
+              <span class="series-status-active">${t('series.status_active')}</span>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
     // Show skeleton then render
     if (typeof showSkeletons === 'function') showSkeletons('latestPosts', 3);
-    setTimeout(() => { renderLatestPosts(); }, 800);
+    setTimeout(() => { renderLatestPosts(); renderActiveSeries(); }, 800);
   </script>
 </body>
 </html>

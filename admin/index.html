@@ -145,6 +145,18 @@
           <label>Etiketler (virgülle ayirin)</label>
           <input type="text" id="tags" placeholder="devops, linux, docker, kubernetes...">
         </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label>Seri</label>
+            <select id="postSeriesId">
+              <option value="">-- Seri Yok --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Seri Sirasi</label>
+            <input type="number" id="postSeriesOrder" value="0" min="0" placeholder="0">
+          </div>
+        </div>
 
         <input type="hidden" id="editId" value="">
 
@@ -157,6 +169,61 @@
       <!-- Existing Posts -->
       <div class="admin-posts-list" id="adminPostsList">
         <h3 style="margin-bottom: 20px;"><i class="fas fa-list"></i> Mevcut Yazilar</h3>
+      </div>
+
+      <!-- ===== SERI YONETIMI ===== -->
+      <div class="admin-form" id="seriesSection" style="margin-top:40px;">
+        <h3 style="margin-bottom: 24px;" id="seriesFormTitle"><i class="fas fa-layer-group"></i> Seri Yonetimi</h3>
+
+        <form id="seriesFormEl">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label>Seri Adi (TR)</label>
+              <input type="text" id="seriesTitleTr" placeholder="Turkce seri adi..." required>
+            </div>
+            <div class="form-group">
+              <label>Seri Adi (EN)</label>
+              <input type="text" id="seriesTitleEn" placeholder="English series title...">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label>Aciklama (TR)</label>
+              <textarea id="seriesDescTr" rows="2" placeholder="Turkce aciklama..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Aciklama (EN)</label>
+              <textarea id="seriesDescEn" rows="2" placeholder="English description..."></textarea>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label>Ikon</label>
+              <input type="text" id="seriesIcon" value="fa-layer-group" placeholder="fa-layer-group">
+            </div>
+            <div class="form-group">
+              <label>Gradient</label>
+              <input type="text" id="seriesGradient" value="var(--primary)" placeholder="var(--primary)">
+            </div>
+            <div class="form-group">
+              <label>Durum</label>
+              <select id="seriesStatus">
+                <option value="active">Aktif</option>
+                <option value="completed">Tamamlandi</option>
+                <option value="draft">Taslak</option>
+              </select>
+            </div>
+          </div>
+          <input type="hidden" id="seriesEditId" value="">
+          <div class="btn-group" style="margin-top: 16px;">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Kaydet</button>
+            <button type="button" class="btn btn-outline" onclick="resetSeriesForm();">Iptal</button>
+          </div>
+        </form>
+
+        <div class="admin-posts-list" id="adminSeriesList" style="margin-top:24px;">
+          <h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Seriler</h3>
+        </div>
       </div>
 
       <!-- ===== PROJE YONETIMI ===== -->
@@ -394,7 +461,9 @@
         icon: document.getElementById('icon').value || 'fa-file-alt',
         gradient: gradients[Math.floor(Math.random() * gradients.length)],
         author: 'Hasan',
-        tags: document.getElementById('tags').value.split(',').map(s => s.trim()).filter(Boolean)
+        tags: document.getElementById('tags').value.split(',').map(s => s.trim()).filter(Boolean),
+        series_id: document.getElementById('postSeriesId').value ? Number(document.getElementById('postSeriesId').value) : null,
+        series_order: Number(document.getElementById('postSeriesOrder').value) || 0
       };
 
       try {
@@ -427,6 +496,8 @@
       document.getElementById('category').value = post.category;
       document.getElementById('icon').value = post.icon;
       document.getElementById('tags').value = (post.tags || []).join(', ');
+      document.getElementById('postSeriesId').value = post.series_id || '';
+      document.getElementById('postSeriesOrder').value = post.series_order || 0;
       document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> Yaziyi Duzenle';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -447,7 +518,118 @@
     function resetForm() {
       document.getElementById('postForm').reset();
       document.getElementById('editId').value = '';
+      document.getElementById('postSeriesId').value = '';
+      document.getElementById('postSeriesOrder').value = '0';
       document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus"></i> Yeni Yazi Ekle';
+    }
+
+    // ===== SERIES MANAGEMENT (Supabase) =====
+    let _adminSeries = [];
+
+    async function loadAdminSeries() {
+      _adminSeries = await fetchAllSeries();
+    }
+
+    async function renderSeriesList() {
+      await loadAdminSeries();
+      const list = document.getElementById('adminSeriesList');
+      if (_adminSeries.length === 0) {
+        list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Seriler</h3><p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz seri eklenmemis.</p>';
+        return;
+      }
+      const statusLabels = { active: 'Aktif', completed: 'Tamamlandi', draft: 'Taslak' };
+      list.innerHTML = '<h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Seriler</h3>' +
+        _adminSeries.map(s => `
+          <div class="admin-post-item">
+            <div class="post-info">
+              <h4><i class="fas ${s.icon}"></i> ${s.title.tr}</h4>
+              <span>${statusLabels[s.status] || s.status}</span>
+            </div>
+            <div class="post-actions">
+              <button class="btn-edit" onclick="editSeriesAdmin(${s.id})"><i class="fas fa-edit"></i> Duzenle</button>
+              <button class="btn-delete" onclick="handleDeleteSeries(${s.id})"><i class="fas fa-trash"></i> Sil</button>
+            </div>
+          </div>
+        `).join('');
+    }
+
+    async function populateSeriesDropdown() {
+      await loadAdminSeries();
+      const sel = document.getElementById('postSeriesId');
+      if (!sel) return;
+      sel.innerHTML = '<option value="">-- Seri Yok --</option>' +
+        _adminSeries.map(s => `<option value="${s.id}">${s.title.tr}</option>`).join('');
+    }
+
+    document.getElementById('seriesFormEl').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const editId = document.getElementById('seriesEditId').value;
+      const seriesData = {
+        title: {
+          tr: document.getElementById('seriesTitleTr').value.trim(),
+          en: document.getElementById('seriesTitleEn').value.trim() || document.getElementById('seriesTitleTr').value.trim()
+        },
+        description: {
+          tr: document.getElementById('seriesDescTr').value.trim(),
+          en: document.getElementById('seriesDescEn').value.trim() || document.getElementById('seriesDescTr').value.trim()
+        },
+        icon: document.getElementById('seriesIcon').value.trim() || 'fa-layer-group',
+        gradient: document.getElementById('seriesGradient').value.trim() || 'var(--primary)',
+        status: document.getElementById('seriesStatus').value
+      };
+
+      try {
+        if (editId) {
+          await updateSeries(Number(editId), seriesData);
+        } else {
+          await insertSeries(seriesData);
+        }
+        invalidateSeriesCache();
+        resetSeriesForm();
+        await renderSeriesList();
+        await populateSeriesDropdown();
+        if (typeof showToast === 'function') showToast('Seri kaydedildi!', 'success');
+      } catch (err) {
+        console.error('Series save error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
+      }
+    });
+
+    function editSeriesAdmin(id) {
+      const s = _adminSeries.find(s => s.id === id);
+      if (!s) return;
+      document.getElementById('seriesEditId').value = s.id;
+      document.getElementById('seriesTitleTr').value = s.title.tr;
+      document.getElementById('seriesTitleEn').value = s.title.en || '';
+      document.getElementById('seriesDescTr').value = s.description.tr;
+      document.getElementById('seriesDescEn').value = s.description.en || '';
+      document.getElementById('seriesIcon').value = s.icon;
+      document.getElementById('seriesGradient').value = s.gradient;
+      document.getElementById('seriesStatus').value = s.status;
+      document.getElementById('seriesFormTitle').innerHTML = '<i class="fas fa-edit"></i> Seriyi Duzenle';
+      document.getElementById('seriesSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function handleDeleteSeries(id) {
+      if (!confirm('Bu seriyi silmek istediginize emin misiniz?')) return;
+      try {
+        await deleteSeries(id);
+        invalidateSeriesCache();
+        await renderSeriesList();
+        await populateSeriesDropdown();
+        if (typeof showToast === 'function') showToast('Seri silindi', 'info');
+      } catch (err) {
+        console.error('Delete error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
+      }
+    }
+
+    function resetSeriesForm() {
+      document.getElementById('seriesFormEl').reset();
+      document.getElementById('seriesEditId').value = '';
+      document.getElementById('seriesIcon').value = 'fa-layer-group';
+      document.getElementById('seriesGradient').value = 'var(--primary)';
+      document.getElementById('seriesFormTitle').innerHTML = '<i class="fas fa-layer-group"></i> Seri Yonetimi';
     }
 
     // ===== PROJECT MANAGEMENT (Supabase) =====
@@ -726,6 +908,8 @@
         content.style.display = '';
         // Load all data
         renderAdminList();
+        renderSeriesList();
+        populateSeriesDropdown();
         renderProjectList();
         renderExpList();
         renderCommentsList();

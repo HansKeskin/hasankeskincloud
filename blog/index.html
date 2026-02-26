@@ -36,6 +36,7 @@
       <ul class="nav-links">
         <li><a href="/" data-i18n="nav.home">Ana Sayfa</a></li>
         <li><a href="/blog/" class="active" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="/series/" data-i18n="nav.series">Seriler</a></li>
         <li><a href="/projects/" data-i18n="nav.projects">Projeler</a></li>
         <li><a href="/cv/" data-i18n="nav.cv">CV</a></li>
         <li><a href="/contact/" data-i18n="nav.contact">Iletisim</a></li>
@@ -77,6 +78,9 @@
         <div class="blog-stat-item"><i class="fas fa-eye"></i> <strong id="statTotalViews">0</strong> Goruntulenme</div>
         <div class="blog-stat-item"><i class="fas fa-bookmark"></i> <strong id="bookmarkCount">0</strong> Kaydedilen</div>
       </div>
+
+      <!-- Active Series Spotlight -->
+      <div class="series-spotlight fade-up" id="seriesSpotlight" style="display:none;"></div>
 
       <!-- Search -->
       <div class="blog-search fade-in">
@@ -153,6 +157,7 @@
           <div class="footer-links">
             <a href="/" data-i18n="nav.home">Ana Sayfa</a>
             <a href="/blog/" data-i18n="nav.blog">Blog</a>
+            <a href="/series/" data-i18n="nav.series">Seriler</a>
             <a href="/projects/" data-i18n="nav.projects">Projeler</a>
             <a href="/cv/" data-i18n="nav.cv">CV</a>
             <a href="/contact/" data-i18n="nav.contact">Iletisim</a>
@@ -299,6 +304,10 @@
         noRes.style.display = 'block';
       } else {
         noRes.style.display = 'none';
+        const allSeries = await getAllSeries();
+        const seriesMap = {};
+        allSeries.forEach(s => { seriesMap[s.id] = s; });
+
         grid.innerHTML = pagePosts.map(p => {
           const title = p.title[lang] || p.title.tr;
           const summary = p.summary[lang] || p.summary.tr;
@@ -308,16 +317,26 @@
 
           const postTags = (p.tags && p.tags.length > 0) ? '<div class="tech-stack" style="margin-top:8px;">' + p.tags.map(tg => '<span class="tag" style="font-size:0.7rem;">' + tg + '</span>').join('') + '</div>' : '';
 
+          // Series badge
+          let seriesBadge = '';
+          if (p.series_id && seriesMap[p.series_id]) {
+            const s = seriesMap[p.series_id];
+            const sTitle = s.title[lang] || s.title.tr;
+            seriesBadge = `<span class="series-badge"><i class="fas fa-layer-group"></i> ${sTitle}</span>`;
+          }
+
           return `
             <div class="blog-card fade-in visible" data-category="${p.category}">
-              <div class="card-image" style="background: ${p.gradient}; display: flex; align-items: center; justify-content: center;">
+              <div class="card-image" style="background: ${p.gradient}; display: flex; align-items: center; justify-content: center; position:relative;">
                 <i class="fas ${p.icon}" style="font-size: 4rem; color: white;"></i>
+                ${p.series_id && p.series_order ? '<span class="series-episode-number">' + t('series.part') + ' ' + p.series_order + '</span>' : ''}
               </div>
               <div class="card-body">
                 <div class="card-meta">
                   <span><i class="far fa-calendar"></i> ${formatDate(p.date, lang)}</span>
                   <span><i class="far fa-clock"></i> ${readTime} ${t('blog.reading_time')}</span>
                 </div>
+                ${seriesBadge}
                 <span class="tag">${categoryLabel[p.category] || p.category}</span>
                 <h3>${title}</h3>
                 <p>${summary}</p>
@@ -404,9 +423,40 @@
       if (el3) el3.textContent = typeof getBookmarks === 'function' ? getBookmarks().length : 0;
     }
 
+    // Active Series Spotlight
+    async function renderSeriesSpotlight() {
+      const lang = getLang();
+      const seriesWithCount = await getSeriesWithPostCount();
+      const activeSeries = seriesWithCount.filter(s => s.status === 'active' && s.postCount > 0);
+      const el = document.getElementById('seriesSpotlight');
+      if (!el || activeSeries.length === 0) return;
+
+      el.style.display = 'block';
+      el.innerHTML = `
+        <h3><i class="fas fa-layer-group"></i> ${t('series.active_series')}</h3>
+        <div class="series-spotlight-grid">
+          ${activeSeries.map(s => {
+            const title = s.title[lang] || s.title.tr;
+            return `
+              <a href="/series/?id=${s.id}" class="series-spotlight-card">
+                <div class="series-spotlight-icon" style="background: ${s.gradient};">
+                  <i class="fas ${s.icon}"></i>
+                </div>
+                <div class="series-spotlight-info">
+                  <h4>${title}</h4>
+                  <span>${s.postCount} ${t('series.posts_count')} &bull; ${t('series.status_active')}</span>
+                </div>
+              </a>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
     // Show skeleton loading then render
     if (typeof showSkeletons === 'function') showSkeletons('blogGrid', 4);
     setTimeout(async () => {
+      await renderSeriesSpotlight();
       await renderTagFilters();
       await renderBlog();
       await updateBlogStats();

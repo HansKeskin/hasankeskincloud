@@ -40,6 +40,7 @@
       <ul class="nav-links">
         <li><a href="/" data-i18n="nav.home">Ana Sayfa</a></li>
         <li><a href="/blog/" class="active" data-i18n="nav.blog">Blog</a></li>
+        <li><a href="/series/" data-i18n="nav.series">Seriler</a></li>
         <li><a href="/projects/" data-i18n="nav.projects">Projeler</a></li>
         <li><a href="/cv/" data-i18n="nav.cv">CV</a></li>
         <li><a href="/contact/" data-i18n="nav.contact">Iletisim</a></li>
@@ -78,6 +79,9 @@
   <section class="section">
     <div class="container">
 
+      <!-- Series Banner -->
+      <div id="seriesBanner" style="display:none;"></div>
+
       <!-- Table of Contents -->
       <div class="toc" id="tocContainer" style="display:none;">
         <h4><i class="fas fa-list-ol"></i> Icindekiler <i class="fas fa-chevron-down toggle-icon"></i></h4>
@@ -104,6 +108,11 @@
               <a href="javascript:void(0)" id="shareLinkedin" class="share-btn linkedin" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
               <button class="share-btn copy" id="shareCopy" title="Linki Kopyala"><i class="fas fa-link"></i></button>
             </div>
+          </div>
+          <!-- Series TOC -->
+          <div class="sidebar-card" id="seriesTocCard" style="display:none;">
+            <h4><i class="fas fa-layer-group"></i> <span data-i18n="series.toc_title">Seri Icerigi</span></h4>
+            <ul class="series-toc-list" id="seriesTocList"></ul>
           </div>
           <!-- Bookmark -->
           <div class="sidebar-card" style="text-align:center;">
@@ -192,6 +201,7 @@
           <div class="footer-links">
             <a href="/" data-i18n="nav.home">Ana Sayfa</a>
             <a href="/blog/" data-i18n="nav.blog">Blog</a>
+            <a href="/series/" data-i18n="nav.series">Seriler</a>
             <a href="/projects/" data-i18n="nav.projects">Projeler</a>
             <a href="/cv/" data-i18n="nav.cv">CV</a>
             <a href="/contact/" data-i18n="nav.contact">Iletisim</a>
@@ -481,8 +491,70 @@
           }
         }
       }
+        // Render series navigation
+        await renderSeriesNav(post);
+      }
       await renderTagCloud();
     };
+
+    async function renderSeriesNav(post) {
+      const nav = await getSeriesNavigation(post.id);
+      if (!nav) return;
+
+      const lang = getLang();
+      const seriesTitle = nav.series.title[lang] || nav.series.title.tr;
+      const progress = nav.currentIndex + 1;
+      const total = nav.total;
+      const pct = Math.round((progress / total) * 100);
+
+      // Render sticky banner
+      const banner = document.getElementById('seriesBanner');
+      let prevBtn = nav.prev
+        ? `<a href="/blog-post/?id=${nav.prev.id}" class="series-nav-btn"><i class="fas fa-chevron-left"></i> ${t('series.prev')}</a>`
+        : `<span class="series-nav-btn disabled"><i class="fas fa-chevron-left"></i> ${t('series.prev')}</span>`;
+      let nextBtn = nav.next
+        ? `<a href="/blog-post/?id=${nav.next.id}" class="series-nav-btn">${t('series.next')} <i class="fas fa-chevron-right"></i></a>`
+        : `<span class="series-nav-btn disabled">${t('series.next')} <i class="fas fa-chevron-right"></i></span>`;
+
+      banner.style.display = 'block';
+      banner.innerHTML = `
+        <div class="series-banner">
+          <div class="series-banner-inner">
+            <div class="series-banner-info">
+              <i class="fas ${nav.series.icon}"></i>
+              <div>
+                <div class="series-banner-title"><a href="/series/?id=${nav.series.id}">${seriesTitle}</a></div>
+                <div class="series-banner-count">${t('series.part')} ${progress}/${total}</div>
+              </div>
+            </div>
+            <div class="series-banner-nav">
+              ${prevBtn}
+              ${nextBtn}
+            </div>
+          </div>
+          <div class="series-progress-bar">
+            <div class="series-progress-fill" style="width: ${pct}%"></div>
+          </div>
+        </div>
+      `;
+
+      // Render sidebar TOC
+      const tocCard = document.getElementById('seriesTocCard');
+      const tocList = document.getElementById('seriesTocList');
+      tocCard.style.display = 'block';
+      tocList.innerHTML = nav.posts.map((p, i) => {
+        const pTitle = p.title[lang] || p.title.tr;
+        const isActive = p.id === post.id;
+        return `
+          <li>
+            <a href="/blog-post/?id=${p.id}" class="series-toc-item ${isActive ? 'active' : ''}">
+              <span class="series-toc-num">${i + 1}</span>
+              <span class="series-toc-title">${pTitle}</span>
+            </a>
+          </li>
+        `;
+      }).join('');
+    }
 
     renderPost();
 

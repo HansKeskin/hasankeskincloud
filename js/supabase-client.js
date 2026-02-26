@@ -22,6 +22,93 @@ async function getSession() {
   return session;
 }
 
+// ===== BLOG SERIES =====
+function transformSeries(row) {
+  return {
+    id: row.id,
+    title: { tr: row.title_tr, en: row.title_en || row.title_tr },
+    description: { tr: row.description_tr || '', en: row.description_en || row.description_tr || '' },
+    icon: row.icon || 'fa-layer-group',
+    gradient: row.gradient || 'var(--primary)',
+    status: row.status || 'active',
+    created_at: row.created_at
+  };
+}
+
+async function fetchAllSeries() {
+  const { data, error } = await _supabase
+    .from('blog_series')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) { console.error('fetchAllSeries error:', error); return []; }
+  return data.map(transformSeries);
+}
+
+async function fetchSeriesById(id) {
+  const { data, error } = await _supabase
+    .from('blog_series')
+    .select('*')
+    .eq('id', id)
+    .single();
+  if (error) { console.error('fetchSeriesById error:', error); return null; }
+  return transformSeries(data);
+}
+
+async function fetchPostsBySeries(seriesId) {
+  const { data, error } = await _supabase
+    .from('blog_posts')
+    .select('*')
+    .eq('series_id', seriesId)
+    .order('series_order', { ascending: true });
+  if (error) { console.error('fetchPostsBySeries error:', error); return []; }
+  return data.map(transformPost);
+}
+
+async function insertSeries(series) {
+  const { data, error } = await _supabase
+    .from('blog_series')
+    .insert({
+      title_tr: series.title.tr,
+      title_en: series.title.en,
+      description_tr: series.description.tr,
+      description_en: series.description.en,
+      icon: series.icon,
+      gradient: series.gradient,
+      status: series.status || 'active'
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return transformSeries(data);
+}
+
+async function updateSeries(id, series) {
+  const { data, error } = await _supabase
+    .from('blog_series')
+    .update({
+      title_tr: series.title.tr,
+      title_en: series.title.en,
+      description_tr: series.description.tr,
+      description_en: series.description.en,
+      icon: series.icon,
+      gradient: series.gradient,
+      status: series.status || 'active'
+    })
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  return transformSeries(data);
+}
+
+async function deleteSeries(id) {
+  const { error } = await _supabase
+    .from('blog_series')
+    .delete()
+    .eq('id', id);
+  if (error) throw error;
+}
+
 // ===== BLOG POSTS =====
 // Flat DB columns -> nested {tr, en} object
 function transformPost(row) {
@@ -35,7 +122,9 @@ function transformPost(row) {
     gradient: row.gradient || 'var(--primary)',
     tags: row.tags || [],
     author: row.author || 'Hasan',
-    date: row.date || row.created_at?.split('T')[0] || new Date().toISOString().split('T')[0]
+    date: row.date || row.created_at?.split('T')[0] || new Date().toISOString().split('T')[0],
+    series_id: row.series_id || null,
+    series_order: row.series_order || 0
   };
 }
 
@@ -60,22 +149,25 @@ async function fetchPostById(id) {
 }
 
 async function insertBlogPost(post) {
+  const row = {
+    title_tr: post.title.tr,
+    title_en: post.title.en,
+    summary_tr: post.summary.tr,
+    summary_en: post.summary.en,
+    content_tr: post.content.tr,
+    content_en: post.content.en,
+    category: post.category,
+    icon: post.icon,
+    gradient: post.gradient,
+    tags: post.tags,
+    author: post.author || 'Hasan',
+    date: post.date
+  };
+  if (post.series_id) row.series_id = post.series_id;
+  if (post.series_order) row.series_order = post.series_order;
   const { data, error } = await _supabase
     .from('blog_posts')
-    .insert({
-      title_tr: post.title.tr,
-      title_en: post.title.en,
-      summary_tr: post.summary.tr,
-      summary_en: post.summary.en,
-      content_tr: post.content.tr,
-      content_en: post.content.en,
-      category: post.category,
-      icon: post.icon,
-      gradient: post.gradient,
-      tags: post.tags,
-      author: post.author || 'Hasan',
-      date: post.date
-    })
+    .insert(row)
     .select()
     .single();
   if (error) throw error;
@@ -83,22 +175,25 @@ async function insertBlogPost(post) {
 }
 
 async function updateBlogPost(id, post) {
+  const row = {
+    title_tr: post.title.tr,
+    title_en: post.title.en,
+    summary_tr: post.summary.tr,
+    summary_en: post.summary.en,
+    content_tr: post.content.tr,
+    content_en: post.content.en,
+    category: post.category,
+    icon: post.icon,
+    gradient: post.gradient,
+    tags: post.tags,
+    author: post.author || 'Hasan',
+    date: post.date,
+    series_id: post.series_id || null,
+    series_order: post.series_order || 0
+  };
   const { data, error } = await _supabase
     .from('blog_posts')
-    .update({
-      title_tr: post.title.tr,
-      title_en: post.title.en,
-      summary_tr: post.summary.tr,
-      summary_en: post.summary.en,
-      content_tr: post.content.tr,
-      content_en: post.content.en,
-      category: post.category,
-      icon: post.icon,
-      gradient: post.gradient,
-      tags: post.tags,
-      author: post.author || 'Hasan',
-      date: post.date
-    })
+    .update(row)
     .eq('id', id)
     .select()
     .single();

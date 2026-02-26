@@ -7,6 +7,7 @@ const translations = {
     "nav.projects": "Projeler",
     "nav.cv": "CV",
     "nav.contact": "Iletisim",
+    "nav.series": "Seriler",
 
     // Hero
     "hero.greeting": "Merhaba, ben",
@@ -109,6 +110,23 @@ const translations = {
     "newsletter.btn": "Abone Ol",
     "newsletter.success": "Basariyla abone oldunuz!",
 
+    // Series
+    "series.page_title": "Blog Serileri",
+    "series.page_subtitle": "Adim adim ogrenin, seri seri okuyun",
+    "series.posts_count": "yazi",
+    "series.status_active": "Devam Ediyor",
+    "series.status_completed": "Tamamlandi",
+    "series.status_draft": "Taslak",
+    "series.part": "Bolum",
+    "series.prev": "Onceki Bolum",
+    "series.next": "Sonraki Bolum",
+    "series.toc_title": "Seri Icerigi",
+    "series.progress": "Ilerleme",
+    "series.view_all": "Tum Seriyi Gor",
+    "series.in_series": "Bu seri icindeki yazilar",
+    "series.no_series": "Henuz seri eklenmemis.",
+    "series.active_series": "Aktif Seriler",
+
     // Footer
     "footer.desc": "Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.",
     "footer.pages": "Sayfalar",
@@ -121,6 +139,7 @@ const translations = {
     "nav.projects": "Projects",
     "nav.cv": "CV",
     "nav.contact": "Contact",
+    "nav.series": "Series",
 
     "hero.greeting": "Hello, I'm",
     "hero.description": "My personal website where I share my thoughts on technology, software and life. Check out my blog posts and projects.",
@@ -213,6 +232,22 @@ const translations = {
     "newsletter.placeholder": "Your email address",
     "newsletter.btn": "Subscribe",
     "newsletter.success": "Successfully subscribed!",
+
+    "series.page_title": "Blog Series",
+    "series.page_subtitle": "Learn step by step, read series by series",
+    "series.posts_count": "posts",
+    "series.status_active": "In Progress",
+    "series.status_completed": "Completed",
+    "series.status_draft": "Draft",
+    "series.part": "Part",
+    "series.prev": "Previous Part",
+    "series.next": "Next Part",
+    "series.toc_title": "Series Contents",
+    "series.progress": "Progress",
+    "series.view_all": "View Full Series",
+    "series.in_series": "Posts in this series",
+    "series.no_series": "No series added yet.",
+    "series.active_series": "Active Series",
 
     "footer.desc": "My personal website where I share my thoughts on technology, software and life.",
     "footer.pages": "Pages",
