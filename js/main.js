@@ -282,7 +282,7 @@ const contactForm = document.querySelector('#contactForm');
 
 if (contactForm) {
   initSpamProtection('contactForm');
-  contactForm.addEventListener('submit', (e) => {
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     if (!checkSpamProtection('contactForm', 'contactHoneypot')) {
@@ -327,18 +327,36 @@ if (contactForm) {
     }
 
     if (isValid) {
-      // Show success
       const btn = contactForm.querySelector('button[type="submit"]');
-      const originalText = btn.textContent;
-      btn.textContent = 'Mesaj Gonderildi!';
-      btn.style.background = '#059669';
-      markFormSubmitted('contactForm');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gonderiliyor...';
+      btn.disabled = true;
 
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.style.background = '';
-        contactForm.reset();
-      }, 3000);
+      try {
+        await insertContactMessage({
+          name: name.value.trim(),
+          email: email.value.trim(),
+          subject: subject.value.trim(),
+          message: message.value.trim()
+        });
+
+        btn.innerHTML = '<i class="fas fa-check"></i> Mesaj Gonderildi!';
+        btn.style.background = '#059669';
+        markFormSubmitted('contactForm');
+        if (typeof showToast === 'function') showToast('Mesajiniz basariyla gonderildi!', 'success');
+
+        setTimeout(() => {
+          btn.innerHTML = originalHTML;
+          btn.style.background = '';
+          btn.disabled = false;
+          contactForm.reset();
+        }, 3000);
+      } catch (err) {
+        console.error('Contact form error:', err);
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+        if (typeof showToast === 'function') showToast('Mesaj gonderilemedi. Lutfen tekrar deneyin.', 'error');
+      }
     }
   });
 }

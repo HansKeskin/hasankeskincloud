@@ -344,6 +344,47 @@ async function deleteGuestbookMessage(id) {
   if (error) throw error;
 }
 
+// ===== CONTACT MESSAGES =====
+async function insertContactMessage(msg) {
+  const { data, error } = await _supabase
+    .from('contact_messages')
+    .insert({
+      name: msg.name,
+      email: msg.email,
+      subject: msg.subject,
+      message: msg.message
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+async function fetchContactMessages() {
+  const { data, error } = await _supabase
+    .from('contact_messages')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) { console.error('fetchContactMessages error:', error); return []; }
+  return data;
+}
+
+async function markContactMessageRead(id) {
+  const { error } = await _supabase
+    .from('contact_messages')
+    .update({ is_read: true })
+    .eq('id', id);
+  if (error) throw error;
+}
+
+async function deleteContactMessage(id) {
+  const { error } = await _supabase
+    .from('contact_messages')
+    .delete()
+    .eq('id', id);
+  if (error) throw error;
+}
+
 // ===== COMMENTS =====
 async function fetchComments(postId) {
   const { data, error } = await _supabase

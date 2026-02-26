@@ -75,7 +75,30 @@
   <!-- Admin Section -->
   <section class="section">
     <div class="container">
+      <div class="admin-layout">
 
+      <!-- Sidebar -->
+      <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-sidebar-header">Yonetim Paneli</div>
+        <ul class="admin-nav">
+          <li><button class="admin-nav-item active" data-section="blogSection"><i class="fas fa-pen-fancy"></i> Blog Yazilari</button></li>
+          <li><button class="admin-nav-item" data-section="seriesSection"><i class="fas fa-layer-group"></i> Seriler</button></li>
+          <li><button class="admin-nav-item" data-section="projectSection"><i class="fas fa-folder"></i> Projeler</button></li>
+          <li><button class="admin-nav-item" data-section="experienceSection"><i class="fas fa-briefcase"></i> Deneyimler</button></li>
+          <li><button class="admin-nav-item" data-section="commentsSection"><i class="fas fa-comments"></i> Yorumlar</button></li>
+          <li><button class="admin-nav-item" data-section="contactSection"><i class="fas fa-envelope"></i> Iletisim</button></li>
+          <li><button class="admin-nav-item" data-section="guestbookSection"><i class="fas fa-book-open"></i> Ziyaretci Defteri</button></li>
+          <li><button class="admin-nav-item" data-section="settingsSection"><i class="fas fa-cog"></i> Ayarlar</button></li>
+        </ul>
+      </aside>
+      <div class="admin-sidebar-overlay" id="sidebarOverlay"></div>
+      <button class="admin-mobile-toggle" id="sidebarToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+
+      <!-- Main Content -->
+      <div class="admin-main">
+
+      <!-- ===== BLOG YAZILARI ===== -->
+      <div class="admin-section active" id="blogSection">
       <form class="admin-form" id="postForm">
         <h3 style="margin-bottom: 24px;" id="formTitle"><i class="fas fa-plus"></i> Yeni Yazi Ekle</h3>
 
@@ -171,8 +194,11 @@
         <h3 style="margin-bottom: 20px;"><i class="fas fa-list"></i> Mevcut Yazilar</h3>
       </div>
 
+      </div><!-- /blogSection -->
+
       <!-- ===== SERI YONETIMI ===== -->
-      <div class="admin-form" id="seriesSection" style="margin-top:40px;">
+      <div class="admin-section" id="seriesSection">
+      <div class="admin-form">
         <h3 style="margin-bottom: 24px;" id="seriesFormTitle"><i class="fas fa-layer-group"></i> Seri Yonetimi</h3>
 
         <form id="seriesFormEl">
@@ -225,9 +251,11 @@
           <h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Seriler</h3>
         </div>
       </div>
+      </div><!-- /seriesSection -->
 
       <!-- ===== PROJE YONETIMI ===== -->
-      <div class="admin-form" id="projectSection" style="margin-top:40px;">
+      <div class="admin-section" id="projectSection">
+      <div class="admin-form">
         <h3 style="margin-bottom: 24px;" id="projectFormTitle"><i class="fas fa-folder-plus"></i> Proje Yonetimi</h3>
 
         <form id="projectFormEl">
@@ -272,9 +300,11 @@
           <h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Projeler</h3>
         </div>
       </div>
+      </div><!-- /projectSection -->
 
       <!-- ===== DENEYIM YONETIMI ===== -->
-      <div class="admin-form" id="experienceSection" style="margin-top:40px;">
+      <div class="admin-section" id="experienceSection">
+      <div class="admin-form">
         <h3 style="margin-bottom: 24px;" id="expFormTitle"><i class="fas fa-briefcase"></i> Deneyim Yonetimi</h3>
 
         <form id="experienceFormEl">
@@ -305,21 +335,35 @@
           <h3 style="margin-bottom:20px;"><i class="fas fa-list"></i> Mevcut Deneyimler</h3>
         </div>
       </div>
+      </div><!-- /experienceSection -->
 
       <!-- ===== YORUM YONETIMI ===== -->
-      <div class="admin-form" id="commentsSection" style="margin-top:40px;">
+      <div class="admin-section" id="commentsSection">
+      <div class="admin-form">
         <h3 style="margin-bottom: 24px;"><i class="fas fa-comments"></i> Yorum Onaylama</h3>
         <div class="admin-posts-list" id="adminCommentsList"></div>
       </div>
+      </div><!-- /commentsSection -->
+
+      <!-- ===== ILETISIM MESAJLARI ===== -->
+      <div class="admin-section" id="contactSection">
+      <div class="admin-form">
+        <h3 style="margin-bottom: 24px;"><i class="fas fa-envelope"></i> Iletisim Mesajlari</h3>
+        <div class="admin-posts-list" id="adminContactList"></div>
+      </div>
+      </div><!-- /contactSection -->
 
       <!-- ===== ZIYARETCI MESAJLARI ===== -->
-      <div class="admin-form" id="guestbookSection" style="margin-top:40px;">
+      <div class="admin-section" id="guestbookSection">
+      <div class="admin-form">
         <h3 style="margin-bottom: 24px;"><i class="fas fa-envelope-open-text"></i> Ziyaretci Mesajlari</h3>
         <div class="admin-posts-list" id="adminGuestbookList"></div>
       </div>
+      </div><!-- /guestbookSection -->
 
-      <!-- Password Change -->
-      <div style="margin-top:40px;padding:24px;background:var(--card-bg,#1a1a2e);border-radius:12px;border:1px solid var(--border,#333);">
+      <!-- ===== AYARLAR ===== -->
+      <div class="admin-section" id="settingsSection">
+      <div style="padding:24px;background:var(--card-bg,#1a1a2e);border-radius:12px;border:1px solid var(--border,#333);">
         <h3 style="margin-bottom:16px;"><i class="fas fa-key"></i> Sifre Degistir</h3>
         <form id="changePasswordForm" autocomplete="off">
           <div class="form-group">
@@ -334,7 +378,10 @@
           <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Sifreyi Guncelle</button>
         </form>
       </div>
+      </div><!-- /settingsSection -->
 
+      </div><!-- /admin-main -->
+      </div><!-- /admin-layout -->
     </div>
   </section>
 
@@ -898,6 +945,125 @@
       }
     }
 
+    // ===== ADMIN SIDEBAR =====
+    function initAdminSidebar() {
+      const sidebar = document.getElementById('adminSidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const toggle = document.getElementById('sidebarToggle');
+      const navItems = document.querySelectorAll('.admin-nav-item');
+      const sections = document.querySelectorAll('.admin-section');
+
+      function switchSection(sectionId) {
+        sections.forEach(s => s.classList.remove('active'));
+        navItems.forEach(n => n.classList.remove('active'));
+        const target = document.getElementById(sectionId);
+        if (target) target.classList.add('active');
+        const activeNav = document.querySelector(`.admin-nav-item[data-section="${sectionId}"]`);
+        if (activeNav) activeNav.classList.add('active');
+        // Close mobile sidebar
+        if (window.innerWidth <= 992) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('open');
+        }
+      }
+
+      navItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const sectionId = item.getAttribute('data-section');
+          switchSection(sectionId);
+        });
+      });
+
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('open');
+        });
+      }
+
+      if (overlay) {
+        overlay.addEventListener('click', () => {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('open');
+        });
+      }
+    }
+
+    // ===== CONTACT MESSAGE MANAGEMENT (Supabase) =====
+    async function renderContactList() {
+      const messages = await fetchContactMessages();
+      const list = document.getElementById('adminContactList');
+      if (!list) return;
+
+      // Update sidebar badge
+      const unreadCount = messages.filter(m => !m.is_read).length;
+      const contactNav = document.querySelector('.admin-nav-item[data-section="contactSection"]');
+      if (contactNav) {
+        const existingBadge = contactNav.querySelector('.nav-badge');
+        if (existingBadge) existingBadge.remove();
+        if (unreadCount > 0) {
+          const badge = document.createElement('span');
+          badge.className = 'nav-badge';
+          badge.textContent = unreadCount;
+          contactNav.appendChild(badge);
+        }
+      }
+
+      if (messages.length === 0) {
+        list.innerHTML = '<p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz iletisim mesaji yok.</p>';
+        return;
+      }
+
+      list.innerHTML = messages.map(msg => {
+        const dateStr = msg.created_at ? new Date(msg.created_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+        const readBadge = msg.is_read
+          ? '<span class="badge-read"><i class="fas fa-check"></i> Okundu</span>'
+          : '<span class="badge-unread"><i class="fas fa-circle"></i> Yeni</span>';
+        const markReadBtn = msg.is_read ? '' : `<button class="btn-edit" onclick="handleMarkContactRead(${msg.id})"><i class="fas fa-eye"></i> Okundu</button>`;
+        const unreadClass = msg.is_read ? '' : ' unread';
+        return `
+          <div class="admin-post-item contact-msg-item${unreadClass}">
+            <div class="post-info">
+              <h4>${escapeHtml(msg.name)} <small style="color:var(--dark-light);">&lt;${escapeHtml(msg.email)}&gt;</small></h4>
+              <p style="margin:2px 0; font-weight:600; font-size:0.9rem;">${escapeHtml(msg.subject)}</p>
+              <p style="margin:4px 0; font-size:0.85rem; color:var(--dark-light);">${escapeHtml(msg.message)}</p>
+              <div class="contact-msg-meta">
+                <span style="font-size:0.8rem; color:var(--dark-light);">${dateStr}</span>
+                ${readBadge}
+              </div>
+            </div>
+            <div class="post-actions">
+              ${markReadBtn}
+              <button class="btn-delete" onclick="handleDeleteContact(${msg.id})"><i class="fas fa-trash"></i> Sil</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleMarkContactRead(id) {
+      try {
+        await markContactMessageRead(id);
+        await renderContactList();
+        if (typeof showToast === 'function') showToast('Mesaj okundu olarak isaretlendi', 'success');
+      } catch (err) {
+        console.error('Mark read error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
+      }
+    }
+
+    async function handleDeleteContact(id) {
+      if (!confirm('Bu mesaji silmek istediginize emin misiniz?')) return;
+      try {
+        await deleteContactMessage(id);
+        await renderContactList();
+        if (typeof showToast === 'function') showToast('Mesaj silindi', 'info');
+      } catch (err) {
+        console.error('Delete error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
+      }
+    }
+
     // ===== LOGIN & AUTH (Supabase) =====
     (async function() {
       var overlay = document.getElementById('loginOverlay');
@@ -906,6 +1072,8 @@
       function showAdmin() {
         overlay.style.display = 'none';
         content.style.display = '';
+        // Init sidebar navigation
+        initAdminSidebar();
         // Load all data
         renderAdminList();
         renderSeriesList();
@@ -913,6 +1081,7 @@
         renderProjectList();
         renderExpList();
         renderCommentsList();
+        renderContactList();
         renderGuestbookList();
       }
 
