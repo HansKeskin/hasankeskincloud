@@ -150,6 +150,41 @@
 - [x] Sitemap Guncellemesi (sitemap.xml + gorsel site haritasi)
 - [x] Responsive Tasarim (mobil uyumlu seri bilesenler)
 
+## Trafik & SEO Yol Haritasi (Planli)
+
+### Teknik SEO (Oncelik: Yuksek)
+- [ ] JSON-LD Structured Data (Article, BreadcrumbList, BlogPosting, Series)
+- [ ] Her yazi icin dinamik og:title / og:description meta tagleri
+- [ ] Canonical URL'ler (cross-post durumunda orijinal kaynagi belirtme)
+- [ ] Breadcrumb markup (Google sonuclarinda sayfa yolu gosterimi)
+- [ ] Google Search Console entegrasyonu ve sitemap submit
+- [ ] Internal linking stratejisi (yazilar arasi otomatik baglanti onerileri)
+
+### RSS Feed & Icerik Dagitimi (Oncelik: Yuksek)
+- [ ] RSS/Atom Feed (/feed.xml) olusturma
+- [ ] Medium cross-post altyapisi (canonical link ile)
+- [ ] dev.to / Hashnode cross-post destegi
+- [ ] Sosyal medya paylasim kartlari (her yazi icin ozel og:image)
+
+### Performans & Core Web Vitals (Oncelik: Orta)
+- [ ] Core Web Vitals optimizasyonu (LCP, CLS, FID)
+- [ ] Service Worker / offline destek (PWA altyapisi)
+- [ ] Image lazy loading & optimization
+- [ ] Critical CSS inline & font-display:swap
+
+### Kullanici Tutma & Donusum (Oncelik: Orta)
+- [ ] Newsletter icerik onizleme (yeni yazi bildirim maili)
+- [ ] "Benzer konuda yazi yazildiginda bilgilendir" ozelligi
+- [ ] Push notification altyapisi (Web Push API)
+- [ ] Okuma istatistikleri dashboardu (en cok okunan, trend yazilar)
+
+### Icerik Stratejisi (Oncelik: Kritik)
+- [ ] Keyword odakli yazi plani (Turkce DevOps/Kubernetes aramalari)
+- [ ] Haftada 1 yazi hedefi
+- [ ] Turkce DevOps icerik boslugundan faydalanma
+- [ ] LinkedIn'de her yazi icin tanitim postu
+- [ ] Reddit/Forum katilimi (r/kubernetes, r/devops, Turkce topluluklar)
+
 ## Kaldirilan Ozellikler
 - [x] Cookie Banner (KVKK/GDPR) - gereksiz, kaldirildi
 - [x] Ziyaretci Sayaci (localStorage) - yaniltici, kaldirildi
