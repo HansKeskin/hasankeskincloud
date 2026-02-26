@@ -212,8 +212,8 @@ if (hamburger) {
 
 // ===== SCROLL ANIMATIONS =====
 const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -50px 0px'
+  threshold: 0.05,
+  rootMargin: '0px 0px 0px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -633,6 +633,14 @@ document.querySelectorAll('.fade-left, .fade-right, .fade-up, .fade-down').forEa
   observer.observe(el);
 });
 
+// Fallback: ensure all fade elements become visible after 3s (iOS Safari safety net)
+setTimeout(() => {
+  document.querySelectorAll('.fade-in, .fade-left, .fade-right, .fade-up, .fade-down').forEach(el => {
+    if (!el.classList.contains('visible')) {
+      el.classList.add('visible');
+    }
+  });
+}, 3000);
 
 // ===== BLOG VIEW TRACKING =====
 function trackPostView(postId) {
@@ -683,6 +691,8 @@ function toggleBookmark(postId) {
   // Update bookmark count
   const countEl = document.getElementById('bookmarkCount');
   if (countEl) countEl.textContent = bookmarks.length;
+  const bmFilterCount = document.getElementById('bookmarkFilterCount');
+  if (bmFilterCount) bmFilterCount.textContent = bookmarks.length > 0 ? bookmarks.length : '';
 }
 
 // ===== TABLE OF CONTENTS =====

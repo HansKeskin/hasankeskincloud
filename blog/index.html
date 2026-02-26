@@ -76,7 +76,7 @@
       <div class="blog-stats-bar fade-up" id="blogStatsBar">
         <div class="blog-stat-item"><i class="fas fa-file-alt"></i> <strong id="statTotalPosts">0</strong> Yazi</div>
         <div class="blog-stat-item"><i class="fas fa-eye"></i> <strong id="statTotalViews">0</strong> Goruntulenme</div>
-        <div class="blog-stat-item"><i class="fas fa-bookmark"></i> <strong id="bookmarkCount">0</strong> Kaydedilen</div>
+        <div class="blog-stat-item" style="cursor:pointer;" onclick="filterByCategory('bookmarked')"><i class="fas fa-bookmark"></i> <strong id="bookmarkCount">0</strong> Kaydedilen</div>
       </div>
 
       <!-- Active Series Spotlight -->
@@ -94,6 +94,7 @@
         <button class="filter-btn" data-filter="teknoloji" data-i18n="blog.filter_tech">Teknoloji</button>
         <button class="filter-btn" data-filter="devops" data-i18n="blog.filter_dev">DevOps</button>
         <button class="filter-btn" data-filter="kisisel" data-i18n="blog.filter_personal">Kisisel</button>
+        <button class="filter-btn filter-btn-bookmark" data-filter="bookmarked"><i class="fas fa-bookmark"></i> Kaydedilenler <span id="bookmarkFilterCount" class="bookmark-filter-count"></span></button>
       </div>
 
       <!-- Tag Filters -->
@@ -240,7 +241,10 @@
       const lang = getLang();
       let posts = await getAllPosts();
 
-      if (currentFilter !== 'all') {
+      if (currentFilter === 'bookmarked') {
+        const bookmarks = getBookmarks();
+        posts = posts.filter(p => bookmarks.includes(String(p.id)));
+      } else if (currentFilter !== 'all') {
         posts = posts.filter(p => p.category === currentFilter);
       }
 
@@ -315,14 +319,14 @@
           const readTime = calculateReadingTime(content);
           const categoryLabel = { devops: t('blog.filter_dev'), teknoloji: t('blog.filter_tech'), kisisel: t('blog.filter_personal') };
 
-          const postTags = (p.tags && p.tags.length > 0) ? '<div class="tech-stack" style="margin-top:8px;">' + p.tags.map(tg => '<span class="tag" style="font-size:0.7rem;">' + tg + '</span>').join('') + '</div>' : '';
+          const postTags = (p.tags && p.tags.length > 0) ? '<div class="tech-stack" style="margin-top:8px;">' + p.tags.map(tg => `<span class="tag card-tag-filter" style="font-size:0.7rem;" onclick="filterByTag('${tg}')">${tg}</span>`).join('') + '</div>' : '';
 
           // Series badge
           let seriesBadge = '';
           if (p.series_id && seriesMap[p.series_id]) {
             const s = seriesMap[p.series_id];
             const sTitle = s.title[lang] || s.title.tr;
-            seriesBadge = `<span class="series-badge"><i class="fas fa-layer-group"></i> ${sTitle}</span>`;
+            seriesBadge = `<a href="/series/?id=${p.series_id}" class="series-badge"><i class="fas fa-layer-group"></i> ${sTitle}</a>`;
           }
 
           return `
@@ -337,7 +341,7 @@
                   <span><i class="far fa-clock"></i> ${readTime} ${t('blog.reading_time')}</span>
                 </div>
                 ${seriesBadge}
-                <span class="tag">${categoryLabel[p.category] || p.category}</span>
+                <span class="tag card-category-tag" onclick="filterByCategory('${p.category}')">${categoryLabel[p.category] || p.category}</span>
                 <h3>${title}</h3>
                 <p>${summary}</p>
                 ${postTags}
@@ -387,6 +391,32 @@
       });
     });
 
+    // Card-level category filter
+    function filterByCategory(cat) {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-filter') === cat);
+      });
+      currentFilter = cat;
+      blogPage = 1;
+      renderTagFilters();
+      renderBlog();
+      document.querySelector('.blog-filters')?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Card-level tag filter
+    function filterByTag(tag) {
+      if (!selectedTags.includes(tag)) {
+        selectedTags.push(tag);
+      }
+      blogPage = 1;
+      const url = new URL(window.location);
+      url.searchParams.set('tag', selectedTags.join(','));
+      history.replaceState(null, '', url);
+      renderTagFilters();
+      renderBlog();
+      document.querySelector('.blog-filters')?.scrollIntoView({ behavior: 'smooth' });
+    }
+
     // Newsletter
     if (typeof initSpamProtection === 'function') initSpamProtection('newsletterForm');
     document.getElementById('newsletterForm').addEventListener('submit', async (e) => {
@@ -420,7 +450,10 @@
       const el3 = document.getElementById('bookmarkCount');
       if (el1) el1.textContent = allPosts.length;
       if (el2) el2.textContent = typeof getTotalViews === 'function' ? getTotalViews() : 0;
-      if (el3) el3.textContent = typeof getBookmarks === 'function' ? getBookmarks().length : 0;
+      const bmCount = typeof getBookmarks === 'function' ? getBookmarks().length : 0;
+      if (el3) el3.textContent = bmCount;
+      const bmFilterCount = document.getElementById('bookmarkFilterCount');
+      if (bmFilterCount) bmFilterCount.textContent = bmCount > 0 ? bmCount : '';
     }
 
     // Active Series Spotlight

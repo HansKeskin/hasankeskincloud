@@ -432,6 +432,8 @@ img {
   overflow: hidden;
   box-shadow: var(--shadow);
   transition: var(--transition);
+  position: relative;
+  cursor: pointer;
 }
 
 .blog-card:hover {
@@ -496,8 +498,37 @@ img {
   transition: var(--transition);
 }
 
+.blog-card .read-more::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
 .blog-card .read-more:hover {
   gap: 8px;
+}
+
+.blog-card .bookmark-btn,
+.blog-card .tag,
+.blog-card .series-badge,
+.blog-card .series-episode-number {
+  position: relative;
+  z-index: 2;
+}
+
+.blog-card .card-category-tag,
+.blog-card .card-tag-filter {
+  cursor: pointer;
+}
+
+.blog-card .card-category-tag:hover,
+.blog-card .card-tag-filter:hover {
+  background: var(--primary);
+  color: #fff;
 }
 
 .tag {
@@ -1027,6 +1058,25 @@ img {
   background: var(--primary);
   color: #fff;
   border-color: transparent;
+}
+
+.filter-btn-bookmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bookmark-filter-count {
+  background: rgba(255, 255, 255, 0.25);
+  font-size: 0.75rem;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.filter-btn-bookmark:not(.active) .bookmark-filter-count {
+  background: var(--primary);
+  color: #fff;
 }
 
 /* ===== PRELOADER ===== */
@@ -3681,6 +3731,10 @@ select:focus-visible {
   font-size: 0.72rem;
   font-weight: 600;
   margin-bottom: 8px;
+}
+
+.series-badge:hover {
+  opacity: 0.85;
 }
 
 .series-badge i {
