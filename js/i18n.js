@@ -131,7 +131,9 @@ const translations = {
     "footer.desc": "Teknoloji, yazilim ve hayata dair dusuncelerimi paylastigim kisisel web sitem.",
     "footer.pages": "Sayfalar",
     "footer.social": "Sosyal Medya",
-    "footer.rights": "Tum haklari saklidir."
+    "footer.rights": "Tum haklari saklidir.",
+    "footer.guestbook": "Ziyaretci Defteri",
+    "footer.sitemap": "Site Haritasi"
   },
   en: {
     "nav.home": "Home",
@@ -252,7 +254,9 @@ const translations = {
     "footer.desc": "My personal website where I share my thoughts on technology, software and life.",
     "footer.pages": "Pages",
     "footer.social": "Social Media",
-    "footer.rights": "All rights reserved."
+    "footer.rights": "All rights reserved.",
+    "footer.guestbook": "Guestbook",
+    "footer.sitemap": "Sitemap"
   }
 };
 

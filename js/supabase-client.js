@@ -321,6 +321,16 @@ async function fetchGuestbookMessages() {
   return data;
 }
 
+async function fetchApprovedGuestbookMessages() {
+  const { data, error } = await _supabase
+    .from('guestbook_messages')
+    .select('*')
+    .eq('approved', true)
+    .order('created_at', { ascending: false });
+  if (error) { console.error('fetchApprovedGuestbookMessages error:', error); return []; }
+  return data;
+}
+
 async function insertGuestbookMessage(msg) {
   const { data, error } = await _supabase
     .from('guestbook_messages')
@@ -328,12 +338,21 @@ async function insertGuestbookMessage(msg) {
       name: msg.name,
       location: msg.location,
       emoji: msg.emoji,
-      message: msg.message
+      message: msg.message,
+      approved: false
     })
     .select()
     .single();
   if (error) throw error;
   return data;
+}
+
+async function approveGuestbookMessage(id) {
+  const { error } = await _supabase
+    .from('guestbook_messages')
+    .update({ approved: true })
+    .eq('id', id);
+  if (error) throw error;
 }
 
 async function deleteGuestbookMessage(id) {

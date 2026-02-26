@@ -128,18 +128,6 @@
       box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
     }
 
-    .message-count {
-      text-align: center;
-      color: var(--dark-light);
-      margin-bottom: 24px;
-      font-size: 0.95rem;
-    }
-
-    .message-count span {
-      font-weight: 700;
-      color: var(--primary);
-    }
-
     .guestbook-messages {
       display: flex;
       flex-direction: column;
@@ -314,6 +302,9 @@
         <p style="color:var(--dark-light);">Mesajiniz bize ulasmistir. Tesekkur ederiz!</p>
       </div>
 
+      <!-- Messages List -->
+      <div class="guestbook-messages fade-in" id="guestbookMessages"></div>
+
     </div>
   </section>
 
@@ -334,8 +325,8 @@
             <a href="/projects/" data-i18n="nav.projects">Projeler</a>
             <a href="/cv/" data-i18n="nav.cv">CV</a>
             <a href="/contact/" data-i18n="nav.contact">Iletisim</a>
-            <a href="/guestbook/">Ziyaretci Defteri</a>
-            <a href="/sitemap-page/">Site Haritasi</a>
+            <a href="/guestbook/" data-i18n="footer.guestbook">Ziyaretci Defteri</a>
+            <a href="/sitemap-page/" data-i18n="footer.sitemap">Site Haritasi</a>
           </div>
         </div>
         <div>
@@ -427,6 +418,9 @@
         showToast('Mesajiniz iletildi!', 'success');
       }
 
+      // Reload messages to show the new one
+      await loadMessages();
+
       // Reset form
       document.getElementById('guestbookForm').reset();
       document.querySelectorAll('.emoji-picker button').forEach(function(b) {
@@ -466,7 +460,55 @@
       }
     }
 
+    // Load and render guestbook messages
+    async function loadMessages() {
+      var lang = (typeof getLang === 'function') ? getLang() : 'tr';
+      var container = document.getElementById('guestbookMessages');
+      if (!container) return;
+
+      try {
+        var messages = await fetchApprovedGuestbookMessages();
+        if (!messages || messages.length === 0) {
+          container.innerHTML = '';
+          return;
+        }
+
+        container.innerHTML = messages.map(function(msg) {
+          var initial = msg.name ? msg.name.charAt(0).toUpperCase() : '?';
+          var date = new Date(msg.created_at);
+          var dateStr = date.toLocaleDateString(lang === 'en' ? 'en-US' : 'tr-TR', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          });
+          var locationHtml = msg.location
+            ? '<span class="guestbook-location"><i class="fas fa-map-marker-alt"></i> ' + escapeHtml(msg.location) + '</span>'
+            : '';
+          return '<div class="guestbook-card">' +
+            '<div class="guestbook-card-header">' +
+              '<div class="guestbook-avatar">' + (msg.emoji || initial) + '</div>' +
+              '<div class="guestbook-meta">' +
+                '<div class="guestbook-name">' + escapeHtml(msg.name) + '</div>' +
+                '<div class="guestbook-date">' + dateStr + '</div>' +
+                locationHtml +
+              '</div>' +
+            '</div>' +
+            '<div class="guestbook-text">' + escapeHtml(msg.message) + '</div>' +
+          '</div>';
+        }).join('');
+      } catch (err) {
+        console.error('loadMessages error:', err);
+      }
+    }
+
+    // HTML escape utility
+    function escapeHtml(text) {
+      if (!text) return '';
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
     updateGuestbookLang();
+    loadMessages();
   </script>
 </body>
 </html>
