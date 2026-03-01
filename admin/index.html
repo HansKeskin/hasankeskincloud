@@ -88,6 +88,7 @@
           <li><button class="admin-nav-item" data-section="commentsSection"><i class="fas fa-comments"></i> Yorumlar</button></li>
           <li><button class="admin-nav-item" data-section="contactSection"><i class="fas fa-envelope"></i> Iletisim</button></li>
           <li><button class="admin-nav-item" data-section="guestbookSection"><i class="fas fa-book-open"></i> Ziyaretci Defteri</button></li>
+          <li><button class="admin-nav-item" data-section="newsletterSection"><i class="fas fa-newspaper"></i> Bulten</button></li>
           <li><button class="admin-nav-item" data-section="settingsSection"><i class="fas fa-cog"></i> Ayarlar</button></li>
         </ul>
       </aside>
@@ -360,6 +361,20 @@
         <div class="admin-posts-list" id="adminGuestbookList"></div>
       </div>
       </div><!-- /guestbookSection -->
+
+      <!-- ===== BULTEN ABONELERI ===== -->
+      <div class="admin-section" id="newsletterSection">
+      <div class="admin-form">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+          <h3 style="margin:0;"><i class="fas fa-newspaper"></i> Bulten Aboneleri <span id="nlSubCount" style="font-size:0.85rem; color:var(--dark-light); font-weight:400;"></span></h3>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="handleCopyEmails()" style="font-size:13px; padding:8px 16px;"><i class="fas fa-copy"></i> E-postalari Kopyala</button>
+            <button class="btn btn-primary" onclick="handleExportCSV()" style="font-size:13px; padding:8px 16px; background:#059669;"><i class="fas fa-file-csv"></i> CSV Indir</button>
+          </div>
+        </div>
+        <div class="admin-posts-list" id="adminNewsletterList"></div>
+      </div>
+      </div><!-- /newsletterSection -->
 
       <!-- ===== AYARLAR ===== -->
       <div class="admin-section" id="settingsSection">
@@ -961,6 +976,104 @@
       }
     }
 
+    // ===== NEWSLETTER MANAGEMENT (Supabase) =====
+    async function renderNewsletterList() {
+      const subs = await fetchNewsletterSubs();
+      const list = document.getElementById('adminNewsletterList');
+      const countEl = document.getElementById('nlSubCount');
+      if (!list) return;
+
+      if (countEl) countEl.textContent = '(' + subs.length + ' abone)';
+
+      // Update sidebar badge
+      const nlNav = document.querySelector('.admin-nav-item[data-section="newsletterSection"]');
+      if (nlNav) {
+        const existingBadge = nlNav.querySelector('.nav-badge');
+        if (existingBadge) existingBadge.remove();
+        if (subs.length > 0) {
+          const badge = document.createElement('span');
+          badge.className = 'nav-badge';
+          badge.style.background = '#059669';
+          badge.textContent = subs.length;
+          nlNav.appendChild(badge);
+        }
+      }
+
+      if (subs.length === 0) {
+        list.innerHTML = '<p style="color:var(--dark-light); text-align:center; padding:20px;">Henuz abone yok.</p>';
+        return;
+      }
+
+      list.innerHTML = subs.map(sub => {
+        const dateStr = sub.created_at ? new Date(sub.created_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+        return `
+          <div class="admin-post-item">
+            <div class="post-info">
+              <h4><i class="fas fa-envelope" style="color:var(--primary); margin-right:8px;"></i>${escapeHtml(sub.email)}</h4>
+              <span style="font-size:0.8rem; color:var(--dark-light);"><i class="fas fa-calendar-alt"></i> ${dateStr}</span>
+            </div>
+            <div class="post-actions">
+              <button class="btn-delete" onclick="handleDeleteNewsletter(${sub.id})"><i class="fas fa-trash"></i> Sil</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleDeleteNewsletter(id) {
+      if (!confirm('Bu aboneyi silmek istediginize emin misiniz?')) return;
+      try {
+        await deleteNewsletterSub(id);
+        await renderNewsletterList();
+        if (typeof showToast === 'function') showToast('Abone silindi', 'info');
+      } catch (err) {
+        console.error('Delete error:', err);
+        if (typeof showToast === 'function') showToast('Hata: ' + err.message, 'error');
+      }
+    }
+
+    async function handleCopyEmails() {
+      const subs = await fetchNewsletterSubs();
+      if (subs.length === 0) {
+        if (typeof showToast === 'function') showToast('Kopyalanacak e-posta yok', 'error');
+        return;
+      }
+      const emails = subs.map(s => s.email).join(', ');
+      try {
+        await navigator.clipboard.writeText(emails);
+        if (typeof showToast === 'function') showToast(subs.length + ' e-posta kopyalandi!', 'success');
+      } catch (err) {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = emails;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (typeof showToast === 'function') showToast(subs.length + ' e-posta kopyalandi!', 'success');
+      }
+    }
+
+    async function handleExportCSV() {
+      const subs = await fetchNewsletterSubs();
+      if (subs.length === 0) {
+        if (typeof showToast === 'function') showToast('Disa aktarilacak abone yok', 'error');
+        return;
+      }
+      const csv = 'Email,Tarih\n' + subs.map(s => {
+        const d = s.created_at ? new Date(s.created_at).toLocaleDateString('tr-TR') : '';
+        return s.email + ',' + d;
+      }).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bulten-aboneleri.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+      if (typeof showToast === 'function') showToast('CSV dosyasi indirildi!', 'success');
+    }
+
     // ===== ADMIN SIDEBAR =====
     function initAdminSidebar() {
       const sidebar = document.getElementById('adminSidebar');
@@ -1099,6 +1212,7 @@
         renderCommentsList();
         renderContactList();
         renderGuestbookList();
+        renderNewsletterList();
       }
 
       // Check existing session

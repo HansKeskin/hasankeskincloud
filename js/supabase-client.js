@@ -473,3 +473,11 @@ async function fetchNewsletterSubs() {
   if (error) { console.error('fetchNewsletterSubs error:', error); return []; }
   return data;
 }
+
+async function deleteNewsletterSub(id) {
+  const { error } = await _supabase
+    .from('newsletter_subs')
+    .delete()
+    .eq('id', id);
+  if (error) throw error;
+}
